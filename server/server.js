@@ -86,13 +86,15 @@ const getTable = (table) => {
                 return result;
             })
             .catch(() => {
-                return [];
+                return {};
             });
     });
 }
 
 app.get("/table/:table", async (req, res) => {
 	const result = await getTable(req.params.table);
-	const toJson = queryToJson(result);
-	return res.json(toJson);
+	if (Object.keys(result).length === 0) {
+		return res.status(404).send("Not found");
+	}
+	return res.status(200).json(queryToJson(result));
 });

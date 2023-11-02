@@ -18,7 +18,7 @@ const App = () => {
 	return (
 		<div className="App">
 			<h1>Hello World</h1>
-			<p>{data ? JSON.stringify(data) : "Loading..."}</p>
+			<p>{Object.keys(data).length !== 0 ? JSON.stringify(data) : "Loading..."}</p>
 		</div>
 	);
 };
