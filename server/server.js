@@ -5,6 +5,7 @@ const express = require("express");
 const loadEnvFile = require("./utils/envUtil");
 const envVariables = loadEnvFile("../.env");
 const oracledb = require("oracledb");
+
 const queryToJson = require("./utils/helpers");
 
 const app = express();
@@ -16,6 +17,8 @@ const DB_CONFIG = {
 	password: envVariables.ORACLE_PASS,
 	connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
 };
+
+console.log(DB_CONFIG);
 
 // Starting the server
 app.listen(PORT, () => {
@@ -30,11 +33,6 @@ app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	next();
-});
-
-
-app.get("/test", (req, res) => {
-	res.json({hi: "hello world"});
 });
 
 // Wrapper to manage OracleDB actions, simplifying connection handling.
@@ -59,36 +57,36 @@ const withOracleDB = (action) => {
 		})
 		.finally(() => {
 			if (connection) {
-                return connection.close()
-                    .catch((err) => {
-                        console.error(err);
-                    });
-            }
+				return connection.close()
+					.catch((err) => {
+						console.error(err);
+					});
+			}
 		});
 }
 
 async function testOracleConnection() {
-    return await withOracleDB(async (connection) => {
+	return await withOracleDB(async (connection) => {
 		console.log("Oracle connection success!");
-        return true;
-    }).catch(() => {
+		return true;
+	}).catch(() => {
 		console.log("Oracle connection failed!");
-        return false;
-    });
+		return false;
+	});
 }
 
 testOracleConnection();
 
 const getTable = (table) => {
-    return withOracleDB((connection) => {
-        return connection.execute(`SELECT * FROM ${table}`)
-            .then((result) => {
-                return result;
-            })
-            .catch(() => {
-                return {};
-            });
-    });
+	return withOracleDB((connection) => {
+		return connection.execute(`SELECT * FROM ${table}`)
+			.then((result) => {
+				return result;
+			})
+			.catch(() => {
+				return {};
+			});
+	});
 }
 
 app.get("/table/:table", async (req, res) => {
