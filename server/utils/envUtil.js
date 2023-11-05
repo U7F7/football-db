@@ -1,3 +1,5 @@
+// From https://github.students.cs.ubc.ca/CPSC304/CPSC304_Node_Project
+
 const fs = require('fs');
 
 function loadEnvFile(filePath) {
