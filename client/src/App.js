@@ -11,9 +11,7 @@ const App = () => {
 				setData(res.data);
 			})
 			.catch(err => console.error(err));
-	}, [data]);
-
-	// const data = JSON.stringify({a: "1"});
+	}, []);
 
 	return (
 		<div className="App">
