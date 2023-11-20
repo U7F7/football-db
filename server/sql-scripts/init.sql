@@ -6,6 +6,7 @@ drop table GIVENBY;
 drop table WINSAWARD;
 drop table PLAYSFOR;
 drop table COACHES;
+drop table REFEREES;
 
 -- drop entities (order may matter for PK/FKs)
 drop table COACH;
@@ -294,6 +295,18 @@ CREATE TABLE WinsAward(
         /* ON UPDATE CASCADE not supported will impl another way */
 );
 
+CREATE TABLE Referees(
+    person_id int,
+    game_id int,
+    PRIMARY KEY(person_id, game_id),
+    FOREIGN KEY(person_id) REFERENCES Referee(person_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(game_id) REFERENCES Game(game_id)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
+);
+
 /* INSERTS */
 
 INSERT ALL
@@ -530,5 +543,13 @@ INSERT ALL
 	INTO WinsAward VALUES (3, 6, 'Vancouver Warriors')
 	INTO WinsAward VALUES (4, 1, 'Vancouver Vipers')
 	INTO WinsAward VALUES (5, 8, 'Vancouver Titans')
+SELECT * FROM dual;
+
+INSERT ALL
+    INTO Referees VALUES (16, 2)
+    INTO Referees VALUES (17, 2)
+    INTO Referees VALUES (20, 1)
+    INTO Referees VALUES (19, 5)
+    INTO Referees VALUES (16, 3)
 SELECT * FROM dual;
 
