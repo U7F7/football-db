@@ -1,26 +1,31 @@
-drop table COACH;
-drop table REFEREE;
-drop table STATISTICS;
-drop table SHOTDETAILS;
-drop table PASSDETAILS;
-drop table AWARDS;
-drop table SPONSOR;
-drop table EVENT;
-drop table INJURY;
-drop table ATHLETE;
-drop table PERSON;
-drop table AGEDETAILS;
-drop table EXPERIENCEDETAILS;
-drop table TEAM;
-drop table VENUE;
-drop table POSITIONDETAILS;
-drop table PLAYSFOR;
-drop table COACHES;
+-- drop relational tables first
 drop table PARTICIPATESIN;
 drop table LOCATEDIN;
 drop table HASSPONSOR;
 drop table GIVENBY;
 drop table WINSAWARD;
+drop table PLAYSFOR;
+drop table COACHES;
+
+-- drop entities (order may matter for PK/FKs)
+drop table COACH;
+drop table REFEREE;
+drop table STATISTICS;
+drop table AWARDS;
+drop table SPONSOR;
+drop table GAME;
+drop table INJURY;
+drop table ATHLETE;
+drop table TEAM;
+drop table VENUE;
+
+-- drop DETAILS last
+drop table AGEDETAILS;
+drop table EXPERIENCEDETAILS;
+drop table POSITIONDETAILS;
+drop table SHOTDETAILS;
+drop table PASSDETAILS;
+
 
 /* Entities */
 
@@ -33,27 +38,8 @@ CREATE TABLE AgeDetails(
 CREATE TABLE ExperienceDetails(
 	date_started date,
 	years_experience int,
-	PRIMARY KEY(date_started)
+    PRIMARY KEY(date_started)
 );
-
--- CREATE TABLE Person(
--- 	person_id int,
--- 	name varchar(100),
--- 	birthdate date,
--- 	height float,
--- 	weight float,
--- 	phone_number int UNIQUE,
--- 	email varchar(100) UNIQUE,
--- 	address varchar(100),
--- 	date_started date,
--- 	PRIMARY KEY(person_id),
--- 	FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
--- 		ON DELETE CASCADE,
--- 		/* ON UPDATE CASCADE, not supported will impl another way */
--- 	FOREIGN KEY (date_started) REFERENCES ExperienceDetails(date_started)
--- 		ON DELETE CASCADE
--- 		/* ON UPDATE CASCADE not supported will impl another way */
--- );
 
 CREATE TABLE Venue(
 	venue_address varchar(100),
@@ -199,11 +185,11 @@ CREATE TABLE Sponsor(
 	PRIMARY KEY(sponsor_name)
 );
 
-CREATE TABLE Event(
-	event_id int,
-	event_name varchar(100),
-	event_data date,
-	PRIMARY KEY(event_id)
+CREATE TABLE Game(
+	game_id int,
+	game_name varchar(100),
+	game_data date,
+	PRIMARY KEY(game_id)
 );
 
 CREATE TABLE Injury(
@@ -217,41 +203,78 @@ CREATE TABLE Injury(
 		/* ON UPDATE CASCADE not supported will impl another way */
 );
 
-/* Relationship Tables that were necessary */
+/* Relationship Tables */
+
 CREATE TABLE PlaysFor(
 	person_id int,
 	team_name varchar(100),
-	PRIMARY KEY(person_id, team_name)
+	PRIMARY KEY(person_id, team_name),
+	FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
+	    ON DELETE CASCADE,
+	    /* ON UPDATE CASCADE not supported will impl another way */
+	FOREIGN KEY(team_name) REFERENCES Team(team_name)
+        ON DELETE CASCADE
+	    /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE Coaches(
 	person_id int,
 	team_name varchar(100),
-	PRIMARY KEY(person_id, team_name)
+	PRIMARY KEY(person_id, team_name),
+    FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(team_name) REFERENCES Team(team_name)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE ParticipatesIn(
 	team_name varchar(100),
-	event_id int,
-	PRIMARY KEY(team_name, event_id)
+	game_id int,
+	PRIMARY KEY(team_name, game_id),
+    FOREIGN KEY(team_name) REFERENCES Team(team_name)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(game_id) REFERENCES Game(game_id)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE LocatedIn(
-	event_id int,
+	game_id int,
 	venue_address varchar(100),
-	PRIMARY KEY(event_id, venue_address)
+	PRIMARY KEY(game_id, venue_address),
+    FOREIGN KEY(game_id) REFERENCES Game(game_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(venue_address) REFERENCES Venue(venue_address)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE HasSponsor(
 	team_name varchar(100),
 	sponsor_name varchar(100),
-	PRIMARY KEY(team_name, sponsor_name)
+	PRIMARY KEY(team_name, sponsor_name),
+    FOREIGN KEY(team_name) REFERENCES Team(team_name)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(sponsor_name) REFERENCES Sponsor(sponsor_name)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE GivenBy(
 	sponsor_name varchar(100),
 	award_id int,
-	PRIMARY KEY(sponsor_name, award_id)
+	PRIMARY KEY(sponsor_name, award_id),
+    FOREIGN KEY(sponsor_name) REFERENCES Sponsor(sponsor_name)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(award_id) REFERENCES Awards(award_id)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE WinsAward(
@@ -259,10 +282,19 @@ CREATE TABLE WinsAward(
 	person_id int,
 	team_name varchar(100),
 	PRIMARY KEY(award_id),
-	UNIQUE(person_id, team_name)
+	UNIQUE(person_id, team_name),
+    FOREIGN KEY(award_id) REFERENCES Awards(award_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(team_name) REFERENCES Team(team_name)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
 );
 
--- INSERTS
+/* INSERTS */
 
 INSERT ALL
 	INTO AgeDetails VALUES ('1985-04-15', 38)
@@ -310,31 +342,34 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2000-04-18', 23)
 SELECT * FROM dual;
 
--- INSERT ALL
--- 	/* Athletes for Team - each team two players for now*/
--- 	INTO Person	VALUES (1, 'John Doe', '1985-04-15', 5.10, 170.5, 6041234567, 'john.doe@soccer.com', '123 Main St, Vancouver', '2000-07-10')
--- 	INTO Person	VALUES (2, 'Jane Smith', '1992-09-25', 5.6, 140.2, 7782345678, 'jane.smith@soccer.com', '456 Oak St, Vancouver', '2010-03-18')
--- 	INTO Person	VALUES (3, 'Mike Johnson', '1988-11-03', 6.0, 185.0, 6043456789, 'mike.johnson@soccer.com', '789 Elm St, Vancouver', '2005-12-05')
--- 	INTO Person	VALUES (4, 'Sarah Lee', '1995-07-19', 5.7, 150.8, 7784567890, 'sarah.lee@soccer.com', '234 Birch St, Vancouver', '2018-02-14')
--- 	INTO Person	VALUES (5, 'David Brown', '1982-03-12', 5.9, 175.3, 6045678901, 'david.brown@soccer.com', '567 Cedar St, Vancouver', '2002-09-22')
--- 	INTO Person	VALUES (6, 'Emily White', '1998-05-29', 5.4, 130.1, 7786789012, 'emily.white@soccer.com', '890 Fir St, Vancouver', '2015-06-30')
--- 	INTO Person	VALUES (7, 'Chris Anderson', '1987-08-14', 6.1, 190.6, 6047890123, 'chris.anderson@soccer.com', '123 Maple St, Vancouver', '2004-04-03')
--- 	INTO Person	VALUES (8, 'Laura Taylor', '1990-01-02', 5.8, 160.0, 7788901234, 'laura.taylor@soccer.com', '456 Pine St, Vancouver', '2009-11-12')
--- 	INTO Person	VALUES (9, 'Mark Wilson', '1986-12-08', 5.11, 180.4, 6049012345, 'mark.wilson@soccer.com', '789 Spruce St, Vancouver', '2007-07-27')
--- 	INTO Person	VALUES (10, 'Ava Martin', '1994-04-23', 5.5, 145.9, 7780123456, 'ava.martin@soccer.com', '234 Oak St, Vancouver', '2013-01-19')
--- 	/* Coaches*/
--- 	INTO Person	VALUES (11, 'Daniel Lee', '1983-06-17', 5.10, 175.2, 6048234567, 'daniel.lee@soccer.com', '567 Birch St, Vancouver', '2001-10-09')
--- 	INTO Person	VALUES (12, 'Olivia Johnson', '1997-10-30', 5.6, 140.8, 7788345678, 'olivia.johnson@soccer.com', '890 Elm St, Vancouver', '2016-08-07')
--- 	INTO Person	VALUES (13, 'William Smith', '1981-12-27', 5.11, 185.6, 6048456789, 'william.smith@soccer.com', '123 Cedar St, Vancouver', '2003-05-14')
--- 	INTO Person	VALUES (14, 'Sophia Brown', '1999-02-10', 5.7, 150.1, 7788567890, 'sophia.brown@soccer.com', '456 Fir St, Vancouver', '2019-12-21')
--- 	INTO Person	VALUES (15, 'James Anderson', '1984-07-07', 6.2, 195.0, 6048678901, 'james.anderson@soccer.com', '789 Pine St, Vancouver', '2006-02-16')
--- 	/* Referees */
--- 	INTO Person	VALUES (16, 'Liam Taylor', '1991-03-18', 5.9, 168.7, 2361234567, 'liam.taylor@soccer.com', '567 Oak St, Vancouver', '2009-08-14')
--- 	INTO Person	VALUES (17, 'Ella Smith', '1996-08-22', 5.4, 135.2, 2362345678, 'ella.smith@soccer.com', '345 Elm St, Vancouver', '2017-05-25')
--- 	INTO Person	VALUES (18, 'Noah Johnson', '1989-12-05', 6.2, 190.8, 2363456789, 'noah.johnson@soccer.com', '678 Birch St, Vancouver', '2006-11-30')
--- 	INTO Person	VALUES (19, 'Mia Davis', '1993-04-30', 5.6, 150.3, 2364567890, 'mia.davis@soccer.com', '456 Cedar St, Vancouver', '2014-09-07')
--- 	INTO Person	VALUES (20, 'Oliver Anderson', '1980-06-14', 5.10, 178.2, 2365678901, 'oliver.anderson@soccer.com', '890 Pine St, Vancouver', '2000-04-18')
--- SELECT * FROM dual;
+INSERT ALL
+    INTO Athlete VALUES (1, 'John Doe', '1985-04-15', 5.10, 170.5, 6041234567, 'john.doe@soccer.com', '123 Main St, Vancouver', '2000-07-10', 1, 'Vancouver Vipers', 60000)
+	INTO Athlete VALUES (2, 'Jane Smith', '1992-09-25', 5.6, 140.2, 7782345678, 'jane.smith@soccer.com', '456 Oak St, Vancouver', '2010-03-18', 2, 'Vancouver Vipers', 70000)
+	INTO Athlete VALUES (3, 'Mike Johnson', '1988-11-03', 6.0, 185.0, 6043456789, 'mike.johnson@soccer.com', '789 Elm St, Vancouver', '2005-12-05', 3, 'Vancouver Thunder', 80000)
+	INTO Athlete VALUES (4, 'Sarah Lee', '1995-07-19', 5.7, 150.8, 7784567890, 'sarah.lee@soccer.com', '234 Birch St, Vancouver', '2018-02-14', 4, 'Vancouver Thunder', 90000)
+	INTO Athlete VALUES (5, 'David Brown', '1982-03-12', 5.9, 175.3, 6045678901, 'david.brown@soccer.com', '567 Cedar St, Vancouver', '2002-09-22', 5, 'Vancouver Warriors', 100000)
+	INTO Athlete VALUES (6, 'Emily White', '1998-05-29', 5.4, 130.1, 7786789012, 'emily.white@soccer.com', '890 Fir St, Vancouver', '2015-06-30', 6, 'Vancouver Warriors', 110000)
+	INTO Athlete VALUES (7, 'Chris Anderson', '1987-08-14', 6.1, 190.6, 6047890123, 'chris.anderson@soccer.com', '123 Maple St, Vancouver', '2004-04-03', 7, 'Vancouver Titans', 120000)
+	INTO Athlete VALUES (8, 'Laura Taylor', '1990-01-02', 5.8, 160.0, 7788901234, 'laura.taylor@soccer.com', '456 Pine St, Vancouver', '2009-11-12', 8, 'Vancouver Titans', 130000)
+	INTO Athlete VALUES (9, 'Mark Wilson', '1986-12-08', 5.11, 180.4, 6049012345, 'mark.wilson@soccer.com', '789 Spruce St, Vancouver', '2007-07-27', 9, 'Vancouver Sharks', 140000)
+	INTO Athlete VALUES (10, 'Ava Martin', '1994-04-23', 5.5, 145.9, 7780123456, 'ava.martin@soccer.com', '234 Oak St, Vancouver', '2013-01-19', 10, 'Vancouver Sharks', 150000)
+SELECT * FROM dual;
+
+INSERT ALL
+    INTO Coach	VALUES (11, 'Daniel Lee', '1983-06-17', 5.10, 175.2, 6048234567, 'daniel.lee@soccer.com', '567 Birch St, Vancouver', '2001-10-09', 'Vancouver Vipers', 'Assistant Coach')
+	INTO Coach	VALUES (12, 'Olivia Johnson', '1997-10-30', 5.6, 140.8, 7788345678, 'olivia.johnson@soccer.com', '890 Elm St, Vancouver', '2016-08-07', 'Vancouver Thunder', 'Assistant Coach')
+	INTO Coach	VALUES (13, 'William Smith', '1981-12-27', 5.11, 185.6, 6048456789, 'william.smith@soccer.com', '123 Cedar St, Vancouver', '2003-05-14', 'Vancouver Warriors', 'Head Coach')
+	INTO Coach	VALUES (14, 'Sophia Brown', '1999-02-10', 5.7, 150.1, 7788567890, 'sophia.brown@soccer.com', '456 Fir St, Vancouver', '2019-12-21', 'Vancouver Titans', 'Head Coach')
+	INTO Coach	VALUES (15, 'James Anderson', '1984-07-07', 6.2, 195.0, 6048678901, 'james.anderson@soccer.com', '789 Pine St, Vancouver', '2006-02-16', 'Vancouver Sharks', 'Assistant Coach')
+SELECT * FROM dual;
+
+INSERT ALL
+	INTO Referee VALUES (16, 'Liam Taylor', '1991-03-18', 5.9, 168.7, 2361234567, 'liam.taylor@soccer.com', '567 Oak St, Vancouver', '2009-08-14', 1)
+	INTO Referee VALUES (17, 'Ella Smith', '1996-08-22', 5.4, 135.2, 2362345678, 'ella.smith@soccer.com', '345 Elm St, Vancouver', '2017-05-25', 2)
+	INTO Referee VALUES (18, 'Noah Johnson', '1989-12-05', 6.2, 190.8, 2363456789, 'noah.johnson@soccer.com', '678 Birch St, Vancouver', '2006-11-30', 3)
+	INTO Referee VALUES (19, 'Mia Davis', '1993-04-30', 5.6, 150.3, 2364567890, 'mia.davis@soccer.com', '456 Cedar St, Vancouver', '2014-09-07', 4)
+	INTO Referee VALUES (20, 'Oliver Anderson', '1980-06-14', 5.10, 178.2, 2365678901, 'oliver.anderson@soccer.com', '890 Pine St, Vancouver', '2000-04-18', 5)
+SELECT * FROM dual;
 
 INSERT ALL
 	INTO Venue VALUES ('5123 Main Street, Vancouver', 'Benz Stadium', 10000)
@@ -365,28 +400,6 @@ INSERT ALL
 	INTO PositionDetails VALUES (10, 'Central Attacking Midfielder')
 SELECT * FROM dual;
 
-
-INSERT ALL
-    INTO Athlete VALUES (1, 'John Doe', '1985-04-15', 5.10, 170.5, 6041234567, 'john.doe@soccer.com', '123 Main St, Vancouver', '2000-07-10', 1, 'Vancouver Vipers', 60000)
-	INTO Athlete VALUES (2, 'Jane Smith', '1992-09-25', 5.6, 140.2, 7782345678, 'jane.smith@soccer.com', '456 Oak St, Vancouver', '2010-03-18', 2, 'Vancouver Vipers', 70000)
-	INTO Athlete VALUES (3, 'Mike Johnson', '1988-11-03', 6.0, 185.0, 6043456789, 'mike.johnson@soccer.com', '789 Elm St, Vancouver', '2005-12-05', 3, 'Vancouver Thunder', 80000)
-	INTO Athlete VALUES (4, 'Sarah Lee', '1995-07-19', 5.7, 150.8, 7784567890, 'sarah.lee@soccer.com', '234 Birch St, Vancouver', '2018-02-14', 4, 'Vancouver Thunder', 90000)
-	INTO Athlete VALUES (5, 'David Brown', '1982-03-12', 5.9, 175.3, 6045678901, 'david.brown@soccer.com', '567 Cedar St, Vancouver', '2002-09-22', 5, 'Vancouver Warriors', 100000)
-	INTO Athlete VALUES (6, 'Emily White', '1998-05-29', 5.4, 130.1, 7786789012, 'emily.white@soccer.com', '890 Fir St, Vancouver', '2015-06-30', 6, 'Vancouver Warriors', 110000)
-	INTO Athlete VALUES (7, 'Chris Anderson', '1987-08-14', 6.1, 190.6, 6047890123, 'chris.anderson@soccer.com', '123 Maple St, Vancouver', '2004-04-03', 7, 'Vancouver Titans', 120000)
-	INTO Athlete VALUES (8, 'Laura Taylor', '1990-01-02', 5.8, 160.0, 7788901234, 'laura.taylor@soccer.com', '456 Pine St, Vancouver', '2009-11-12', 8, 'Vancouver Titans', 130000)
-	INTO Athlete VALUES (9, 'Mark Wilson', '1986-12-08', 5.11, 180.4, 6049012345, 'mark.wilson@soccer.com', '789 Spruce St, Vancouver', '2007-07-27', 9, 'Vancouver Sharks', 140000)
-	INTO Athlete VALUES (10, 'Ava Martin', '1994-04-23', 5.5, 145.9, 7780123456, 'ava.martin@soccer.com', '234 Oak St, Vancouver', '2013-01-19', 10, 'Vancouver Sharks', 150000)
-SELECT * FROM dual;
-
-INSERT ALL
-    INTO Coach	VALUES (11, 'Daniel Lee', '1983-06-17', 5.10, 175.2, 6048234567, 'daniel.lee@soccer.com', '567 Birch St, Vancouver', '2001-10-09', 'Vancouver Vipers', 'Assistant Coach')
-	INTO Coach	VALUES (12, 'Olivia Johnson', '1997-10-30', 5.6, 140.8, 7788345678, 'olivia.johnson@soccer.com', '890 Elm St, Vancouver', '2016-08-07', 'Vancouver Thunder', 'Assistant Coach')
-	INTO Coach	VALUES (13, 'William Smith', '1981-12-27', 5.11, 185.6, 6048456789, 'william.smith@soccer.com', '123 Cedar St, Vancouver', '2003-05-14', 'Vancouver Warriors', 'Head Coach')
-	INTO Coach	VALUES (14, 'Sophia Brown', '1999-02-10', 5.7, 150.1, 7788567890, 'sophia.brown@soccer.com', '456 Fir St, Vancouver', '2019-12-21', 'Vancouver Titans', 'Head Coach')
-	INTO Coach	VALUES (15, 'James Anderson', '1984-07-07', 6.2, 195.0, 6048678901, 'james.anderson@soccer.com', '789 Pine St, Vancouver', '2006-02-16', 'Vancouver Sharks', 'Assistant Coach')
-SELECT * FROM dual;
-
 INSERT ALL
 	INTO ShotDetails VALUES (1, 2, 1/2)
 	INTO ShotDetails VALUES (3, 4, 3/4)
@@ -409,14 +422,6 @@ INSERT ALL
 	INTO PassDetails VALUES (65, 15, 1-15/65)
 	INTO PassDetails VALUES (69, 16, 1-16/69)
 	INTO PassDetails VALUES (67, 13, 1-13/67)
-SELECT * FROM dual;
-
-INSERT ALL
-	INTO Referee VALUES (16, 'Liam Taylor', '1991-03-18', 5.9, 168.7, 2361234567, 'liam.taylor@soccer.com', '567 Oak St, Vancouver', '2009-08-14', 1)
-	INTO Referee VALUES (17, 'Ella Smith', '1996-08-22', 5.4, 135.2, 2362345678, 'ella.smith@soccer.com', '345 Elm St, Vancouver', '2017-05-25', 2)
-	INTO Referee VALUES (18, 'Noah Johnson', '1989-12-05', 6.2, 190.8, 2363456789, 'noah.johnson@soccer.com', '678 Birch St, Vancouver', '2006-11-30', 3)
-	INTO Referee VALUES (19, 'Mia Davis', '1993-04-30', 5.6, 150.3, 2364567890, 'mia.davis@soccer.com', '456 Cedar St, Vancouver', '2014-09-07', 4)
-	INTO Referee VALUES (20, 'Oliver Anderson', '1980-06-14', 5.10, 178.2, 2365678901, 'oliver.anderson@soccer.com', '890 Pine St, Vancouver', '2000-04-18', 5)
 SELECT * FROM dual;
 
 INSERT ALL
@@ -451,11 +456,11 @@ SELECT * FROM dual;
 
 
 INSERT ALL
-	INTO Event VALUES (1, 'Vancouver Warriors vs. Vancouver Sharks', '2022-01-28')
-	INTO Event VALUES (2, 'Coca-Cola Fundraiser Special', '2021-02-01')
-	INTO Event VALUES (3, 'Vancouver Sharks vs. Vancouver Titans', '2022-06-02')
-	INTO Event VALUES (4, 'Vancouver Vipers vs. Vancouver Titans','2023-08-15')
-	INTO Event VALUES (5, 'Vancouver Thunder Practice Game', '2022-10-27')
+	INTO Game VALUES (1, 'Vancouver Warriors vs. Vancouver Sharks', '2022-01-28')
+	INTO Game VALUES (2, 'Coca-Cola Fundraiser Special', '2021-02-01')
+	INTO Game VALUES (3, 'Vancouver Sharks vs. Vancouver Titans', '2022-06-02')
+	INTO Game VALUES (4, 'Vancouver Vipers vs. Vancouver Titans','2023-08-15')
+	INTO Game VALUES (5, 'Vancouver Thunder Practice Game', '2022-10-27')
 SELECT * FROM dual;
 
 INSERT ALL
