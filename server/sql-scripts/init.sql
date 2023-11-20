@@ -24,7 +24,6 @@ drop table VENUE;
 -- drop DETAILS last
 drop table AGEDETAILS;
 drop table EXPERIENCEDETAILS;
-drop table POSITIONDETAILS;
 drop table SHOTDETAILS;
 drop table PASSDETAILS;
 
@@ -60,12 +59,6 @@ CREATE TABLE Team(
 		/* ON UPDATE NO ACTION not supported will impl another way */
 );
 
-CREATE TABLE PositionDetails(
-	jersey_num int,
-	position varchar(100),
-	PRIMARY KEY(jersey_num)
-);
-
 CREATE TABLE Athlete(
 	person_id int NOT NULL,
 	name varchar(100),
@@ -77,6 +70,7 @@ CREATE TABLE Athlete(
 	address varchar(100),
 	date_started date,
     jersey_num int,
+    position varchar(100),
     current_team varchar(100) NOT NULL,
 	salary int,
 	PRIMARY KEY(person_id),
@@ -86,11 +80,8 @@ CREATE TABLE Athlete(
 	FOREIGN KEY (date_started) REFERENCES ExperienceDetails(date_started)
 		ON DELETE CASCADE,
 		/* ON UPDATE CASCADE not supported will impl another way */
-	FOREIGN KEY(current_team) REFERENCES Team(team_name),
+	FOREIGN KEY(current_team) REFERENCES Team(team_name)
 --         ON DELETE NO ACTION, /* must point team to another team first*/ no required
-		/* ON UPDATE CASCADE, not supported will impl another way */
-	FOREIGN KEY(jersey_num) REFERENCES PositionDetails(jersey_num)
-		ON DELETE CASCADE
 		/* ON UPDATE CASCADE, not supported will impl another way */
 );
 
@@ -223,7 +214,7 @@ CREATE TABLE Coaches(
 	person_id int,
 	team_name varchar(100),
 	PRIMARY KEY(person_id, team_name),
-    FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
+    FOREIGN KEY(person_id) REFERENCES Coach(person_id)
         ON DELETE CASCADE,
         /* ON UPDATE CASCADE not supported will impl another way */
     FOREIGN KEY(team_name) REFERENCES Team(team_name)
@@ -361,7 +352,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1988-03-19', 34)
 	INTO AgeDetails VALUES ('1996-05-02', 27)
 	INTO AgeDetails VALUES ('1982-07-16', 41)
-	INTO AgeDetails VALUES ('1998-11-25', 24)
+	INTO AgeDetails VALUES ('1998-11-25', 24) -- vipers end
 	INTO AgeDetails VALUES ('1981-01-03', 42)
 	INTO AgeDetails VALUES ('1994-06-28', 29)
 	INTO AgeDetails VALUES ('1989-08-11', 33)
@@ -372,7 +363,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1992-02-03', 31)
 	INTO AgeDetails VALUES ('1983-08-26', 40)
 	INTO AgeDetails VALUES ('1997-01-09', 26)
-	INTO AgeDetails VALUES ('1980-12-23', 42)
+	INTO AgeDetails VALUES ('1980-12-23', 42) -- thunder end
     INTO AgeDetails VALUES ('1986-04-17', 36)
 	INTO AgeDetails VALUES ('1992-09-15', 31)
 	INTO AgeDetails VALUES ('1988-11-23', 34)
@@ -383,7 +374,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1990-02-15', 33)
 	INTO AgeDetails VALUES ('1986-12-21', 36)
 	INTO AgeDetails VALUES ('1994-05-06', 29)
-	INTO AgeDetails VALUES ('1983-07-01', 40)
+	INTO AgeDetails VALUES ('1983-07-01', 40) -- warriors end
 	INTO AgeDetails VALUES ('1997-11-13', 25)
 	INTO AgeDetails VALUES ('1981-01-27', 42)
 	INTO AgeDetails VALUES ('1999-03-10', 24)
@@ -394,7 +385,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1993-05-15', 30)
 	INTO AgeDetails VALUES ('1980-07-29', 43)
     INTO AgeDetails VALUES ('1987-02-27', 36)
-	INTO AgeDetails VALUES ('1993-09-20', 30)
+	INTO AgeDetails VALUES ('1993-09-20', 30) -- titans end
 	INTO AgeDetails VALUES ('1985-11-18', 37)
 	INTO AgeDetails VALUES ('1991-07-12', 32)
 	INTO AgeDetails VALUES ('1988-03-25', 34)
@@ -405,7 +396,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1994-07-27', 29)
 	INTO AgeDetails VALUES ('1989-09-15', 33)
 	INTO AgeDetails VALUES ('1995-11-18', 27)
-	INTO AgeDetails VALUES ('1984-03-30', 39)
+	INTO AgeDetails VALUES ('1984-03-30', 39) -- sharks end
 	INTO AgeDetails VALUES ('1990-07-17', 33)
 	INTO AgeDetails VALUES ('1986-09-02', 36)
 	INTO AgeDetails VALUES ('1992-02-04', 31)
@@ -416,7 +407,7 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1992-09-30', 31)
 	INTO AgeDetails VALUES ('1988-11-07', 34)
 	INTO AgeDetails VALUES ('1995-07-12', 28)
-	INTO AgeDetails VALUES ('1982-03-06', 41)
+	INTO AgeDetails VALUES ('1982-03-06', 41) -- bears end
 SELECT * FROM dual;
 
 INSERT ALL
@@ -449,7 +440,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2002-12-22', 20)
 	INTO ExperienceDetails VALUES ('2015-12-30', 7)
 	INTO ExperienceDetails VALUES ('2004-06-03', 19)
-	INTO ExperienceDetails VALUES ('2009-07-12', 14)
+	INTO ExperienceDetails VALUES ('2009-07-12', 14) -- vipers end
 	INTO ExperienceDetails VALUES ('2007-09-27', 16)
 	INTO ExperienceDetails VALUES ('2013-04-19', 10)
 	INTO ExperienceDetails VALUES ('2001-08-09', 22)
@@ -460,7 +451,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2009-05-14', 14)
 	INTO ExperienceDetails VALUES ('2017-08-25', 6)
 	INTO ExperienceDetails VALUES ('2006-04-30', 16)
-	INTO ExperienceDetails VALUES ('2014-11-07', 9)
+	INTO ExperienceDetails VALUES ('2014-11-07', 9) -- thunder end
 	INTO ExperienceDetails VALUES ('2000-11-18', 22)
 	INTO ExperienceDetails VALUES ('2008-10-01', 15)
 	INTO ExperienceDetails VALUES ('2012-06-12', 11)
@@ -471,7 +462,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2009-03-01', 14)
 	INTO ExperienceDetails VALUES ('2006-09-20', 16)
 	INTO ExperienceDetails VALUES ('2010-12-10', 12)
-	INTO ExperienceDetails VALUES ('2001-01-15', 22)
+	INTO ExperienceDetails VALUES ('2001-01-15', 22) -- warriors end
 	INTO ExperienceDetails VALUES ('2015-07-17', 8)
     INTO ExperienceDetails VALUES ('2004-11-08', 18)
 	INTO ExperienceDetails VALUES ('2018-06-25', 5)
@@ -482,7 +473,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2008-01-12', 15)
 	INTO ExperienceDetails VALUES ('2011-09-27', 12)
 	INTO ExperienceDetails VALUES ('2005-06-22', 17)
-	INTO ExperienceDetails VALUES ('2017-01-05', 6)
+	INTO ExperienceDetails VALUES ('2017-01-05', 6) -- titans end
 	INTO ExperienceDetails VALUES ('2003-12-14', 20)
 	INTO ExperienceDetails VALUES ('2014-07-30', 9)
 	INTO ExperienceDetails VALUES ('2009-05-01', 14)
@@ -493,7 +484,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2004-12-08', 18)
 	INTO ExperienceDetails VALUES ('2018-07-25', 5)
 	INTO ExperienceDetails VALUES ('2007-04-03', 16)
-	INTO ExperienceDetails VALUES ('2012-09-14', 11)
+	INTO ExperienceDetails VALUES ('2012-09-14', 11) -- sharks end
 	INTO ExperienceDetails VALUES ('2002-06-20', 21)
 	INTO ExperienceDetails VALUES ('2016-05-09', 7)
 	INTO ExperienceDetails VALUES ('2008-02-12', 15)
@@ -504,20 +495,7 @@ INSERT ALL
 	INTO ExperienceDetails VALUES ('2015-07-30', 8)
 	INTO ExperienceDetails VALUES ('2010-05-01', 14)
 	INTO ExperienceDetails VALUES ('2006-11-20', 16)
-	INTO ExperienceDetails VALUES ('2011-02-10', 12)
-SELECT * FROM dual;
-
-INSERT ALL
-	INTO PositionDetails VALUES (1, 'Goalkeeper')
-	INTO PositionDetails VALUES (2, 'Right Back')
-	INTO PositionDetails VALUES (3, 'Left Back')
-	INTO PositionDetails VALUES (4, 'Sweeper')
-	INTO PositionDetails VALUES (5, 'Central Back')
-	INTO PositionDetails VALUES (6, 'Defensive Midfielder')
-	INTO PositionDetails VALUES (7, 'Winger')
-	INTO PositionDetails VALUES (8, 'Central Midfielder')
-	INTO PositionDetails VALUES (9, 'Striker')
-	INTO PositionDetails VALUES (10, 'Central Attacking Midfielder')
+	INTO ExperienceDetails VALUES ('2011-02-10', 12) -- bears end
 SELECT * FROM dual;
 
 INSERT ALL
@@ -565,16 +543,78 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
-    INTO Athlete VALUES (1, 'John Doe', '1985-04-15', 5.10, 170.5, 6041234567, 'john.doe@soccer.com', '123 Main St, Vancouver', '2000-07-10', 1, 'Vancouver Vipers', 60000)
-	INTO Athlete VALUES (2, 'Jane Smith', '1992-09-25', 5.6, 140.2, 7782345678, 'jane.smith@soccer.com', '456 Oak St, Vancouver', '2010-03-18', 2, 'Vancouver Vipers', 70000)
-	INTO Athlete VALUES (3, 'Mike Johnson', '1988-11-03', 6.0, 185.0, 6043456789, 'mike.johnson@soccer.com', '789 Elm St, Vancouver', '2005-12-05', 3, 'Vancouver Thunder', 80000)
-	INTO Athlete VALUES (4, 'Sarah Lee', '1995-07-19', 5.7, 150.8, 7784567890, 'sarah.lee@soccer.com', '234 Birch St, Vancouver', '2018-02-14', 4, 'Vancouver Thunder', 90000)
-	INTO Athlete VALUES (5, 'David Brown', '1982-03-12', 5.9, 175.3, 6045678901, 'david.brown@soccer.com', '567 Cedar St, Vancouver', '2002-09-22', 5, 'Vancouver Warriors', 100000)
-	INTO Athlete VALUES (6, 'Emily White', '1998-05-29', 5.4, 130.1, 7786789012, 'emily.white@soccer.com', '890 Fir St, Vancouver', '2015-06-30', 6, 'Vancouver Warriors', 110000)
-	INTO Athlete VALUES (7, 'Chris Anderson', '1987-08-14', 6.1, 190.6, 6047890123, 'chris.anderson@soccer.com', '123 Maple St, Vancouver', '2004-04-03', 7, 'Vancouver Titans', 120000)
-	INTO Athlete VALUES (8, 'Laura Taylor', '1990-01-02', 5.8, 160.0, 7788901234, 'laura.taylor@soccer.com', '456 Pine St, Vancouver', '2009-11-12', 8, 'Vancouver Titans', 130000)
-	INTO Athlete VALUES (9, 'Mark Wilson', '1986-12-08', 5.11, 180.4, 6049012345, 'mark.wilson@soccer.com', '789 Spruce St, Vancouver', '2007-07-27', 9, 'Vancouver Sharks', 140000)
-	INTO Athlete VALUES (10, 'Ava Martin', '1994-04-23', 5.5, 145.9, 7780123456, 'ava.martin@soccer.com', '234 Oak St, Vancouver', '2013-01-19', 10, 'Vancouver Sharks', 150000)
+    -- Vancouver Vipers
+    INTO Athlete VALUES (1, 'John Doe', '1989-12-05', 5.10, 170.5, 6041234567, 'john.doe@soccer.com', '123 Main St, Vancouver', '2006-11-30', 1, 'Goalkeeper', 'Vancouver Vipers', 60000)
+    INTO Athlete VALUES (2, 'Jane Smith', '1993-04-30', 5.7, 150.5, 778980912, 'jane.smith@soccer.com', '123 Oak St, Vancouver', '2014-09-07', 2, 'Right Back', 'Vancouver Vipers', 70000)
+    INTO Athlete VALUES (3, 'Mike Johnson', '1980-06-14', 6.2, 200.3, 6041820192, 'mike.johnson@soccer.com', '461 Fir St, Vancouver', '2000-04-18', 3, 'Left Back', 'Vancouver Vipers', 120000)
+    INTO Athlete VALUES (4, 'Michelle Zhu', '1987-02-09', 5.10, 180.3, 7781920391, 'michell.zhu@soccer.com', '192 Oats Rd, Vancouver', '2010-10-10', 4, 'Sweeper', 'Vancouver Vipers', 100000)
+    INTO Athlete VALUES (5, 'Michael Dune', '1993-09-12', 6.7, 290.2, 6045129102, 'michael.dune@soccer.com', '101 Chem Drive, Vancouver', '2011-03-18', 5, 'Central Back', 'Vancouver Vipers', 500000)
+    INTO Athlete VALUES (6, 'Serena Storm', '1985-11-20', 5.7, 122.5, 7889129301, 'serena.storm@soccer.com', '783 Balsam St, Vancouver', '2005-02-05', 6, 'Defensive Midfielder', 'Vancouver Vipers', 190000)
+    INTO Athlete VALUES (7, 'Daniel Kee', '1991-07-06', 5.10, 168.3, 6045919203, 'daniel.kee@soccer.com', '912 Mark Lane, Vancouver', '2018-08-14', 7, 'Winger', 'Vancouver Vipers', 1200000)
+    INTO Athlete VALUES (8, 'Emily Carr', '1988-03-19', 5.7, 189.3, 778902183, 'emily.carr@soccer.com', '281 Fox St, Vancouver', '2002-12-22', 8, 'Central Midfielder', 'Vancouver Vipers', 80000)
+    INTO Athlete VALUES (9, 'Jason Bills', '1996-05-02', 4.3, 87.2, 7781029301, 'jason.bills@soccer.com', '292 Blue Drive, Vancouver', '2015-12-30', 9, 'Striker', 'Vancouver Vipers', 180000)
+    INTO Athlete VALUES (10, 'Rachel Jordan', '1982-07-16', 5.9, 148.2, 6045881923, 'rachel.jordan@soccer.com', '778 Phone St, Vancouver', '2004-06-03', 10, 'Central Attacking Midfielder', 'Vancouver Vipers', 175000)
+    INTO Athlete VALUES (11, 'Rick Tord', '1998-11-25', 6.0, 172.3, 7786758192, 'rick.tord@soccer.com', '182 Dubious Lane, Vancouver', '2009-07-12', 11, 'Outside Midfielder', 'Vancouver Vipers', 250000)
+    -- Vancouver Thunder
+    INTO Athlete VALUES (12, 'Billy Bob', '1981-01-03', 6.5, 280.2, 6045557892, 'billy.bob@socer.com', '872 Fire Lane, Vancouver', '2007-09-27', 1, 'Goalkeeper', 'Vancouver Thunder', 280000)
+    INTO Athlete VALUES (13, 'Danielle Chu', '1994-06-28', 5.4, 124.3, 7789901203, 'danielle.chu@soccer.com', '897 Key St, Vancouver', '2013-04-19', 2, 'Right Back', 'Vancouver Thunder', 3400000)
+    INTO Athlete VALUES (14, 'Darren Sam', '1989-08-11', 6.2, 185.2, 6045589102, 'darren.sam@soccer.com', '291 Bin Rd, Vancouver', '2001-08-09', 3, 'Left Back', 'Vancouver Thunder', 120000)
+    INTO Athlete VALUES (15, 'Cynthia Game', '1995-12-14', 5.6, 129.4, 6049012930, 'cynthia.game@soccer.com', '448 Elm Rd, Vancouver', '2016-01-07', 4, 'Sweeper', 'Vancouver Thunder', 190000)
+    INTO Athlete VALUES (16, 'Mark Nguyen', '1984-02-28', 6.1, 180.4, 7781920192, 'mark.nguyen@soccer.com', '909 Flower Dr, Vancouver', '2003-09-14', 5, 'Central Back', 'Vancouver Thunder', 1700000)
+    INTO Athlete VALUES (17, 'Jillian Prim', '1990-04-10', 5.8, 111.9, 6047781029, 'jillian.prim@soccer.com', '180 Priority St, Vancouver', '2019-02-21', 6, 'Defensive Midfielder', 'Vancouver Thunder', 2000000)
+    INTO Athlete VALUES (18, 'Simon Jones', '1986-10-21', 7.1, 192.1, 7786521829, 'simon.jones@soccer.com', '728 Current Dr, Vancouver', '2006-07-16', 7, 'Winger', 'Vancouver Thunder', 70000)
+    INTO Athlete VALUES (19, 'Adora Park', '1992-02-03', 5.2, 99.2, 6045781029, 'adora.park@soccer.com', '182 Princeton Way, Vancouver', '2009-05-14', 8, 'Central Midfielder', 'Vancouver Thunder', 900000)
+    INTO Athlete VALUES (20, 'Matt Dracos', '1983-08-26', 6.5, 208.2, 7785648189, 'matt.dracos@soccer.com', '994 Slogan Dr, Vancouver', '2017-08-25', 9, 'Striker', 'Vancouver Thunder', 90000)
+    INTO Athlete VALUES (21, 'Heidi Gram', '1997-01-09', 5.8, 79.2, 6048891203, 'heidi.gram@soccer.com', '444 Dragon Rd, Vancouver', '2006-04-30', 10, 'Central Attacking Midfielder', 'Vancouver Thunder', 170000)
+    INTO Athlete VALUES (22, 'Jeremy Lim', '1980-12-23', 6.7, 148.5, 7786541092, 'jeremy.lim@soccer.com', '182 Basket Way, Vancouver', '2014-11-07', 11, 'Outside Midfielder', 'Vancouver Thunder', 240000)
+    -- Vancouver Warriors
+    INTO Athlete VALUES (23, 'Parker Fin', '1986-04-17', 5.6, 117.2, 6057810293, 'parker.fin@soccer.com', '982 Bingo St, Vancouver', '2000-11-18', 1, 'Goalkeeper', 'Vancouver Warriors', 170000)
+    INTO Athlete VALUES (24, 'Lauren Shim', '1992-09-15', 5.4, 89.2, 77867182911, 'lauren.shim@soccer.com', '821 Heart Way, Vancouver', '2008-10-01', 2, 'Right Back', 'Vancouver Warriors', 256000)
+    INTO Athlete VALUES (25, 'Markus Duff', '1988-11-23', 6.7, 190.4, 6045579012, 'markus.duff@soccer.com', '192 Rock Lane, Vancouver', '2012-06-12', 3, 'Left Back', 'Vancouver Warriors', 400000)
+    INTO Athlete VALUES (26, 'Fiora Moon', '1995-07-09', 5.7, 140.5, 7786541297, 'fiora.moon@soccer.com', '872 Piano Dr, Vancouver', '2005-08-23', 4, 'Sweeper', 'Vancouver Warriors', 187000)
+    INTO Athlete VALUES (27, 'Wolf Sun', '1982-03-26', 4.2, 133.7, 6045709908, 'wolf.sun@soccer.com', '126 Error Rd, Vancouver', '2017-04-05', 5, 'Central Back', 'Vancouver Warriors', 80000)
+    INTO Athlete VALUES (28, 'MJ Heart', '1998-06-12', 5.6, 98.7, 7781112345, 'mj.heart@soccer.com', '988 Nest Way, Vancouver', '2003-02-14', 6, 'Defensive Midfielder', 'Vancouver Warriors', 190000)
+    INTO Athlete VALUES (29, 'Jordan Tan', '1987-08-28', 7.6, 155.8, 6048990765, 'jordan.tan@soccer.com', '444 Bike Lane, Vancouver', '2014-10-30', 7, 'Winger', 'Vancouver Warriors', 761000)
+    INTO Athlete VALUES (30, 'Ellie Howling', '1990-02-15', 4.5, 89.1, 7789912232, 'ellie.howling@soccer.com', '291 Desk Rd, Vancouver', '2009-03-01', 8, 'Central Midfielder', 'Vancouver Warriors', 19000)
+    INTO Athlete VALUES (31, 'Darius Wong', '1986-12-21', 7.1, 150.7, 7786098801, 'darius.wong@soccer.com', '321 Turn St, Vancouver', '2006-09-20', 9, 'Striker', 'Vancouver Warriors', 172000)
+    INTO Athlete VALUES (32, 'Delilah Kim', '1994-05-06', 5.6, 78.9, 6045578901, 'delilah.kim@soccer.com', '124 Function Rd, Vancouver', '2010-12-10', 10, 'Central Attacking Midfielder', 'Vancouver Warriors', 900000)
+    INTO Athlete VALUES (33, 'Francis David', '1983-07-01', 6.7, 223.6, 7786543389, 'francis.david@soccer.com', '127 Bacon St, Vancovuer', '2001-01-15', 11, 'Outside Midfielder', 'Vancouver Warriors', 876000)
+    -- Vancouver Titans
+    INTO Athlete VALUES (34, 'Adam Desmond', '1997-11-13', 5.8, 143.7, 6045578896, 'adam.desmond@socer.com', '778 Philosophy Lane, Vancouver', '2015-07-17', 1, 'Goalkeeper', 'Vancouver Titans', 178000)
+    INTO Athlete VALUES (35, 'Brittany Peterson', '1981-01-27', 4.5, 130.4, 7786129993, 'brittany.peterson@soccer.com', '560 Canuck St, Vancouver', '2004-11-08', 2, 'Right Back', 'Vancouver Titans', 200000)
+    INTO Athlete VALUES (36, 'Ryan Son', '1999-03-10', 7.6, 186.3, 6046678901, 'ryan.son@soccer.com', '329 Jensen Way, Vancouver', '2018-06-25', 3, 'Left Back', 'Vancouver Titans', 678000)
+    INTO Athlete VALUES (37, 'Georgia Cheng', '1984-07-21', 5.9, 130.6, 778019812, 'georgia.cheng@soccer.com', '008 Armour Dr, Vancouver', '2007-03-03', 4, 'Sweeper', 'Vancouver Titans', 192000)
+    INTO Athlete VALUES (38, 'Jared Sinew', '1991-04-03', 6.4, 307.4, 6040580095, 'jared.sinew@soccer.com', '776 Corpus Lane, Vancouver', '2012-08-14', 5, 'Central Back', 'Vancouver Titans', 70800)
+    INTO Athlete VALUES (39, 'Ashley Shu', '1996-09-17', 5.5, 119.3, 7783220119, 'ashley.shu@soccer.com', '887 Compass Rd, Vancouver', '2002-05-20', 6, 'Defensive Midfielder', 'Vancouver Titans', 1000000)
+    INTO Athlete VALUES (40, 'Lucas Man', '1989-12-30', 6.7, 84.3, 6048571002, 'lucas.man@soccer.com', '812 Lead Dr, Vancouver', '2016-04-09', 7, 'Winger', 'Vancouver Titans', 240000)
+    INTO Athlete VALUES (41, 'Sherry Van', '1993-05-15', 6.2, 110.2, 7780091435, 'sherry.van@soccer.com', '441 Floor Rd, Vancouver', '2008-01-12', 8, 'Central Midfielder', 'Vancouver Titans', 700000)
+    INTO Athlete VALUES (42, 'Vincent Lu', '1980-07-29', 5.8, 94.2, 6044478990, 'vincent.lu@soccer.com', '128 Douglas Dr, Vancouver', '2011-09-27', 9, 'Striker', 'Vancouver Titans', 860000)
+    INTO Athlete VALUES (43, 'Mary Jane', '1987-02-27', 5.9, 107.4, 7787563299, 'mary.jane@soccer.com', '888 Thunder Rd, Vancouver', '2005-06-22', 10, 'Central Attacking Midfielder', 'Vancouver Titans', 978000)
+    INTO Athlete VALUES (44, 'Jason Billy', '1993-09-20', 5.9, 124.5, 6049890071, 'jason.billy@soccer.com', '449 Apple St, Vancouver', '2017-01-05', 11, 'Outside Midfielder', 'Vancouver Titans', 170000)
+    -- Vancouver Sharks
+    INTO Athlete VALUES (45, 'Harry Ford', '1985-11-18', 6.2, 156.8, 7786543090, 'harry.ford@soccer.com', '192 Falcon Dr, Vancouver', '2003-12-14', 1, 'Goalkeeper', 'Vancouver Sharks', 16700000)
+    INTO Athlete VALUES (46, 'Ruth North', '1991-07-12', 5.7, 149.3, 6045589012, 'ruth,north@soccer.com', '514 Fox Way, Vancouver', '2014-07-30', 2, 'Right Back', 'Vancouver Sharks', 40000)
+    INTO Athlete VALUES (47, 'Luke Sky', '1988-03-25', 6.7, 241.2, 7786543998, 'luke.sky@soccer.com', '123 Force Lane, Vancouver', '2009-05-01', 3, 'Sweeper', 'Vancouver Sharks', 990000)
+    INTO Athlete VALUES (48, 'Noon Locomotion', '1996-05-18', 4.5, 67.8, 7780091002, 'noon.locomotion@soccer.com', '443 Train Rd, Vancouver', '2006-10-20', 4, 'Sweeper', 'Vancouver Sharks', 54600)
+    INTO Athlete VALUES (49, 'Parker Jones', '1982-07-26', 5.8, 190.4, 6041123009, 'parker.jones@soccer.com', '652 Stone Lane, Vancouver', '2011-01-10', 5, 'Central Back', 'Vancouver Sharks', 981000)
+    INTO Athlete VALUES (50, 'Jamie Flame', '1998-11-27', 5.9, 167.0, 7784439012, 'jamie.flame@soccer.com', '332 Yang St, Vancouver', '2001-02-15', 6, 'Defensive Midfielder', 'Vancouver Sharks', 728000)
+    INTO Athlete VALUES (51, 'Dennis Honda', '1981-01-09', 6.4, 135.6, 6045589900, 'dennis.honda@soccer.com', '126 Arch Way, Vancouver', '2015-08-17', 7, 'Winger', 'Vancouver Sharks', 971000)
+    INTO Athlete VALUES (52, 'Karina Allen', '1994-07-27', 5.8, 93.5, 7786519822, 'karina.allen@soccer.com', '349 Synchronization Lane, Vancouver', '2004-12-08', 8, 'Central Midfielder', 'Vancouver Sharks', 144000)
+    INTO Athlete VALUES (53, 'John Under', '1989-09-15', 4.8, 119.0, 6045567124, 'john.under@soccer.com', '448 Dream Rd, Vancouver', '2018-07-25', 9, 'Striker', 'Vancouver Sharks', 322900)
+    INTO Athlete VALUES (54, 'Alicia Yoo', '1995-11-18', 5.6, 120.4, 7781129945, 'alicia.yoo@soccer.com', '229 Ocean Rd, Vancouver', '2007-04-03', 10, 'Central Attacking Midfielder', 'Vancouver Sharks', 890000)
+    INTO Athlete VALUES (55, 'Cameron Jonas', '1984-03-30', 6.1, 145.6, 7781009020, 'cameron.jones@soccer.com', '776 Sting St, Vancouver', '2012-09-14', 11, 'Outside Midfielder', 'Vancouver Sharks', 750000)
+    -- Vancouver Bears
+    INTO Athlete VALUES (56, 'James Fort', '1990-07-17', 6.9, 155.7, 6049125567, 'james.fort@soccer.com', '554 Knob Rd, Vancouver', '2002-06-20', 1, 'Goalkeeper', 'Vancouver Bears', 150000)
+    INTO Athlete VALUES (57, 'Ivana Lee', '1986-09-02', 5.7, 144.2, 7786990001, 'ivana.lee@soccer.com', '447 Jelly Way, Vancouver', '2016-05-09', 2, 'Right Back', 'Vancouver Bears', 800000)
+    INTO Athlete VALUES (58, 'Jim Gear', '1992-02-04', 5.9, 239.4, 6045578990, 'jim.gear@socer.com', '761 Willow Drive, Vancouver', '2008-02-12', 3, 'Left Back', 'Vancouver Bears', 60000)
+    INTO Athlete VALUES (59, 'Sophia Turn', '1983-08-23', 5.4, 129.3, 77866548888, 'sophia.turn@soccer.com', '551 Sunflower Way, Vancouver', '2011-10-27', 4, 'Sweeper', 'Vancouver Bears', 765000)
+    INTO Athlete VALUES (60, 'Andrew Lim', '1997-01-19', 6.4, 178.0, 6049980073, 'andrew.lim@soccer.com', '060 Focus St, Vancouver', '2005-07-22', 5, 'Central Back', 'Vancouver Bears', 236000)
+    INTO Athlete VALUES (61, 'Evelyn Crow', '1980-12-03', 5.7, 144.2, 7786527778, 'evelyn.crow@soccer.com', '445 Gold Lane, Vancouver', '2017-02-05', 6, 'Defensive Midfielder', 'Vancouver Bears', 743000)
+    INTO Athlete VALUES (62, 'Tim Shore', '1986-04-15', 6.7, 344.7, 6045590087, 'tim.shore@soccer.com', '112 Plane Rd, Vancouver', '2004-01-14', 7, 'Winger', 'Vancouver Bears', 76500)
+    INTO Athlete VALUES (63, 'Rebecca Salvador', '1992-09-30', 5.2, 100.4, 6048891112, 'rebecca.salvador@soccer.com', '887 Leaf Way, Vancouver', '2015-07-30', 8, 'Central Midfielder', 'Vancouver Bears', 106700)
+    INTO Athlete VALUES (64, 'Jean Fargo', '1988-11-07', 5.6, 178.3,7782234778, 'jean.fargo@soccer.com', '119 Boar Dr, Vancouver', '2010-05-01', 9, 'Striker', 'Vancouver Bears', 178000)
+    INTO Athlete VALUES (65, 'Selena An', '1995-07-12', 5.7, 110.3, 6045009122, 'selena.an@soccer.com', '132 Stores Way, Vancouver', '2006-11-20', 10, 'Central Attacking Midfielder', 'Vancouver Bears', 1780000)
+    INTO Athlete VALUES (66, 'Ahmed Tom', '1982-03-06', 6.2, 142.5, 7786223489, 'ahmed.tom@soccer.com', '443 Manager St. Vancouver', '2011-02-10', 11, 'Outside Midfielder', 'Vancouver Bears', 166500)
 SELECT * FROM dual;
 
 INSERT ALL
@@ -631,6 +671,7 @@ INSERT ALL
 	INTO Statistics VALUES (9, 9, 0, 4, 3, 69, 16, 41.0)
 	INTO Statistics VALUES (10, 10, 0, 6, 3, 67, 13, 48.0)
 SELECT * FROM dual;
+
 
 INSERT ALL
 	INTO Referee VALUES (1, 'Liam Taylor', '1991-03-18', 5.9, 168.7, 2361234567, 'liam.taylor@soccer.com', '567 Oak St, Vancouver', '2009-08-14', 1)
