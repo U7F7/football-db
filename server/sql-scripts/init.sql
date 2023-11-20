@@ -499,6 +499,7 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
+    -- todo
 	INTO ShotDetails VALUES (1, 2, 1/2)
 	INTO ShotDetails VALUES (3, 4, 3/4)
 	INTO ShotDetails VALUES (2, 6, 2/6)
@@ -510,6 +511,7 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
+    -- todo
 	INTO PassDetails VALUES (50, 10, 1-10/50)
 	INTO PassDetails VALUES (51, 11, 1-11/51)
 	INTO PassDetails VALUES (52, 12, 1-12/52)
@@ -660,6 +662,7 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
+    -- todo
 	INTO Statistics VALUES (1, 1, 1, 2, 3, 50, 10, 40.0)
 	INTO Statistics VALUES (2, 2, 3, 4, 3, 51, 11, 50.0)
 	INTO Statistics VALUES (3, 3, 2, 6, 3, 52, 12, 45.0)
@@ -698,23 +701,86 @@ SELECT * FROM dual;
 
 INSERT ALL
 	INTO Coaches VALUES (1, 'Vancouver Vipers')
-	INTO Coaches VALUES (2, 'Vancouver Thunder')
-	INTO Coaches VALUES (3, 'Vancouver Warriors')
-	INTO Coaches VALUES (4, 'Vancouver Titans')
-	INTO Coaches VALUES (5, 'Vancouver Sharks')
+	INTO Coaches VALUES (2, 'Vancouver Vipers')
+	INTO Coaches VALUES (3, 'Vancouver Thunder')
+	INTO Coaches VALUES (4, 'Vancouver Thunder')
+	INTO Coaches VALUES (5, 'Vancouver Warriors')
+    INTO Coaches VALUES (6, 'Vancouver Warriors')
+    INTO Coaches VALUES (7, 'Vancouver Titans')
+    INTO Coaches VALUES (8, 'Vancouver Titans')
+    INTO Coaches VALUES (9, 'Vancouver Sharks')
+    INTO Coaches VALUES (10, 'Vancouver Sharks')
+    INTO Coaches VALUES (11, 'Vancouver Bears')
+    INTO Coaches VALUES (12, 'Vancouver Bears')
 SELECT * FROM dual;
 
 INSERT ALL
 	INTO PlaysFor VALUES (1, 'Vancouver Vipers')
-	INTO PlaysFor VALUES (2, 'Vancouver Thunder')
-	INTO PlaysFor VALUES (3, 'Vancouver Warriors')
-	INTO PlaysFor VALUES (4, 'Vancouver Titans')
-	INTO PlaysFor VALUES (5, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (2, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (3, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (4, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (5, 'Vancouver Vipers')
 	INTO PlaysFor VALUES (6, 'Vancouver Vipers')
-	INTO PlaysFor VALUES (7, 'Vancouver Thunder')
-	INTO PlaysFor VALUES (8, 'Vancouver Warriors')
-	INTO PlaysFor VALUES (9, 'Vancouver Titans')
-	INTO PlaysFor VALUES (10, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (7, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (8, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (9, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (10, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (11, 'Vancouver Vipers')
+	INTO PlaysFor VALUES (12, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (13, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (14, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (15, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (16, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (17, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (18, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (19, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (20, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (21, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (22, 'Vancouver Thunder')
+	INTO PlaysFor VALUES (23, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (24, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (25, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (26, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (27, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (28, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (29, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (30, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (31, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (32, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (33, 'Vancouver Warriors')
+	INTO PlaysFor VALUES (34, 'Vancouver Titans')
+	INTO PlaysFor VALUES (35, 'Vancouver Titans')
+	INTO PlaysFor VALUES (36, 'Vancouver Titans')
+	INTO PlaysFor VALUES (37, 'Vancouver Titans')
+	INTO PlaysFor VALUES (38, 'Vancouver Titans')
+	INTO PlaysFor VALUES (39, 'Vancouver Titans')
+	INTO PlaysFor VALUES (40, 'Vancouver Titans')
+	INTO PlaysFor VALUES (41, 'Vancouver Titans')
+	INTO PlaysFor VALUES (42, 'Vancouver Titans')
+	INTO PlaysFor VALUES (43, 'Vancouver Titans')
+	INTO PlaysFor VALUES (44, 'Vancouver Titans')
+	INTO PlaysFor VALUES (45, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (46, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (47, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (48, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (49, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (50, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (51, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (52, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (53, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (54, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (55, 'Vancouver Sharks')
+	INTO PlaysFor VALUES (56, 'Vancouver Bears')
+	INTO PlaysFor VALUES (57, 'Vancouver Bears')
+	INTO PlaysFor VALUES (58, 'Vancouver Bears')
+	INTO PlaysFor VALUES (59, 'Vancouver Bears')
+	INTO PlaysFor VALUES (60, 'Vancouver Bears')
+	INTO PlaysFor VALUES (61, 'Vancouver Bears')
+	INTO PlaysFor VALUES (62, 'Vancouver Bears')
+	INTO PlaysFor VALUES (63, 'Vancouver Bears')
+	INTO PlaysFor VALUES (64, 'Vancouver Bears')
+	INTO PlaysFor VALUES (65, 'Vancouver Bears')
+	INTO PlaysFor VALUES (66, 'Vancouver Bears')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -734,11 +800,21 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO LocatedIn VALUES (1, '5234 Pine Street, Vancouver')
+	INTO LocatedIn VALUES (1, '5123 Main Street, Vancouver')
 	INTO LocatedIn VALUES (2, '5789 Elm Road, Vancouver')
 	INTO LocatedIn VALUES (3, '5234 Pine Street, Vancouver')
-	INTO LocatedIn VALUES (4, '5101 Maple Lane, Vancouver')
+	INTO LocatedIn VALUES (4, '5123 Main Street, Vancouver')
 	INTO LocatedIn VALUES (5, '5456 Oak Avenue, Vancouver')
+	INTO LocatedIn VALUES (6, '5101 Maple Lane, Vancouver')
+	INTO LocatedIn VALUES (7, '5123 Main Street, Vancouver')
+	INTO LocatedIn VALUES (8, '5234 Pine Street, Vancouver')
+	INTO LocatedIn VALUES (9, '1923 River Road, Vancouver')
+	INTO LocatedIn VALUES (10, '5234 Pine Street, Vancouver')
+	INTO LocatedIn VALUES (11, '1923 River Road, Vancouver')
+	INTO LocatedIn VALUES (12, '5101 Maple Lane, Vancouver')
+	INTO LocatedIn VALUES (13, '1923 River Road, Vancouver')
+	INTO LocatedIn VALUES (14, '7212 Orange Crescent, Vancouver')
+	INTO LocatedIn VALUES (15, '1182 History Street, Vancouver')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -761,21 +837,41 @@ SELECT * FROM dual;
 
 INSERT ALL
 	INTO WinsAward VALUES (1, 2, 'Vancouver Vipers')
-	INTO WinsAward VALUES (2, 6, 'Vancouver Warriors')
-	INTO WinsAward VALUES (3, 6, 'Vancouver Warriors')
-	INTO WinsAward VALUES (4, 1, 'Vancouver Vipers')
-	INTO WinsAward VALUES (5, 8, 'Vancouver Titans')
+	INTO WinsAward VALUES (2, 32, 'Vancouver Warriors')
+	INTO WinsAward VALUES (3, 25, 'Vancouver Warriors')
+	INTO WinsAward VALUES (4, 53, 'Vancouver Sharks')
+	INTO WinsAward VALUES (5, 37, 'Vancouver Titans')
 SELECT * FROM dual;
 
 INSERT ALL
-    INTO Referees VALUES (1, 2)
-    INTO Referees VALUES (2, 2)
-    INTO Referees VALUES (5, 1)
-    INTO Referees VALUES (4, 5)
+    INTO Referees VALUES (1, 1)
+    INTO Referees VALUES (2, 1)
+    INTO Referees VALUES (5, 2)
+    INTO Referees VALUES (4, 2)
     INTO Referees VALUES (1, 3)
+    INTO Referees VALUES (2, 3)
+    INTO Referees VALUES (3, 4)
+    INTO Referees VALUES (3, 5)
+    INTO Referees VALUES (4, 6)
+    INTO Referees VALUES (4, 7)
+    INTO Referees VALUES (5, 7)
+    INTO Referees VALUES (2, 8)
+    INTO Referees VALUES (1, 8)
+    INTO Referees VALUES (4, 8)
+    INTO Referees VALUES (1, 9)
+    INTO Referees VALUES (1, 10)
+    INTO Referees VALUES (3, 11)
+    INTO Referees VALUES (5, 12)
+    INTO Referees VALUES (4, 13)
+    INTO Referees VALUES (1, 13)
+    INTO Referees VALUES (5, 14)
+    INTO Referees VALUES (2, 15)
+    INTO Referees VALUES (3, 15)
+    INTO Referees VALUES (1, 15)
 SELECT * FROM dual;
 
 INSERT ALL
+    -- todo
     INTO RecordsGame VALUES (1, 1, 1)
     INTO RecordsGame VALUES (4, 4, 1)
     INTO RecordsGame VALUES (3, 3, 4)
