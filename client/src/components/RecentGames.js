@@ -46,6 +46,7 @@ const RecentGames = () => {
 			<Card.Body style={{ paddingTop: 0 }}>
 				<Container>
 					{dummyData.map((obj, i) => {
+						if (i >= dummyData.length / 2) return null;
 						return (
 							<Row style={{ marginTop: "20px" }}>
 								<Col>

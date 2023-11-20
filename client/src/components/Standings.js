@@ -45,8 +45,8 @@ const Standings = () => {
 	return (
 		<Card>
 			<Card.Header as="h5">Standings</Card.Header>
-			<Card.Body>
-				<Table striped bordered>
+			<Card.Body style={{ paddingTop: 0 }}>
+				<Table striped bordered style={{ marginTop: "20px" }}>
 					<thead>
 						<tr>
 							<th>Team</th>
