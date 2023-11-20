@@ -4,6 +4,44 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
 const Standings = () => {
+	const dummyData = [
+		{
+			team: "Vancouver Vipers",
+			gamesPlayed: 15,
+			wins: 7,
+			draws: 0,
+			losses: 8
+		},
+		{
+			team: "Vancouver Thunder",
+			gamesPlayed: 15,
+			wins: 15,
+			draws: 0,
+			losses: 0
+		},
+		{
+			team: "Vancouver Warriors",
+			gamesPlayed: 15,
+			wins: 2,
+			draws: 2,
+			losses: 11
+		},
+		{
+			team: "Vancouver Titans",
+			gamesPlayed: 15,
+			wins: 8,
+			draws: 2,
+			losses: 5
+		},
+		{
+			team: "Vancouver Sharks",
+			gamesPlayed: 15,
+			wins: 4,
+			draws: 1,
+			losses: 10
+		},	
+	]
+
 	return (
 		<Card>
 			<Card.Header as="h5">Standings</Card.Header>
@@ -19,41 +57,17 @@ const Standings = () => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Vancouver Vipers</td>
-							<td>15</td>
-							<td>7</td>
-							<td>0</td>
-							<td>8</td>
-						</tr>
-						<tr>
-							<td>Vancouver Thunder</td>
-							<td>15</td>
-							<td>15</td>
-							<td>0</td>
-							<td>0</td>
-						</tr>
-						<tr>
-							<td>Vancouver Warriors</td>
-							<td>15</td>
-							<td>2</td>
-							<td>2</td>
-							<td>11</td>
-						</tr>
-						<tr>
-							<td>Vancouver Titans</td>
-							<td>15</td>
-							<td>8</td>
-							<td>2</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Vancouver Sharks</td>
-							<td>15</td>
-							<td>4</td>
-							<td>1</td>
-							<td>10</td>
-						</tr>
+						{dummyData.map(row => {
+							return (
+								<tr>
+									<td>{row.team}</td>
+									<td>{row.gamesPlayed}</td>
+									<td>{row.wins}</td>
+									<td>{row.draws}</td>
+									<td>{row.losses}</td>
+								</tr>	
+							);
+						})}
 					</tbody>
 				</Table>
 			</Card.Body>

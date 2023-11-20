@@ -9,27 +9,54 @@ import Col from "react-bootstrap/Col";
 
 
 const RecentGames = () => {
+	const dummyData = [
+		{
+			date: "2023-10-20",
+			home: "Vancouver Thunder",
+			homeScore: 3,
+			away: "Vancouver Sharks",
+			awayScore: 1
+		},
+		{
+			date: "2023-10-20",
+			home: "Vancouver Thunder",
+			homeScore: 3,
+			away: "Vancouver Sharks",
+			awayScore: 1
+		},
+		{
+			date: "2023-10-20",
+			home: "Vancouver Thunder",
+			homeScore: 3,
+			away: "Vancouver Sharks",
+			awayScore: 1
+		},
+		{
+			date: "2023-10-20",
+			home: "Vancouver Thunder",
+			homeScore: 3,
+			away: "Vancouver Sharks",
+			awayScore: 1
+		},
+	]
+
 	return (
 		<Card>
 			<Card.Header as="h5">Recent Games</Card.Header>
-			<Card.Body>
+			<Card.Body style={{ paddingTop: 0 }}>
 				<Container>
-					<Row>
-						<Col>
-							<RecentGame date="2023-10-20" home="Vancouver Thunder" homeScore="3" away="Vancouver Sharks" awayScore="1"/>
-						</Col>
-						<Col>
-							<RecentGame date="2023-10-20" home="Vancouver Thunder" homeScore="3" away="Vancouver Sharks" awayScore="1"/>
-						</Col>
-					</Row>
-					<Row style={{ marginTop: "20px" }}>
-						<Col>
-							<RecentGame date="2023-10-20" home="Vancouver Thunder" homeScore="3" away="Vancouver Sharks" awayScore="1"/>
-						</Col>
-						<Col>
-							<RecentGame date="2023-10-20" home="Vancouver Thunder" homeScore="3" away="Vancouver Sharks" awayScore="1"/>
-						</Col>
-					</Row>
+					{dummyData.map((obj, i) => {
+						return (
+							<Row style={{ marginTop: "20px" }}>
+								<Col>
+									{2 * i < dummyData.length ? <RecentGame {...dummyData[2 * i]}/> : ""}
+								</Col>
+								<Col>
+									{2 * i + 1 < dummyData.length ? <RecentGame {...dummyData[2 * i + 1]}/> : ""}
+								</Col>
+							</Row>
+						);
+					})}
 				</Container>
 			</Card.Body>
 		</Card>
