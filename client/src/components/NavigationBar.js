@@ -9,7 +9,7 @@ const NavigationBar = () => {
 		<>
 		<Navbar expand="lg" bg="dark" variant="dark">
 			<Container>
-				<Navbar.Brand href="/">Vancouver Pro Soccer League</Navbar.Brand>
+				<Navbar.Brand href="/">BC Pro Soccer League</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
