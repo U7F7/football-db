@@ -7,6 +7,7 @@ drop table WINSAWARD;
 drop table PLAYSFOR;
 drop table COACHES;
 drop table REFEREES;
+drop table RECORDSGAME
 
 -- drop entities (order may matter for PK/FKs)
 drop table COACH;
@@ -283,7 +284,7 @@ CREATE TABLE WinsAward(
 	person_id int,
 	team_name varchar(100),
 	PRIMARY KEY(award_id),
--- 	UNIQUE(person_id, team_name),
+    -- 	UNIQUE(person_id, team_name),
     FOREIGN KEY(award_id) REFERENCES Awards(award_id)
         ON DELETE CASCADE,
         /* ON UPDATE CASCADE not supported will impl another way */
@@ -300,6 +301,22 @@ CREATE TABLE Referees(
     game_id int,
     PRIMARY KEY(person_id, game_id),
     FOREIGN KEY(person_id) REFERENCES Referee(person_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(game_id) REFERENCES Game(game_id)
+        ON DELETE CASCADE
+        /* ON UPDATE CASCADE not supported will impl another way */
+);
+
+CREATE TABLE RecordsGame(
+    person_id int,
+    stats_id int,
+    game_id int,
+    PRIMARY KEY (person_id, stats_id, game_id),
+    FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
+        ON DELETE CASCADE,
+        /* ON UPDATE CASCADE not supported will impl another way */
+    FOREIGN KEY(stats_id) REFERENCES Statistics(stats_id)
         ON DELETE CASCADE,
         /* ON UPDATE CASCADE not supported will impl another way */
     FOREIGN KEY(game_id) REFERENCES Game(game_id)
@@ -551,5 +568,13 @@ INSERT ALL
     INTO Referees VALUES (20, 1)
     INTO Referees VALUES (19, 5)
     INTO Referees VALUES (16, 3)
+SELECT * FROM dual;
+
+INSERT ALL
+    INTO RecordsGame VALUES (1, 1, 1)
+    INTO RecordsGame VALUES (4, 4, 1)
+    INTO RecordsGame VALUES (3, 3, 4)
+    INTO RecordsGame VALUES (3, 3, 3)
+    INTO RecordsGame VALUES (5, 5, 3)
 SELECT * FROM dual;
 
