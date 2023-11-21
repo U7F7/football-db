@@ -23,7 +23,6 @@ drop table GAME;
 
 -- drop DETAILS last
 drop table AGEDETAILS;
-drop table EXPERIENCEDETAILS;
 drop table POSITIONDETAILS;
 
 
@@ -33,12 +32,6 @@ CREATE TABLE AgeDetails(
 	birthdate date,
 	age int,
 	PRIMARY KEY(birthdate)
-);
-
-CREATE TABLE ExperienceDetails(
-	date_started date,
-	years_experience int,
-    PRIMARY KEY(date_started)
 );
 
 CREATE TABLE Venue(
@@ -81,9 +74,6 @@ CREATE TABLE Athlete(
 	FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
 		ON DELETE CASCADE,
 		/* ON UPDATE CASCADE, not supported will impl another way */
-	FOREIGN KEY (date_started) REFERENCES ExperienceDetails(date_started)
-		ON DELETE CASCADE,
-		/* ON UPDATE CASCADE not supported will impl another way */
 	FOREIGN KEY(current_team) REFERENCES Team(team_name),
 --         ON DELETE NO ACTION, /* must point team to another team first*/ no required
 		/* ON UPDATE CASCADE, not supported will impl another way */
@@ -108,9 +98,6 @@ CREATE TABLE Coach(
     FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
         ON DELETE CASCADE,
         /* ON UPDATE CASCADE, not supported will impl another way */
-	FOREIGN KEY (date_started) REFERENCES ExperienceDetails(date_started)
-		ON DELETE CASCADE,
-		/* ON UPDATE CASCADE not supported will impl another way */
 	FOREIGN KEY(current_team) REFERENCES Team(team_name)
 --         ON DELETE NO ACTION /* must point team to another team first*/ // not required
 		/* ON UPDATE CASCADE not supported will impl another way */
@@ -131,9 +118,6 @@ CREATE TABLE Referee(
     FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
         ON DELETE CASCADE,
         /* ON UPDATE CASCADE, not supported will impl another way */
-	FOREIGN KEY (date_started) REFERENCES ExperienceDetails(date_started)
-		ON DELETE CASCADE
-		/* ON UPDATE CASCADE not supported will impl another way */
 );
 
 CREATE TABLE Statistics(
@@ -395,94 +379,6 @@ INSERT ALL
 	INTO AgeDetails VALUES ('1988-11-07', 34)
 	INTO AgeDetails VALUES ('1995-07-12', 28)
 	INTO AgeDetails VALUES ('1982-03-06', 41) -- bears end
-SELECT * FROM dual;
-
-INSERT ALL
-	INTO ExperienceDetails VALUES ('2000-07-10', 23)
-	INTO ExperienceDetails VALUES ('2010-03-18', 13)
-	INTO ExperienceDetails VALUES ('2005-12-05', 17)
-	INTO ExperienceDetails VALUES ('2018-02-14', 5)
-	INTO ExperienceDetails VALUES ('2002-09-22', 21)
-	INTO ExperienceDetails VALUES ('2015-06-30', 8)
-	INTO ExperienceDetails VALUES ('2004-04-03', 19)
-	INTO ExperienceDetails VALUES ('2009-11-12', 13)
-	INTO ExperienceDetails VALUES ('2007-07-27', 16)
-	INTO ExperienceDetails VALUES ('2013-01-19', 10)
-	INTO ExperienceDetails VALUES ('2001-10-09', 22)
-	INTO ExperienceDetails VALUES ('2016-08-07', 7)
-    -- coach ends
-	INTO ExperienceDetails VALUES ('2003-05-14', 20)
-	INTO ExperienceDetails VALUES ('2019-12-21', 3)
-	INTO ExperienceDetails VALUES ('2006-02-16', 17)
-	INTO ExperienceDetails VALUES ('2009-08-14', 14)
-	INTO ExperienceDetails VALUES ('2017-05-25', 6)
-    -- ref ends
-	INTO ExperienceDetails VALUES ('2006-11-30', 16)
-	INTO ExperienceDetails VALUES ('2014-09-07', 9)
-	INTO ExperienceDetails VALUES ('2000-04-18', 23)
-	INTO ExperienceDetails VALUES ('2010-10-10', 13)
-	INTO ExperienceDetails VALUES ('2011-03-18', 12)
-	INTO ExperienceDetails VALUES ('2005-02-05', 18)
-	INTO ExperienceDetails VALUES ('2018-08-14', 5)
-	INTO ExperienceDetails VALUES ('2002-12-22', 20)
-	INTO ExperienceDetails VALUES ('2015-12-30', 7)
-	INTO ExperienceDetails VALUES ('2004-06-03', 19)
-	INTO ExperienceDetails VALUES ('2009-07-12', 14) -- vipers end
-	INTO ExperienceDetails VALUES ('2007-09-27', 16)
-	INTO ExperienceDetails VALUES ('2013-04-19', 10)
-	INTO ExperienceDetails VALUES ('2001-08-09', 22)
-	INTO ExperienceDetails VALUES ('2016-01-07', 7)
-	INTO ExperienceDetails VALUES ('2003-09-14', 20)
-	INTO ExperienceDetails VALUES ('2019-02-21', 3)
-	INTO ExperienceDetails VALUES ('2006-07-16', 16)
-	INTO ExperienceDetails VALUES ('2009-05-14', 14)
-	INTO ExperienceDetails VALUES ('2017-08-25', 6)
-	INTO ExperienceDetails VALUES ('2006-04-30', 16)
-	INTO ExperienceDetails VALUES ('2014-11-07', 9) -- thunder end
-	INTO ExperienceDetails VALUES ('2000-11-18', 22)
-	INTO ExperienceDetails VALUES ('2008-10-01', 15)
-	INTO ExperienceDetails VALUES ('2012-06-12', 11)
-	INTO ExperienceDetails VALUES ('2005-08-23', 17)
-	INTO ExperienceDetails VALUES ('2017-04-05', 6)
-	INTO ExperienceDetails VALUES ('2003-02-14', 20)
-	INTO ExperienceDetails VALUES ('2014-10-30', 9)
-	INTO ExperienceDetails VALUES ('2009-03-01', 14)
-	INTO ExperienceDetails VALUES ('2006-09-20', 16)
-	INTO ExperienceDetails VALUES ('2010-12-10', 12)
-	INTO ExperienceDetails VALUES ('2001-01-15', 22) -- warriors end
-	INTO ExperienceDetails VALUES ('2015-07-17', 8)
-    INTO ExperienceDetails VALUES ('2004-11-08', 18)
-	INTO ExperienceDetails VALUES ('2018-06-25', 5)
-	INTO ExperienceDetails VALUES ('2007-03-03', 16)
-	INTO ExperienceDetails VALUES ('2012-08-14', 11)
-	INTO ExperienceDetails VALUES ('2002-05-20', 21)
-	INTO ExperienceDetails VALUES ('2016-04-09', 7)
-	INTO ExperienceDetails VALUES ('2008-01-12', 15)
-	INTO ExperienceDetails VALUES ('2011-09-27', 12)
-	INTO ExperienceDetails VALUES ('2005-06-22', 17)
-	INTO ExperienceDetails VALUES ('2017-01-05', 6) -- titans end
-	INTO ExperienceDetails VALUES ('2003-12-14', 20)
-	INTO ExperienceDetails VALUES ('2014-07-30', 9)
-	INTO ExperienceDetails VALUES ('2009-05-01', 14)
-	INTO ExperienceDetails VALUES ('2006-10-20', 16)
-	INTO ExperienceDetails VALUES ('2011-01-10', 12)
-	INTO ExperienceDetails VALUES ('2001-02-15', 22)
-	INTO ExperienceDetails VALUES ('2015-08-17', 8)
-	INTO ExperienceDetails VALUES ('2004-12-08', 18)
-	INTO ExperienceDetails VALUES ('2018-07-25', 5)
-	INTO ExperienceDetails VALUES ('2007-04-03', 16)
-	INTO ExperienceDetails VALUES ('2012-09-14', 11) -- sharks end
-	INTO ExperienceDetails VALUES ('2002-06-20', 21)
-	INTO ExperienceDetails VALUES ('2016-05-09', 7)
-	INTO ExperienceDetails VALUES ('2008-02-12', 15)
-	INTO ExperienceDetails VALUES ('2011-10-27', 12)
-	INTO ExperienceDetails VALUES ('2005-07-22', 17)
-	INTO ExperienceDetails VALUES ('2017-02-05', 6)
-	INTO ExperienceDetails VALUES ('2004-01-14', 20)
-	INTO ExperienceDetails VALUES ('2015-07-30', 8)
-	INTO ExperienceDetails VALUES ('2010-05-01', 14)
-	INTO ExperienceDetails VALUES ('2006-11-20', 16)
-	INTO ExperienceDetails VALUES ('2011-02-10', 12) -- bears end
 SELECT * FROM dual;
 
 INSERT ALL
