@@ -189,7 +189,7 @@ const Athletes = () => {
 					<Button variant="primary" onClick={() => setShowAddAthlete(true)}>Add Athlete</Button>
 				</Col>
 			</Row>
-			<AddAthleteModal athletes={dummyData} showAddAthlete={showAddAthlete} setShowAddAthlete={setShowAddAthlete} />
+			<AddAthleteModal athletes={dummyData} setAthletes={setDummyData} showAddAthlete={showAddAthlete} setShowAddAthlete={setShowAddAthlete} />
 			<Table striped bordered>
 				<thead>
 					<tr>
