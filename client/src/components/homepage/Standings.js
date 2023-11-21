@@ -13,33 +13,40 @@ const Standings = () => {
 			losses: 8
 		},
 		{
-			team: "Vancouver Thunder",
+			team: "Richmond Thunder",
 			gamesPlayed: 15,
 			wins: 15,
 			draws: 0,
 			losses: 0
 		},
 		{
-			team: "Vancouver Warriors",
+			team: "Burnaby Warriors",
 			gamesPlayed: 15,
 			wins: 2,
 			draws: 2,
 			losses: 11
 		},
 		{
-			team: "Vancouver Titans",
+			team: "Surrey Titans",
 			gamesPlayed: 15,
 			wins: 8,
 			draws: 2,
 			losses: 5
 		},
 		{
-			team: "Vancouver Sharks",
+			team: "Coquitlam Sharks",
 			gamesPlayed: 15,
 			wins: 4,
 			draws: 1,
 			losses: 10
-		},	
+		},
+				{
+			team: "Langley Bears",
+			gamesPlayed: 15,
+			wins: 5,
+			draws: 1,
+			losses: 9
+		}	
 	];
 
 	return (
