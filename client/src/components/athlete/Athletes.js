@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-import AddPlayerModal from "./AddPlayerModal";
+import AddAthleteModal from "./AddAthleteModal";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -11,7 +11,7 @@ import Table from "react-bootstrap/Table";
 import { ArrowDownUp } from "react-bootstrap-icons";
 
 
-const Players = () => {
+const Athletes = () => {
 	const addButtonStyle = {
 		display: "flex", 
 		justifyContent: "right", 
@@ -177,19 +177,19 @@ const Players = () => {
 		}
 	};
 
-	const [showAddPlayer, setShowAddPlayer] = useState(false);
+	const [showAddAthlete, setShowAddAthlete] = useState(false);
 
 	return (
 		<Container style={{ marginTop: "20px" }}>
 			<Row>
 				<Col xs={10}>
-					<h1>Players</h1>
+					<h1>Athletes</h1>
 				</Col>
 				<Col xs={2} style={addButtonStyle}>
-					<Button variant="primary" onClick={() => setShowAddPlayer(true)}>Add Player</Button>
+					<Button variant="primary" onClick={() => setShowAddAthlete(true)}>Add Athlete</Button>
 				</Col>
 			</Row>
-			<AddPlayerModal showAddPlayer={showAddPlayer} setShowAddPlayer={setShowAddPlayer} />
+			<AddAthleteModal athletes={dummyData} showAddAthlete={showAddAthlete} setShowAddAthlete={setShowAddAthlete} />
 			<Table striped bordered>
 				<thead>
 					<tr>
@@ -248,4 +248,4 @@ const Players = () => {
 	);
 };
 
-export default Players;
+export default Athletes;
