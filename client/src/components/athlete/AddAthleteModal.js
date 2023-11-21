@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import axios from "axios";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -7,31 +9,36 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthlete }) => {
+	const [positions, setPositions] = useState({});
 
-	const getNextId = () => {
-		let max = 0;
-		athletes.forEach((a) => {
-			if (a.person_id > max) {
-				max = a.person_id;
-			}
-		});
-		return max + 1;
-	};
+	useEffect(() => {
+		axios.get("http://localhost:65535/positions")
+			.then((res) => {
+				let ret = {};
+				for (let d of res.data) {
+					ret[d.jersey_num] = d.position
+				}
+				setPositions(ret);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
 
-	// will be api eventually
-	const [teams, setTeams] = useState({
-		"teams": [
-			"Vancouver Vipers",
-			"Richmond Thunder",
-			"Burnaby Warriors",
-			"Surrey Titans",
-			"Coquitlam Sharks",
-			"Langley Bears"
-		]
-	});
+	const [teams, setTeams] = useState([]);
+
+	useEffect(() => {
+		axios.get("http://localhost:65535/teams")
+			.then((res) => {
+				setTeams(res.data.map((obj) => obj.team_name));
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
 
 	const [athlete, setAthlete] = useState({
-		person_id: getNextId(),
+		person_id:  0,
 		name: "",
 		birthdate: "",
 		height: 0,
@@ -56,15 +63,20 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 	};
 
 	const addAthlete = () => {
-		// TODO data needs to be renamed and filtered to the needed fields only
-		// add to database
-		// get the athlete back such that we have the position join
+		// try to add to database
 		// add the athlete locally only to not reload whole table
-		// check for sql injection
-		setAthletes([...athletes, athlete]);
+		// check for sql injection (in the api not here!)
+		const nextID = Math.max(...athletes.map((a) => a.person_id)) + 1;
+		setAthlete({...athlete, person_id: nextID});
+
+		setAthletes([{ 
+			"person_id": athlete.person_id,
+			"name": athlete.name, 
+			"position": positions[athlete.jersey_num], 
+			"team": athlete.current_team 
+		}, ...athletes]);
 		setShowAddAthlete(false);
 	}
-
 
 	return (
 		<Modal centered size="lg" show={showAddAthlete} onHide={() => setShowAddAthlete(false)}>
@@ -89,7 +101,7 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 						<Col>
 							<Form.Group controlId="weight">
 								<Form.Label>Weight</Form.Label>
-								<Form.Control type="number" min="0" weight="weight" onChange={handleFormChange} placeholder="Enter weight (kg)" required/>
+								<Form.Control type="number" min="0" name="weight" onChange={handleFormChange} placeholder="Enter weight (kg)" required/>
 							</Form.Group>
 						</Col>
 						<Col>
@@ -104,6 +116,7 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 							<Form.Group controlId="jersey">
 								<Form.Label>Jersey Number/Position</Form.Label>
 								<Form.Select aria-label="Default select example" name="jersey_num" onChange={handleFormChange}>
+									<option value="default">-</option>
 									<option value="1">1 (Goalkeeper)</option>
 									<option value="2">2 (Right Back)</option>
 									<option value="3">3 (Left Back)</option>
@@ -122,7 +135,8 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 							<Form.Group controlId="team">
 								<Form.Label>Team</Form.Label>
 								<Form.Select aria-label="Default select example" name="current_team" onChange={handleFormChange}>
-									{teams.teams.map((t, i) => {
+									<option value="default">-</option>
+									{teams.map((t, i) => {
 										return (
 											<option key={i} value={t}>{t}</option>
 										);

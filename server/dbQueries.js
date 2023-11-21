@@ -8,36 +8,36 @@ const DB_CONFIG = {
 	user: envVariables.ORACLE_USER,
 	password: envVariables.ORACLE_PASS,
 	connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
+	poolMax: 1
 };
 
 // Wrapper to manage OracleDB actions, simplifying connection handling.
-const withOracleDB = (action) => {
-	let connection;
+// https://piazza.com/class/lkk1xyugpas6fo/post/545
+let poolMade = false;
+let pool;
+const withOracleDB = async(action) => {
+    let connection;
+    try {
+        if (!poolMade) {
+            await oracledb.createPool(DB_CONFIG);
+            pool = oracledb.getPool();
+            poolMade = true;
+        }
 
-	return oracledb.getConnection(DB_CONFIG)
-		.then((conn) => {
-			connection = conn;
-			return action(connection)
-				.then((result) => {
-					return result;
-				})
-				.catch((err) => {
-					console.error(err);
-					throw err;
-				});
-		})
-		.catch((err) => {
-			console.error(err);
-			throw err;
-		})
-		.finally(() => {
-			if (connection) {
-				return connection.close()
-					.catch((err) => {
-						console.error(err);
-					});
-			}
-		});
+        connection = await pool.getConnection();
+        return await action(connection);
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
 }
 
 const testOracleConnection = async () => {
@@ -53,13 +53,62 @@ const testOracleConnection = async () => {
 const getTable = (table) => {
 	return withOracleDB((connection) => {
 		return connection.execute(`SELECT * FROM ${table}`)
-			.catch(() => {
-				return {};
+			.catch((err) => {
+				throw err;
 			});
 	});
 }
 
+const getAllNamePositionTeam = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT person_id, name, position, current_team as team
+			FROM Athlete, PositionDetails
+			WHERE Athlete.jersey_num = PositionDetails.jersey_num
+		`).catch((err) => {
+			throw err;
+		});
+	});
+}
+
+const getTeams = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT team_name
+			FROM Team
+		`).catch((err) => {
+			throw err;
+		});
+	});
+}
+
+const getMaxPersonID = (person) => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT MAX(person_id) as max
+			FROM ${person}
+		`).catch((err) => {
+			throw err;
+		});
+	});
+};
+
+const getPositions = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT *
+			FROM PositionDetails
+		`).catch((err) => {
+			throw err;
+		});
+	});
+};
+
 module.exports = {
 	testOracleConnection,
-	getTable
+	getTable,
+	getAllNamePositionTeam,
+	getTeams,
+	getMaxPersonID,
+	getPositions
 };
