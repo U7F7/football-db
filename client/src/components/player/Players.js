@@ -1,5 +1,7 @@
 import { React, useState } from "react";
 
+import AddPlayerModal from "./AddPlayerModal";
+
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -28,95 +30,113 @@ const Players = () => {
 	
 	const [dummyData, setDummyData] = useState([
 		{
+			"person_id": 1,
 			"name": "John Doe",
 			"position": "Goalkeeper",
 			"team": "Vancouver Vipers"
 		},
 		{
+			"person_id": 2,
 			"name": "Jane Smith",
 			"position": "Right Back",
 			"team": "Vancouver Vipers"
 		},
 		{
+			"person_id": 3,
 			"name": "Mike Johnson",
 			"position": "Left Back",
 			"team": "Vancouver Vipers"
 		},
 		{
+			"person_id": 4,
 			"name": "Billy Bob",
 			"position": "Goalkeeper",
 			"team": "Vancouver Thunder"
 		},
 		{
+			"person_id": 5,
 			"name": "Danielle Chu",
 			"position": "Right Back",
 			"team": "Vancouver Thunder"
 		},
 		{
+			"person_id": 6,
 			"name": "Darren Sam",
 			"position": "Left Back",
 			"team": "Vancouver Thunder"
 		},
 		{
+			"person_id": 7,
 			"name": "Parker Fin",
 			"position": "Goalkeeper",
 			"team": "Vancouver Warriors"
 		},
 		{
+			"person_id": 8,
 			"name": "Lauren Shim",
 			"position": "Right Back",
 			"team": "Vancouver Warriors"
 		},
 		{
+			"person_id": 9,
 			"name": "Markus Duff",
 			"position": "Left Back",
 			"team": "Vancouver Warriors"
 		},
 		{
+			"person_id": 10,
 			"name": "Adam Desmond",
 			"position": "Goalkeeper",
 			"team": "Vancouver Titans"
 		},
 		{
+			"person_id": 11,
 			"name": "Brittany Peterson",
 			"position": "Right Back",
 			"team": "Vancouver Titans"
 		},
 		{
+			"person_id": 12,
 			"name": "Ryan Son",
 			"position": "Left Back",
 			"team": "Vancouver Titans"
 		},
 		{
+			"person_id": 13,
 			"name": "Harry Ford",
 			"position": "Goalkeeper",
 			"team": "Vancouver Sharks"
 		},
 		{
+			"person_id": 14,
 			"name": "Ruth North",
 			"position": "Right Back",
 			"team": "Vancouver Sharks"
 		},
 		{
+			"person_id": 15,
 			"name": "Luke Sky",
 			"position": "Sweeper",
 			"team": "Vancouver Sharks"
 		},
 		{
+			"person_id": 16,
 			"name": "James Fort",
 			"position": "Goalkeeper",
 			"team": "Vancouver Bears"
 		},
 		{
+			"person_id": 17,
 			"name": "Ivana Lee",
 			"position": "Right Back",
 			"team": "Vancouver Bears"
 		},
 		{
+			"person_id": 18,
 			"name": "Jim Gear",
 			"position": "Left Back",
 			"team": "Vancouver Bears"
-		}
+		},
 	]);
 
 	const ASC = false;
@@ -157,6 +177,8 @@ const Players = () => {
 		}
 	};
 
+	const [showAddPlayer, setShowAddPlayer] = useState(false);
+
 	return (
 		<Container style={{ marginTop: "20px" }}>
 			<Row>
@@ -164,9 +186,10 @@ const Players = () => {
 					<h1>Players</h1>
 				</Col>
 				<Col xs={2} style={addButtonStyle}>
-					<Button variant="primary">Add Player</Button>
+					<Button variant="primary" onClick={() => setShowAddPlayer(true)}>Add Player</Button>
 				</Col>
 			</Row>
+			<AddPlayerModal showAddPlayer={showAddPlayer} setShowAddPlayer={setShowAddPlayer} />
 			<Table striped bordered>
 				<thead>
 					<tr>
@@ -198,9 +221,9 @@ const Players = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{dummyData.map((obj, i) => {
+					{dummyData.map((obj) => {
 						return (
-							<tr key={i}>
+							<tr key={obj.person_id}>
 								<td>{obj.name}</td>
 								<td>{obj.position}</td>
 								<td>{obj.team}</td>
@@ -208,12 +231,10 @@ const Players = () => {
 									<Container style={{ display: "flex", justifyContent: "center" }}>
 										<Row>
 											<Col>
-												{/* <Button variant="warning"><PencilFill color="white" /></Button> */}
-												<Button variant="warning">Edit</Button>
+												<Button id={obj.person_id} variant="warning">Edit</Button>
 											</Col>
 											<Col>
-												{/* <Button variant="danger"><TrashFill /></Button> */}
-												<Button variant="danger">Delete</Button>
+												<Button id={obj.person_id} variant="danger">Delete</Button>
 											</Col>
 										</Row>	
 									</Container>
