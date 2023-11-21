@@ -157,8 +157,9 @@ CREATE TABLE Sponsor(
 
 CREATE TABLE Game(
 	game_id int,
-	game_name varchar(100),
-	game_data date,
+	home varchar(100),
+	away varchar(100),
+	game_date date,
 	PRIMARY KEY(game_id)
 );
 
@@ -481,7 +482,7 @@ INSERT ALL
 	INTO Venue VALUES ('5789 Elm Road, Burnaby', 'Evergreen Arena', 15000)
 	INTO Venue VALUES ('5101 Maple Lane, Surrey', 'Harbor View Stadium', 5000)
 	INTO Venue VALUES ('5234 Pine Street, Coquitlam', 'Sea View Arena', 34500)
-    INTO Venue VALUES ('1923 RIver Road, Langley', 'Waterways Stadium', 17000)
+    INTO Venue VALUES ('1923 River Road, Langley', 'Waterways Stadium', 17000)
     INTO Venue VALUES ('7212 Orange Crescent, Vancouver', 'Natural Neon Arena', 7500)
     INTO Venue VALUES ('1182 History Street, Vancouver', 'Old Books Building', 800)
 SELECT * FROM dual;
@@ -492,7 +493,7 @@ INSERT ALL
 	INTO Team VALUES ('Burnaby Warriors', 'Michael Brown', '5789 Elm Road, Burnaby')
 	INTO Team VALUES ('Surrey Titans', 'Sarah Lee', '5101 Maple Lane, Surrey')
 	INTO Team VALUES ('Coquitlam Sharks', 'Robert Davis', '5234 Pine Street, Coquitlam')
-    INTO Team VALUES ('Langley Bears', 'Chris Huk', '1923 RIver Road, Langley')
+    INTO Team VALUES ('Langley Bears', 'Chris Huk', '1923 River Road, Langley')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -579,21 +580,21 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Game VALUES (1, 'Vancouver Vipers vs. Richmond Thunder', '2022-01-28')
-	INTO Game VALUES (2, 'Burnaby Warriors vs. Surrey Titans', '2022-02-01')
-	INTO Game VALUES (3, 'Coquitlam Sharks vs. Langley Bears', '2022-06-02')
-	INTO Game VALUES (4, 'Vancouver Vipers vs. Burnaby Warriors','2022-08-15')
-	INTO Game VALUES (5, 'Richmond Thunder vs. Coquitlam Sharks', '2022-10-01')
-	INTO Game VALUES (6, 'Surrey Titans vs. Langley Bears', '2022-11-27')
-	INTO Game VALUES (7, 'Vancouver Vipers vs. Surrey Titans', '2022-12-18')
-	INTO Game VALUES (8, 'Burnaby Warriors vs. Coquitlam Sharks', '2023-02-05')
-	INTO Game VALUES (9, 'Richmond Thunder vs. Langley Bears', '2023-02-17')
-	INTO Game VALUES (10, 'Vancouver Vipers vs. Coquitlam Sharks', '2023-03-13')
-	INTO Game VALUES (11, 'Burnaby Warriors vs. Langley Bears', '2023-05-24')
-	INTO Game VALUES (12, 'Richmond Thunder vs. Surrey Titans', '2023-08-16')
-	INTO Game VALUES (13, 'Vancouver Vipers vs. Langley Bears', '2023-09-01')
-	INTO Game VALUES (14, 'Richmond Thunder vs. Burnaby Warriors', '2023-09-08')
-	INTO Game VALUES (15, 'Coquitlam Sharks vs. Surrey Titans', '2023-11-19')
+	INTO Game VALUES (1, 'Vancouver Vipers', 'Richmond Thunder', '2022-01-28')
+	INTO Game VALUES (2, 'Burnaby Warriors', 'Surrey Titans', '2022-02-01')
+	INTO Game VALUES (3, 'Coquitlam Sharks', 'Langley Bears', '2022-06-02')
+	INTO Game VALUES (4, 'Vancouver Vipers', 'Burnaby Warriors','2022-08-15')
+	INTO Game VALUES (5, 'Richmond Thunder', 'Coquitlam Sharks', '2022-10-01')
+	INTO Game VALUES (6, 'Surrey Titans', 'Langley Bears', '2022-11-27')
+	INTO Game VALUES (7, 'Vancouver Vipers', 'Surrey Titans', '2022-12-18')
+	INTO Game VALUES (8, 'Burnaby Warriors', 'Coquitlam Sharks', '2023-02-05')
+	INTO Game VALUES (9, 'Richmond Thunder', 'Langley Bears', '2023-02-17')
+	INTO Game VALUES (10, 'Vancouver Vipers', 'Coquitlam Sharks', '2023-03-13')
+	INTO Game VALUES (11, 'Burnaby Warriors', 'Langley Bears', '2023-05-24')
+	INTO Game VALUES (12, 'Richmond Thunder', 'Surrey Titans', '2023-08-16')
+	INTO Game VALUES (13, 'Vancouver Vipers', 'Langley Bears', '2023-09-01')
+	INTO Game VALUES (14, 'Richmond Thunder', 'Burnaby Warriors', '2023-09-08')
+	INTO Game VALUES (15, 'Coquitlam Sharks', 'Surrey Titans', '2023-11-19')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -1077,11 +1078,11 @@ INSERT ALL
 	INTO LocatedIn VALUES (6, '5101 Maple Lane, Surrey')
 	INTO LocatedIn VALUES (7, '5123 Main Street, Vancouver')
 	INTO LocatedIn VALUES (8, '5234 Pine Street, Coquitlam')
-	INTO LocatedIn VALUES (9, '1923 RIver Road, Langley')
+	INTO LocatedIn VALUES (9, '1923 River Road, Langley')
 	INTO LocatedIn VALUES (10, '5234 Pine Street, Coquitlam')
-	INTO LocatedIn VALUES (11, '1923 RIver Road, Langley')
+	INTO LocatedIn VALUES (11, '1923 River Road, Langley')
 	INTO LocatedIn VALUES (12, '5101 Maple Lane, Surrey')
-	INTO LocatedIn VALUES (13, '1923 RIver Road, Langley')
+	INTO LocatedIn VALUES (13, '1923 River Road, Langley')
 	INTO LocatedIn VALUES (14, '7212 Orange Crescent, Vancouver')
 	INTO LocatedIn VALUES (15, '1182 History Street, Vancouver')
 SELECT * FROM dual;
