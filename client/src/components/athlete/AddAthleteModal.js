@@ -122,9 +122,9 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 							<Form.Group controlId="team">
 								<Form.Label>Team</Form.Label>
 								<Form.Select aria-label="Default select example" name="current_team" onChange={handleFormChange}>
-									{teams.teams.map((t) => {
+									{teams.teams.map((t, i) => {
 										return (
-											<option value={t}>{t}</option>
+											<option key={i} value={t}>{t}</option>
 										);
 									})}
 								</Form.Select>

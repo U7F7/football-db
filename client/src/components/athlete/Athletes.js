@@ -143,6 +143,7 @@ const Athletes = () => {
 	const DESC = true;
 
 	const [sortDir, setSortDir] = useState({ name: ASC, position: ASC, team: ASC });
+	const [showAddAthlete, setShowAddAthlete] = useState(false);
 
 	const handleSort = (e) => {
 		if (e.currentTarget.id === "name-up") {
@@ -177,7 +178,13 @@ const Athletes = () => {
 		}
 	};
 
-	const [showAddAthlete, setShowAddAthlete] = useState(false);
+	const handleDelete = (e) => {
+		// TODO
+		// should make a modal to confirm!
+		// do changes in database too
+		// if not legal alert!!
+		setDummyData(dummyData.filter(athlete => athlete.person_id != e.currentTarget.id));
+	}
 
 	return (
 		<Container style={{ marginTop: "20px" }}>
@@ -234,7 +241,7 @@ const Athletes = () => {
 												<Button id={obj.person_id} variant="warning">Edit</Button>
 											</Col>
 											<Col>
-												<Button id={obj.person_id} variant="danger">Delete</Button>
+												<Button id={obj.person_id} variant="danger" onClick={handleDelete}>Delete</Button>
 											</Col>
 										</Row>	
 									</Container>
