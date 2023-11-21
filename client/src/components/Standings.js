@@ -40,7 +40,7 @@ const Standings = () => {
 			draws: 1,
 			losses: 10
 		},	
-	]
+	];
 
 	return (
 		<Card>

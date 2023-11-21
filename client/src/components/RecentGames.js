@@ -38,7 +38,7 @@ const RecentGames = () => {
 			away: "Vancouver Sharks",
 			awayScore: 1
 		},
-	]
+	];
 
 	return (
 		<Card>
@@ -50,10 +50,10 @@ const RecentGames = () => {
 						return (
 							<Row style={{ marginTop: "20px" }}>
 								<Col>
-									{2 * i < dummyData.length ? <RecentGame {...dummyData[2 * i]}/> : ""}
+									{2 * i < dummyData.length ? <RecentGame {...dummyData[2 * i]}/> : null}
 								</Col>
 								<Col>
-									{2 * i + 1 < dummyData.length ? <RecentGame {...dummyData[2 * i + 1]}/> : ""}
+									{2 * i + 1 < dummyData.length ? <RecentGame {...dummyData[2 * i + 1]}/> : null}
 								</Col>
 							</Row>
 						);
