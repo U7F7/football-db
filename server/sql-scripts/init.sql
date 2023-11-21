@@ -22,17 +22,9 @@ drop table VENUE;
 drop table GAME;
 
 -- drop DETAILS last
-drop table AGEDETAILS;
 drop table POSITIONDETAILS;
 
-
 /* Entities */
-
-CREATE TABLE AgeDetails(
-	birthdate date,
-	age int,
-	PRIMARY KEY(birthdate)
-);
 
 CREATE TABLE Venue(
 	venue_address varchar(100),
@@ -71,9 +63,6 @@ CREATE TABLE Athlete(
     current_team varchar(100) NOT NULL,
 	salary int,
 	PRIMARY KEY(person_id),
-	FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
-		ON DELETE CASCADE,
-		/* ON UPDATE CASCADE, not supported will impl another way */
 	FOREIGN KEY(current_team) REFERENCES Team(team_name),
 --         ON DELETE NO ACTION, /* must point team to another team first*/ no required
 		/* ON UPDATE CASCADE, not supported will impl another way */
@@ -95,9 +84,6 @@ CREATE TABLE Coach(
     current_team varchar(100) NOT NULL,
     specialization varchar(100),
     PRIMARY KEY(person_id),
-    FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
-        ON DELETE CASCADE,
-        /* ON UPDATE CASCADE, not supported will impl another way */
 	FOREIGN KEY(current_team) REFERENCES Team(team_name)
 --         ON DELETE NO ACTION /* must point team to another team first*/ // not required
 		/* ON UPDATE CASCADE not supported will impl another way */
@@ -115,9 +101,6 @@ CREATE TABLE Referee(
 	date_started date,
 	certification_level int,
     PRIMARY KEY(person_id),
-    FOREIGN KEY(birthdate) REFERENCES AgeDetails(birthdate)
-        ON DELETE CASCADE,
-        /* ON UPDATE CASCADE, not supported will impl another way */
 );
 
 CREATE TABLE Statistics(
@@ -291,95 +274,6 @@ CREATE TABLE CorrespondsTo(
 );
 
 /* INSERTS */
-
-
-INSERT ALL
-    INTO AgeDetails VALUES ('1985-04-15', 38)
-	INTO AgeDetails VALUES ('1992-09-25', 31)
-	INTO AgeDetails VALUES ('1988-11-03', 34)
-	INTO AgeDetails VALUES ('1995-07-19', 28)
-	INTO AgeDetails VALUES ('1982-03-12', 41)
-	INTO AgeDetails VALUES ('1998-05-29', 25)
-	INTO AgeDetails VALUES ('1987-08-14', 36)
-	INTO AgeDetails VALUES ('1990-01-02', 33)
-	INTO AgeDetails VALUES ('1986-12-08', 36)
-	INTO AgeDetails VALUES ('1994-04-23', 29)
-	INTO AgeDetails VALUES ('1983-06-17', 40)
-	INTO AgeDetails VALUES ('1997-10-30', 25)
-    -- coach ends
-	INTO AgeDetails VALUES ('1981-12-27', 41)
-	INTO AgeDetails VALUES ('1999-02-10', 24)
-	INTO AgeDetails VALUES ('1984-07-07', 39)
-	INTO AgeDetails VALUES ('1991-03-18', 32)
-	INTO AgeDetails VALUES ('1996-08-22', 27)
-    -- ref ends
-	INTO AgeDetails VALUES ('1989-12-05', 33)
-	INTO AgeDetails VALUES ('1993-04-30', 30)
-	INTO AgeDetails VALUES ('1980-06-14', 43)
-    INTO AgeDetails VALUES ('1987-02-09', 36)
-	INTO AgeDetails VALUES ('1993-09-12', 30)
-	INTO AgeDetails VALUES ('1985-11-20', 37)
-	INTO AgeDetails VALUES ('1991-07-06', 32)
-	INTO AgeDetails VALUES ('1988-03-19', 34)
-	INTO AgeDetails VALUES ('1996-05-02', 27)
-	INTO AgeDetails VALUES ('1982-07-16', 41)
-	INTO AgeDetails VALUES ('1998-11-25', 24) -- vipers end
-	INTO AgeDetails VALUES ('1981-01-03', 42)
-	INTO AgeDetails VALUES ('1994-06-28', 29)
-	INTO AgeDetails VALUES ('1989-08-11', 33)
-	INTO AgeDetails VALUES ('1995-12-14', 27)
-	INTO AgeDetails VALUES ('1984-02-28', 39)
-	INTO AgeDetails VALUES ('1990-04-10', 33)
-	INTO AgeDetails VALUES ('1986-10-21', 36)
-	INTO AgeDetails VALUES ('1992-02-03', 31)
-	INTO AgeDetails VALUES ('1983-08-26', 40)
-	INTO AgeDetails VALUES ('1997-01-09', 26)
-	INTO AgeDetails VALUES ('1980-12-23', 42) -- thunder end
-    INTO AgeDetails VALUES ('1986-04-17', 36)
-	INTO AgeDetails VALUES ('1992-09-15', 31)
-	INTO AgeDetails VALUES ('1988-11-23', 34)
-	INTO AgeDetails VALUES ('1995-07-09', 28)
-	INTO AgeDetails VALUES ('1982-03-26', 41)
-	INTO AgeDetails VALUES ('1998-06-12', 25)
-	INTO AgeDetails VALUES ('1987-08-28', 36)
-	INTO AgeDetails VALUES ('1990-02-15', 33)
-	INTO AgeDetails VALUES ('1986-12-21', 36)
-	INTO AgeDetails VALUES ('1994-05-06', 29)
-	INTO AgeDetails VALUES ('1983-07-01', 40) -- warriors end
-	INTO AgeDetails VALUES ('1997-11-13', 25)
-	INTO AgeDetails VALUES ('1981-01-27', 42)
-	INTO AgeDetails VALUES ('1999-03-10', 24)
-	INTO AgeDetails VALUES ('1984-07-21', 39)
-	INTO AgeDetails VALUES ('1991-04-03', 32)
-	INTO AgeDetails VALUES ('1996-09-17', 27)
-	INTO AgeDetails VALUES ('1989-12-30', 33)
-	INTO AgeDetails VALUES ('1993-05-15', 30)
-	INTO AgeDetails VALUES ('1980-07-29', 43)
-    INTO AgeDetails VALUES ('1987-02-27', 36)
-	INTO AgeDetails VALUES ('1993-09-20', 30) -- titans end
-	INTO AgeDetails VALUES ('1985-11-18', 37)
-	INTO AgeDetails VALUES ('1991-07-12', 32)
-	INTO AgeDetails VALUES ('1988-03-25', 34)
-	INTO AgeDetails VALUES ('1996-05-18', 27)
-	INTO AgeDetails VALUES ('1982-07-26', 41)
-	INTO AgeDetails VALUES ('1998-11-27', 24)
-	INTO AgeDetails VALUES ('1981-01-09', 42)
-	INTO AgeDetails VALUES ('1994-07-27', 29)
-	INTO AgeDetails VALUES ('1989-09-15', 33)
-	INTO AgeDetails VALUES ('1995-11-18', 27)
-	INTO AgeDetails VALUES ('1984-03-30', 39) -- sharks end
-	INTO AgeDetails VALUES ('1990-07-17', 33)
-	INTO AgeDetails VALUES ('1986-09-02', 36)
-	INTO AgeDetails VALUES ('1992-02-04', 31)
-	INTO AgeDetails VALUES ('1983-08-23', 40)
-	INTO AgeDetails VALUES ('1997-01-19', 26)
-	INTO AgeDetails VALUES ('1980-12-03', 42)
-    INTO AgeDetails VALUES ('1986-04-15', 36)
-	INTO AgeDetails VALUES ('1992-09-30', 31)
-	INTO AgeDetails VALUES ('1988-11-07', 34)
-	INTO AgeDetails VALUES ('1995-07-12', 28)
-	INTO AgeDetails VALUES ('1982-03-06', 41) -- bears end
-SELECT * FROM dual;
 
 INSERT ALL
 	INTO PositionDetails VALUES (1, 'Goalkeeper')
