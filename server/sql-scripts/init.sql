@@ -100,7 +100,7 @@ CREATE TABLE Referee(
 	address varchar(100),
 	date_started date,
 	certification_level int,
-    PRIMARY KEY(person_id),
+    PRIMARY KEY(person_id)
 );
 
 CREATE TABLE Statistics(
