@@ -12,6 +12,7 @@ import Table from "react-bootstrap/Table";
 import { ArrowDownUp } from "react-bootstrap-icons";
 
 import axios from "axios";
+import EditAthleteModal from "./EditAthleteModal";
 
 const Athletes = () => {
 	const addButtonStyle = {
@@ -102,6 +103,13 @@ const Athletes = () => {
 		setAthletes(athletes.filter(athlete => athlete.person_id != e.currentTarget.id));
 	}
 
+	const [showEditAthlete, setShowEditAthlete] = useState(false);
+	// the current athlete which the user clicked edit on
+	const [currEditAthlete, setCurrEditAthlete] = useState(null);
+
+
+
+
 	return (
 		<Container style={{ marginTop: "20px" }}>
 			<Row>
@@ -154,7 +162,10 @@ const Athletes = () => {
 									<Container style={{ display: "flex", justifyContent: "center" }}>
 										<Row>
 											<Col>
-												<Button id={obj.person_id} variant="warning">Edit</Button>
+												<Button id={obj.person_id} variant="warning" onClick={(e) => {
+													setShowEditAthlete(true);
+													setCurrEditAthlete(Number(e.target.id));
+												}}>Edit</Button>
 											</Col>
 											<Col>
 												<Button id={obj.person_id} variant="danger" onClick={(e) => {
@@ -173,11 +184,18 @@ const Athletes = () => {
 				</tbody>
 			</Table>												
 			<DeleteAthleteModal 
-				athlete_id={currDeleteAthlete} 
+				person_id={currDeleteAthlete} 
 				athletes={athletes}
 				handleDelete={handleDelete} 
 				showDeleteAthlete={showDeleteAthlete} 
 				setShowDeleteAthlete={setShowDeleteAthlete} 
+			/>
+			<EditAthleteModal 
+				person_id={currEditAthlete}
+				athletes={athletes}
+				setAthletes={setAthletes}
+				showEditAthlete={showEditAthlete}
+				setShowEditAthlete={setShowEditAthlete}
 			/>
 		</Container>
 	);

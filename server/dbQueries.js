@@ -146,7 +146,6 @@ const insertAthlete = (body) => {
 };
 
 const deleteAthlete = (person_id) => {
-
 	return withOracleDB((connection) => {
 		return connection.execute(`
 				DELETE FROM Athlete
@@ -160,6 +159,60 @@ const deleteAthlete = (person_id) => {
 	});
 };
 
+const getAthlete = (person_id) => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT *
+			FROM Athlete
+			WHERE Athlete.person_id = ${person_id}
+		`).catch((err) => {
+			throw err;
+		});
+	});
+};
+
+const updateAthlete = (body) => {
+	const { 
+		person_id,
+		name,
+		birthdate,
+		height,
+		weight,
+		phone_number,
+		email,
+		address,
+		date_started,
+		jersey_num,
+		current_team,
+		salary
+	} = body;
+
+	console.log(body);
+
+	// for some reason bind parameters don't work here...
+	return withOracleDB((connection) => {
+		return connection.execute(`
+				UPDATE Athlete 
+				SET name='${name}',
+					birthdate=TO_DATE('${birthdate}', 'YYYY-MM-DD'),
+					height=${height}, 
+					weight=${weight}, 
+					phone_number=${phone_number}, 
+					email='${email}', 
+					address='${address}', 
+					date_started=TO_DATE('${date_started}', 'YYYY-MM-DD'),
+					jersey_num=${jersey_num}, 
+					current_team='${current_team}', 
+					salary=${salary}
+				WHERE person_id=${person_id}
+			`, []
+			, { autoCommit: true })
+		.catch((err) => {
+			throw err;
+		});
+	});
+};
+
 module.exports = {
 	testOracleConnection,
 	getTable,
@@ -167,5 +220,7 @@ module.exports = {
 	getTeams,
 	getPositions,
 	insertAthlete,
-	deleteAthlete
+	deleteAthlete,
+	getAthlete,
+	updateAthlete
 };

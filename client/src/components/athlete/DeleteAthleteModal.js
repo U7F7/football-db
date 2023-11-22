@@ -3,10 +3,10 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const DeleteAthleteModal = ({ athlete_id, athletes, handleDelete, showDeleteAthlete, setShowDeleteAthlete }) => {
-	let athlete = { name: "" };
+const DeleteAthleteModal = ({ person_id, athletes, handleDelete, showDeleteAthlete, setShowDeleteAthlete }) => {
+	let athlete;
 	for (let a of athletes) {
-		if (a.person_id == athlete_id) {
+		if (a.person_id == person_id) {
 			athlete = a;
 			break;
 		}
@@ -17,9 +17,9 @@ const DeleteAthleteModal = ({ athlete_id, athletes, handleDelete, showDeleteAthl
 			<Modal.Header closeButton>
 				<Modal.Title>Delete Athlete</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>Are you sure you want to delete {athlete.name}?</Modal.Body>
+			<Modal.Body>Are you sure you want to delete {athlete?.name}?</Modal.Body>
 			<Modal.Footer>
-				<Button id={athlete_id} variant="danger" onClick={handleDelete}>
+				<Button id={person_id} variant="danger" onClick={handleDelete}>
 					Delete
 				</Button>
 			</Modal.Footer>
