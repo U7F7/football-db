@@ -187,8 +187,6 @@ const updateAthlete = (body) => {
 		salary
 	} = body;
 
-	console.log(body);
-
 	// for some reason bind parameters don't work here...
 	return withOracleDB((connection) => {
 		return connection.execute(`

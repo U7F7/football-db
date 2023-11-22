@@ -94,7 +94,6 @@ router.delete("/athlete/:person_id", async (req, res) => {
 router.put("/athlete", async (req, res) => {
 	let result = await updateAthlete(req.body);
 	if (result) {
-		console.log(result);
 		res.json({ success: true });
 	} else {
 		res.status(500).json({ success: false });
