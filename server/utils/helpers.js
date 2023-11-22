@@ -1,5 +1,6 @@
 const queryToJson = (result) => {
-	const keys = []
+	const keys = [];
+
 	result.metaData.forEach((e) => {
 		keys.push(e.name.toLowerCase());
 	})

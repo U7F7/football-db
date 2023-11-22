@@ -1,23 +1,24 @@
-import "./App.css";
-import axios from "axios";
-import { React, useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import NavigationBar from "./components/NavigationBar";
+import HomePage from "./components/homepage/HomePage";
+import Athletes from "./components/athlete/Athletes";
+import Teams from "./components/teams/Teams";
+import Games from "./components/games/Games";
 
 const App = () => {
-	const [data, setData] = useState({});
-
-	useEffect(() => {
-		axios.get("http://localhost:65535/table/Awards")
-			.then((res) => {
-				setData(res.data);
-			})
-			.catch(err => console.error(err));
-	}, []);
 
 	return (
-		<div className="App">
-			<h1>Hello World</h1>
-			<p>{Object.keys(data).length !== 0 ? JSON.stringify(data) : "Loading..."}</p>
-		</div>
+		<Router>
+			<NavigationBar />
+			<Routes>
+				<Route exact path="/" element={<HomePage />} />
+				<Route exact path="/athletes" element={<Athletes />} />
+				<Route exact path="/teams" element={<Teams />} />
+				<Route exact path="/games" element={<Games />} />
+			</Routes>
+		</Router>
 	);
 };
 
