@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 
 import AddAthleteModal from "./AddAthleteModal";
 import DeleteAthleteModal from "./DeleteAthleteModal";
+import EditAthleteModal from "./EditAthleteModal";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -12,7 +13,6 @@ import Table from "react-bootstrap/Table";
 import { ArrowDownUp } from "react-bootstrap-icons";
 
 import axios from "axios";
-import EditAthleteModal from "./EditAthleteModal";
 
 const Athletes = () => {
 	const addButtonStyle = {
@@ -86,28 +86,10 @@ const Athletes = () => {
 	// the current athlete which the user clicked delete on
 	const [currDeleteAthlete, setCurrDeleteAthlete] = useState(null);
 
-	const handleDelete = (e) => {
-		// TODO
-		// should make a modal to confirm!
-		// do changes in database too
-		setShowDeleteAthlete(!showDeleteAthlete);
-
-		axios.delete(`http://localhost:65535/athlete/${e.currentTarget.id}`)
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-
-		setAthletes(athletes.filter(athlete => athlete.person_id != e.currentTarget.id));
-	}
 
 	const [showEditAthlete, setShowEditAthlete] = useState(false);
 	// the current athlete which the user clicked edit on
 	const [currEditAthlete, setCurrEditAthlete] = useState(null);
-
-
 
 
 	return (
@@ -186,7 +168,7 @@ const Athletes = () => {
 			<DeleteAthleteModal 
 				person_id={currDeleteAthlete} 
 				athletes={athletes}
-				handleDelete={handleDelete} 
+				setAthletes={setAthletes}
 				showDeleteAthlete={showDeleteAthlete} 
 				setShowDeleteAthlete={setShowDeleteAthlete} 
 			/>

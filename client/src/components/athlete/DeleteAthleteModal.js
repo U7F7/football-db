@@ -3,13 +3,31 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const DeleteAthleteModal = ({ person_id, athletes, handleDelete, showDeleteAthlete, setShowDeleteAthlete }) => {
+import axios from "axios";
+
+const DeleteAthleteModal = ({ person_id, athletes, setAthletes, showDeleteAthlete, setShowDeleteAthlete }) => {
 	let athlete;
 	for (let a of athletes) {
 		if (a.person_id == person_id) {
 			athlete = a;
 			break;
 		}
+	}
+	const deleteAthlete = () => {
+		// TODO
+		// should make a modal to confirm!
+		// do changes in database too
+		setShowDeleteAthlete(!showDeleteAthlete);
+
+		axios.delete(`http://localhost:65535/athlete/${person_id}`)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+
+		setAthletes(athletes.filter(athlete => athlete.person_id != person_id));
 	}
 
 	return (
@@ -19,7 +37,7 @@ const DeleteAthleteModal = ({ person_id, athletes, handleDelete, showDeleteAthle
 			</Modal.Header>
 			<Modal.Body>Are you sure you want to delete {athlete?.name}?</Modal.Body>
 			<Modal.Footer>
-				<Button id={person_id} variant="danger" onClick={handleDelete}>
+				<Button id={person_id} variant="danger" onClick={deleteAthlete}>
 					Delete
 				</Button>
 			</Modal.Footer>
