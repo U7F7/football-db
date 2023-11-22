@@ -105,7 +105,7 @@ CREATE TABLE Referee(
 
 CREATE TABLE Statistics(
 	stats_id int,
-	person_id int,
+	person_id int NOT NULL,
 	goals int,
 	shots_taken int,
 	passes_attempted int,
