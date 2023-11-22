@@ -4,7 +4,6 @@ const {
 	getTable,
 	getAllNamePositionTeam,
 	getTeams,
-	getMaxPersonID,
 	getPositions,
 	insertAthlete,
 	deleteAthlete
@@ -49,16 +48,6 @@ router.get("/teams", async (req, res) => {
 		result = await getTeams();
 	} catch (err) {
 		res.status(404).send("Not found"); 
-	}
-	res.status(200).json(queryToJson(result));	
-});
-
-router.get("/max-id/:person", async (req, res) => {
-	let result;
-	try {
-		result = await getMaxPersonID(req.params.person);
-	} catch (err) {
-		es.status(404).send("Not found"); 
 	}
 	res.status(200).json(queryToJson(result));	
 });

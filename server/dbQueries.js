@@ -82,17 +82,6 @@ const getTeams = () => {
 	});
 }
 
-const getMaxPersonID = (person) => {
-	return withOracleDB((connection) => {
-		return connection.execute(`
-			SELECT MAX(person_id) as max
-			FROM ${person}
-		`).catch((err) => {
-			throw err;
-		});
-	});
-};
-
 const getPositions = () => {
 	return withOracleDB((connection) => {
 		return connection.execute(`
@@ -176,7 +165,6 @@ module.exports = {
 	getTable,
 	getAllNamePositionTeam,
 	getTeams,
-	getMaxPersonID,
 	getPositions,
 	insertAthlete,
 	deleteAthlete

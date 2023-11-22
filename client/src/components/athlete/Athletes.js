@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from "react";
 
 import AddAthleteModal from "./AddAthleteModal";
+import DeleteAthleteModal from "./DeleteAthleteModal";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -40,12 +41,12 @@ const Athletes = () => {
 				console.error(err);
 			})
 	}, []);
+	
+	const [showAddAthlete, setShowAddAthlete] = useState(false);
 
 	const ASC = false;
 	const DESC = true;
-
 	const [sortDir, setSortDir] = useState({ name: ASC, position: ASC, team: ASC });
-	const [showAddAthlete, setShowAddAthlete] = useState(false);
 
 	const handleSort = (e) => {
 		if (e.currentTarget.id === "name-up") {
@@ -80,11 +81,15 @@ const Athletes = () => {
 		}
 	};
 
+	const [showDeleteAthlete, setShowDeleteAthlete] = useState(false);
+	// the current athlete which the user clicked delete on
+	const [currDeleteAthlete, setCurrDeleteAthlete] = useState(null);
+
 	const handleDelete = (e) => {
 		// TODO
 		// should make a modal to confirm!
 		// do changes in database too
-		// if not legal alert!!
+		setShowDeleteAthlete(!showDeleteAthlete);
 
 		axios.delete(`http://localhost:65535/athlete/${e.currentTarget.id}`)
 			.then((res) => {
@@ -152,7 +157,12 @@ const Athletes = () => {
 												<Button id={obj.person_id} variant="warning">Edit</Button>
 											</Col>
 											<Col>
-												<Button id={obj.person_id} variant="danger" onClick={handleDelete}>Delete</Button>
+												<Button id={obj.person_id} variant="danger" onClick={(e) => {
+													setShowDeleteAthlete(true);
+													setCurrDeleteAthlete(Number(e.currentTarget.id));
+												}}>Delete
+												</Button>
+
 											</Col>
 										</Row>	
 									</Container>
@@ -161,7 +171,14 @@ const Athletes = () => {
 						);
 					})}
 				</tbody>
-			</Table>
+			</Table>												
+			<DeleteAthleteModal 
+				athlete_id={currDeleteAthlete} 
+				athletes={athletes}
+				handleDelete={handleDelete} 
+				showDeleteAthlete={showDeleteAthlete} 
+				setShowDeleteAthlete={setShowDeleteAthlete} 
+			/>
 		</Container>
 	);
 };
