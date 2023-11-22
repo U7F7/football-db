@@ -14,9 +14,6 @@ const DeleteAthleteModal = ({ person_id, athletes, setAthletes, showDeleteAthlet
 		}
 	}
 	const deleteAthlete = () => {
-		// TODO
-		// should make a modal to confirm!
-		// do changes in database too
 		setShowDeleteAthlete(!showDeleteAthlete);
 
 		axios.delete(`http://localhost:65535/athlete/${person_id}`)
