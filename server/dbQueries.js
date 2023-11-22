@@ -104,11 +104,80 @@ const getPositions = () => {
 	});
 };
 
+const insertAthlete = (body) => {
+	const { 
+		person_id,
+		name,
+		birthdate,
+		height,
+		weight,
+		phone_number,
+		email,
+		address,
+		date_started,
+		jersey_num,
+		current_team,
+		salary
+	} = body;
+
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			INSERT INTO Athlete VALUES (
+				:person_id, 
+				:name, 
+				TO_DATE(:birthdate, 'YYYY-MM-DD'),
+				:height, 
+				:weight, 
+				:phone_number, 
+				:email, 
+				:address, 
+				TO_DATE(:date_started, 'YYYY-MM-DD'),
+				:jersey_num, 
+				:current_team, 
+				:salary
+			)`, [	
+				person_id,
+				name,
+				birthdate,
+				height,
+				weight,
+				phone_number,
+				email,
+				address,
+				date_started,
+				jersey_num,
+				current_team,
+				salary
+			],
+			{ autoCommit: true}
+		).catch((err) => {
+			throw err;
+		});
+	});
+};
+
+const deleteAthlete = (person_id) => {
+
+	return withOracleDB((connection) => {
+		return connection.execute(`
+				DELETE FROM Athlete
+				WHERE person_id = :person_id
+			`, 
+			[person_id],
+			{ autoCommit: true }
+		).catch((err) => {
+			throw err;
+		});
+	});
+};
+
 module.exports = {
 	testOracleConnection,
 	getTable,
 	getAllNamePositionTeam,
 	getTeams,
 	getMaxPersonID,
-	getPositions
+	getPositions,
+	insertAthlete,
+	deleteAthlete
 };

@@ -4,6 +4,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bodyParser = require('body-parser')
 const controller = require("./controller");
 
 const loadEnvFile = require("./utils/envUtil");
@@ -13,6 +14,9 @@ const PORT = envVariables.PORT || 65534; // Adjust the PORT if needed (e.g., if 
 // Middleware setup
 // CORS to allow front end to query backend
 app.use(cors());
+
+// parse incoming request bodies
+app.use(bodyParser.json());
 
 // mount the router
 app.use("/", controller);

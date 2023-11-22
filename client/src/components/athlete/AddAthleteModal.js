@@ -38,18 +38,18 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 	}, []);
 
 	const [athlete, setAthlete] = useState({
-		person_id:  0,
-		name: "",
-		birthdate: "",
-		height: 0,
-		weight: 0,
-		phone_number: "",
-		email: "",
-		address: "",
-		date_started: "",
-		jersey_num: 0,
-		current_team: "",
-		salary: 0
+		person_id:  null,
+		name: null,
+		birthdate: null,
+		height: null,
+		weight: null,
+		phone_number: null,
+		email: null,
+		address: null,
+		date_started: null,
+		jersey_num: null,
+		current_team: null,
+		salary: null
 	});
 
 	const handleFormChange = (e) => {
@@ -57,17 +57,26 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 		setAthlete(oldState => {
 			return {
 				...oldState,
-				[e.target.name]: e.target.value
+				[e.target.name]: (["height", "weight", "salary", "phone_number"].includes(e.target.name)) ? Number(e.target.value) : e.target.value
 			};
 		});
-	};
+	}
 
 	const addAthlete = () => {
-		// try to add to database
-		// add the athlete locally only to not reload whole table
-		// check for sql injection (in the api not here!)
 		const nextID = Math.max(...athletes.map((a) => a.person_id)) + 1;
-		setAthlete({...athlete, person_id: nextID});
+
+		// make sure post request gets nextid
+		const newAthlete = {...athlete, person_id: nextID};
+		setAthlete(newAthlete);
+
+		axios.post("http://localhost:65535/athlete", newAthlete)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				// TODO if input invalid notify user
+				console.error(err);
+			});
 
 		setAthletes([{ 
 			"person_id": athlete.person_id,
@@ -114,8 +123,8 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 					<Row>
 						<Col>
 							<Form.Group controlId="jersey">
-								<Form.Label>Jersey Number/Position</Form.Label>
-								<Form.Select aria-label="Default select example" name="jersey_num" onChange={handleFormChange}>
+								<Form.Label>Number/Position</Form.Label>
+								<Form.Select aria-label="jersey" name="jersey_num" onChange={handleFormChange}>
 									<option value="default">-</option>
 									<option value="1">1 (Goalkeeper)</option>
 									<option value="2">2 (Right Back)</option>
@@ -134,7 +143,7 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 						<Col>
 							<Form.Group controlId="team">
 								<Form.Label>Team</Form.Label>
-								<Form.Select aria-label="Default select example" name="current_team" onChange={handleFormChange}>
+								<Form.Select aria-label="team" name="current_team" onChange={handleFormChange}>
 									<option value="default">-</option>
 									{teams.map((t, i) => {
 										return (

@@ -85,8 +85,16 @@ const Athletes = () => {
 		// should make a modal to confirm!
 		// do changes in database too
 		// if not legal alert!!
+
+		axios.delete(`http://localhost:65535/athlete/${e.currentTarget.id}`)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+
 		setAthletes(athletes.filter(athlete => athlete.person_id != e.currentTarget.id));
-		console.log(athletes);
 	}
 
 	return (

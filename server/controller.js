@@ -5,8 +5,9 @@ const {
 	getAllNamePositionTeam,
 	getTeams,
 	getMaxPersonID,
-	getPositions
-
+	getPositions,
+	insertAthlete,
+	deleteAthlete
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -27,9 +28,9 @@ router.get("/table/:table", async (req, res) => {
 	try {
 		result = await getTable(req.params.table);
 	} catch (err) {
-		return res.status(404).send("Not found");
+		res.status(404).send("Not found");
 	}
-	return res.status(200).json(queryToJson(result));
+	res.status(200).json(queryToJson(result));
 });
 
 router.get("/name-position-team", async (req, res) => {
@@ -37,9 +38,9 @@ router.get("/name-position-team", async (req, res) => {
 	try {
 		result = await getAllNamePositionTeam();
 	} catch (err) {
-		return res.status(404).send("Not found");
+		res.status(404).send("Not found");
 	}
-	return res.status(200).json(queryToJson(result));
+	res.status(200).json(queryToJson(result));
 });
 
 router.get("/teams", async (req, res) => {
@@ -47,9 +48,9 @@ router.get("/teams", async (req, res) => {
 	try {
 		result = await getTeams();
 	} catch (err) {
-		return res.status(404).send("Not found"); 
+		res.status(404).send("Not found"); 
 	}
-	return res.status(200).json(queryToJson(result));	
+	res.status(200).json(queryToJson(result));	
 });
 
 router.get("/max-id/:person", async (req, res) => {
@@ -57,9 +58,9 @@ router.get("/max-id/:person", async (req, res) => {
 	try {
 		result = await getMaxPersonID(req.params.person);
 	} catch (err) {
-		return res.status(404).send("Not found"); 
+		es.status(404).send("Not found"); 
 	}
-	return res.status(200).json(queryToJson(result));	
+	res.status(200).json(queryToJson(result));	
 });
 
 router.get("/positions", async (req, res) => {
@@ -67,9 +68,28 @@ router.get("/positions", async (req, res) => {
 	try {
 		result = await getPositions();
 	} catch (err) {
-		return res.status(404).send("Not found"); 
+		res.status(404).send("Not found"); 
 	}
-	return res.status(200).json(queryToJson(result));	
+	res.status(200).json(queryToJson(result));	
+});
+
+router.post("/athlete", async (req, res) => {
+	let result;
+	try {
+		result = await insertAthlete(req.body);
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ success: false });
+	}
+});
+
+router.delete("/athlete/:person_id", async (req, res) => {
+	let result = await deleteAthlete(req.params.person_id);
+    if (result) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
 });
 
 
