@@ -3,6 +3,7 @@ import { React, useEffect, useState } from "react";
 import AddAthleteModal from "./AddAthleteModal";
 import DeleteAthleteModal from "./DeleteAthleteModal";
 import EditAthleteModal from "./EditAthleteModal";
+import ViewAthleteModal from "./ViewAthleteModal";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -91,6 +92,9 @@ const Athletes = () => {
 	// the current athlete which the user clicked edit on
 	const [currEditAthlete, setCurrEditAthlete] = useState(null);
 
+	const [showViewAthlete, setShowViewAthlete] = useState(false);
+	// the current athlete which the user clicked edit on
+	const [currViewAthlete, setCurrViewAthlete] = useState(null);
 
 	return (
 		<Container style={{ marginTop: "20px" }}>
@@ -130,7 +134,7 @@ const Athletes = () => {
 								<ArrowDownUp id={sortDir.team === ASC ? "team-up" : "team-down"} onClick={handleSort} />
 							</div>
 						</th>
-						<th style={{ width: "15%" }}>Action</th>
+						<th style={{ width: "25%" }}>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -144,9 +148,17 @@ const Athletes = () => {
 									<Container style={{ display: "flex", justifyContent: "center" }}>
 										<Row>
 											<Col>
+												<Button id={obj.person_id} variant="success" onClick={(e) => {
+													setShowViewAthlete(true);
+													setCurrViewAthlete(Number(e.currentTarget.id));
+												}}>
+													View
+												</Button>
+											</Col>
+											<Col>
 												<Button id={obj.person_id} variant="warning" onClick={(e) => {
 													setShowEditAthlete(true);
-													setCurrEditAthlete(Number(e.target.id));
+													setCurrEditAthlete(Number(e.currentTarget.id));
 												}}>Edit</Button>
 											</Col>
 											<Col>
@@ -178,6 +190,13 @@ const Athletes = () => {
 				setAthletes={setAthletes}
 				showEditAthlete={showEditAthlete}
 				setShowEditAthlete={setShowEditAthlete}
+			/>
+			<ViewAthleteModal 
+				person_id={currViewAthlete}
+				athletes={athletes}
+				setAthletes={setAthletes}
+				showViewAthlete={showViewAthlete}
+				setShowViewAthlete={setShowViewAthlete}
 			/>
 		</Container>
 	);

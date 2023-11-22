@@ -13,6 +13,7 @@ const DeleteAthleteModal = ({ person_id, athletes, setAthletes, showDeleteAthlet
 			break;
 		}
 	}
+
 	const deleteAthlete = () => {
 		setShowDeleteAthlete(!showDeleteAthlete);
 
@@ -30,7 +31,7 @@ const DeleteAthleteModal = ({ person_id, athletes, setAthletes, showDeleteAthlet
 	return (
 		<Modal centered show={showDeleteAthlete} onHide={() => setShowDeleteAthlete(false)}>
 			<Modal.Header closeButton>
-				<Modal.Title>Delete Athlete</Modal.Title>
+				<Modal.Title>Delete {athlete ? athlete.name : "Athlete"}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>Are you sure you want to delete {athlete?.name}?</Modal.Body>
 			<Modal.Footer>

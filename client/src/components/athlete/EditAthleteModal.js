@@ -91,7 +91,7 @@ const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, s
 	return (
 		<Modal centered size="lg" show={showEditAthlete} onHide={() => setShowEditAthlete(false)}>
 			<Modal.Header closeButton>
-				<Modal.Title>Edit Athlete</Modal.Title>
+				<Modal.Title>Edit {athlete ? athlete.name : "Athlete"}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
