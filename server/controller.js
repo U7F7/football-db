@@ -8,7 +8,8 @@ const {
 	insertAthlete,
 	deleteAthlete,
 	getAthlete,
-	updateAthlete
+	updateAthlete,
+	getPlayerAwards
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -98,6 +99,15 @@ router.put("/athlete", async (req, res) => {
 	} else {
 		res.status(500).json({ success: false });
 	}
+});
+
+router.get("/awards/athlete/:person_id", async (req, res) => {
+	let result = await getPlayerAwards(req.params.person_id);
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}	
 });
 
 

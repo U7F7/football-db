@@ -211,6 +211,18 @@ const updateAthlete = (body) => {
 	});
 };
 
+const getPlayerAwards = (person_id) => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT Athlete.person_id, Awards.year, Awards.award_name
+			FROM Athlete, WinsAward, Awards
+			WHERE Athlete.person_id=WinsAward.person_id AND WinsAward.award_id=Awards.award_id AND Athlete.person_id=${person_id}
+		`).catch((err) => {
+			throw err;
+		});
+	});	
+};
+
 module.exports = {
 	testOracleConnection,
 	getTable,
@@ -220,5 +232,6 @@ module.exports = {
 	insertAthlete,
 	deleteAthlete,
 	getAthlete,
-	updateAthlete
+	updateAthlete,
+	getPlayerAwards
 };

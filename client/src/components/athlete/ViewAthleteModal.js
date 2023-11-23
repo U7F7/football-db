@@ -48,6 +48,23 @@ const ViewAthleteModal = ({ person_id, athletes, setAthletes, showViewAthlete, s
 			})
 	}, [person_id, showViewAthlete]);
 
+	const [awards, setAwards] = useState("");
+
+	useEffect(() => {
+		axios.get(`http://localhost:65535/awards/athlete/${person_id}`)
+			.then((res) => {
+				const arrAwards = res.data.map((d) => {
+					return `${d.year} ${d.award_name}`
+				});
+				const strAwards = arrAwards.join(", ");
+				setAwards(strAwards);
+			})
+			.catch((err) => {
+				console.error(err);
+			})
+	}, [person_id, showViewAthlete]);
+
+
 	return (
 		<Modal centered size="lg" show={showViewAthlete} onHide={() => setShowViewAthlete(false)}>
 			<Modal.Header closeButton>
@@ -63,6 +80,7 @@ const ViewAthleteModal = ({ person_id, athletes, setAthletes, showViewAthlete, s
 							<p style={{ marginBottom: 0 }}>Years of Experience: {(athlete && athlete.date_started) ? new Date(new Date() - new Date(athlete.date_started.split("T")[0])).getFullYear() - 1970 : 0}</p>
 							<p style={{ marginBottom: 0 }}>Jersey/Position: {athlete?.jersey_num} ({positions[athlete?.jersey_num]})</p>
 							<p style={{ marginBottom: 0 }}>Team: {athlete?.current_team}</p>
+							<p style={{ marginBottom: 0 }}>Awards: {awards === "" ? "N/A" : awards}</p>
 						</Col>
 						<Col>
 							<p style={{ marginBottom: 0 }}>Birthdate: {athlete?.birthdate?.split("T")[0]}</p>
