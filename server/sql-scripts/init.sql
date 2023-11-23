@@ -410,6 +410,7 @@ INSERT ALL
 	INTO Awards VALUES (3, 2022, 'Offensive Player of the Year')
 	INTO Awards VALUES (4, 2022, 'Team of the Year')
 	INTO Awards VALUES (5, 2023, 'Team of the Year')
+    INTO Awards VALUES (6, 2021, 'Offensive Player of the Year')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -910,6 +911,7 @@ INSERT ALL
     INTO WinsAward VALUES (3, 25, NULL)
     INTO WinsAward VALUES (4, NULL, 'Coquitlam Sharks')
     INTO WinsAward VALUES (5, NULL, 'Surrey Titans')
+    INTO WinsAward VALUES (6, 2, NULL)
 SELECT * FROM dual;
 
 INSERT ALL
