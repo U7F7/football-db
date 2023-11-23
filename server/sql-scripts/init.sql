@@ -905,11 +905,11 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO WinsAward VALUES (1, 2, 'Vancouver Vipers')
-	INTO WinsAward VALUES (2, 32, 'Burnaby Warriors')
-	INTO WinsAward VALUES (3, 25, 'Burnaby Warriors')
-	INTO WinsAward VALUES (4, 53, 'Coquitlam Sharks')
-	INTO WinsAward VALUES (5, 37, 'Surrey Titans')
+    INTO WinsAward VALUES (1, 2, NULL)
+    INTO WinsAward VALUES (2, 32, NULL)
+    INTO WinsAward VALUES (3, 25, NULL)
+    INTO WinsAward VALUES (4, NULL, 'Coquitlam Sharks')
+    INTO WinsAward VALUES (5, NULL, 'Surrey Titans')
 SELECT * FROM dual;
 
 INSERT ALL
