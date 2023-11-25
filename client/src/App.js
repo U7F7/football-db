@@ -6,6 +6,7 @@ import HomePage from "./components/homepage/HomePage";
 import Athletes from "./components/athlete/Athletes";
 import Teams from "./components/teams/Teams";
 import Games from "./components/games/Games";
+import Advanced from "./components/advanced/Advanced";
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
 				<Route exact path="/athletes" element={<Athletes />} />
 				<Route exact path="/teams" element={<Teams />} />
 				<Route exact path="/games" element={<Games />} />
+				<Route exact path="/advanced" element={<Advanced />} />
 			</Routes>
 		</Router>
 	);

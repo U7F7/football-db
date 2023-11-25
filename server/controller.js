@@ -1,7 +1,6 @@
 const express = require("express");
 const { 
 	testOracleConnection,
-	getTable,
 	getAllNamePositionTeam,
 	getTeams,
 	getPositions,
@@ -9,7 +8,10 @@ const {
 	deleteAthlete,
 	getAthlete,
 	updateAthlete,
-	getPlayerAwards
+	getPlayerAwards,
+	getTables,
+	getAttributes,
+	getTable
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -23,16 +25,6 @@ router.get("/check-db-connection", async (req, res) => {
     } else {
         res.send("Unable to connect!");
     }
-});
-
-router.get("/table/:table", async (req, res) => {	
-	let result = await getTable(req.params.table);
-	if (result) {
-		res.status(200).json(queryToJson(result));
-	} else {
-		res.status(404).send("Not found");
-	}
-	
 });
 
 router.get("/name-position-team", async (req, res) => {
@@ -110,6 +102,33 @@ router.get("/awards/athlete/:person_id", async (req, res) => {
 	}	
 });
 
+
+router.get("/tables", async (req, res) => {	
+	let result = await getTables();
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.get("/table/:table_name/attributes", async (req, res) => {	
+	let result = await getAttributes(req.params.table_name);
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.post("/table", async (req, res) => {	
+	let result = await getTable(req.body);
+	if (result) {
+		res.status(200).json(queryToJson(result));	
+	} else {
+		res.status(404).send("Not found");
+	}
+});
 
 
 

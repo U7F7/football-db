@@ -50,15 +50,6 @@ const testOracleConnection = async () => {
 	});
 }
 
-const getTable = (table) => {
-	return withOracleDB((connection) => {
-		return connection.execute(`SELECT * FROM ${table}`)
-			.catch((err) => {
-				throw err;
-			});
-	});
-}
-
 const getAllNamePositionTeam = () => {
 	return withOracleDB((connection) => {
 		return connection.execute(`
@@ -223,9 +214,53 @@ const getPlayerAwards = (person_id) => {
 	});	
 };
 
+const getTables = () => {
+	return withOracleDB((connection) => {
+		// not allowing user to see certain "private" tables, but otherwise is dynamic
+		// https://www.sqltutorial.org/sql-list-all-tables/
+		return connection.execute(`
+			SELECT table_name
+			FROM user_tables
+			WHERE table_name <> 'PARTICIPATESIN' AND
+				table_name <> 'LOCATEDIN' AND
+				table_name <> 'HASSPONSOR' AND
+				table_name <> 'GIVENBY' AND
+				table_name <> 'WINSAWARD' AND
+				table_name <> 'PLAYSFOR' AND
+				table_name <> 'COACHES' AND
+				table_name <> 'REFEREES'
+		`).catch((err) => {
+			throw err;
+		});
+	});	
+};
+
+const getAttributes = (table_name) => {
+	// https://stackoverflow.com/a/32240681
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT column_name
+			FROM USER_TAB_COLS
+			WHERE table_name=UPPER('${table_name}')
+		`).catch((err) => {
+			throw err;
+		});
+	});	
+} 
+
+const getTable = (body) => {
+	const { table, attributes } = body;
+
+	return withOracleDB((connection) => {
+		return connection.execute(`SELECT ${attributes.toString()} FROM ${table}`)
+			.catch((err) => {
+				throw err;
+			});
+	});
+}
+
 module.exports = {
 	testOracleConnection,
-	getTable,
 	getAllNamePositionTeam,
 	getTeams,
 	getPositions,
@@ -233,5 +268,8 @@ module.exports = {
 	deleteAthlete,
 	getAthlete,
 	updateAthlete,
-	getPlayerAwards
+	getPlayerAwards,
+	getTables,
+	getAttributes,
+	getTable
 };
