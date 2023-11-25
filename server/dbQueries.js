@@ -259,6 +259,74 @@ const getTable = (body) => {
 	});
 }
 
+const getStandings = () => {
+	// TODO: update to do the correct one
+
+	const queries = [
+		"DROP VIEW AvgGoalsPerGame",
+		"DROP VIEW MaxAvgGoalsPerGame",
+		`
+		CREATE VIEW AvgGoalsPerGame AS
+			(SELECT home as team, total_goals
+			FROM HomeGoals)
+			UNION ALL
+			(SELECT away as team, total_goals
+			FROM AwayGoals)`,
+		`CREATE VIEW MaxAvgGoalsPerGame AS
+		SELECT team, avg(total_goals) as AvgGoalsPerGame
+		FROM AvgGoalsPerGame a
+		GROUP BY team
+		HAVING avg(total_goals) >= all  (SELECT avg(a.total_goals)
+										FROM AvgGoalsPerGame a
+										GROUP BY a.team)`
+	]
+
+	return withOracleDB(async (connection) => {
+
+		for (let query of queries) {
+			await connection.execute(query);
+		}
+
+		let result = await connection.execute("SELECT * FROM MAXAVGGOALSPERGAME");
+		return result;
+
+	});
+};
+
+
+const getMaxAvgGoalsPerGame = () => {
+
+	const queries = [
+		"DROP VIEW AvgGoalsPerGame",
+		"DROP VIEW MaxAvgGoalsPerGame",
+		`
+		CREATE VIEW AvgGoalsPerGame AS
+			(SELECT home as team, total_goals
+			FROM HomeGoals)
+			UNION ALL
+			(SELECT away as team, total_goals
+			FROM AwayGoals)`,
+		`CREATE VIEW MaxAvgGoalsPerGame AS
+		SELECT team, avg(total_goals) as AvgGoalsPerGame
+		FROM AvgGoalsPerGame a
+		GROUP BY team
+		HAVING avg(total_goals) >= all  (SELECT avg(a.total_goals)
+										FROM AvgGoalsPerGame a
+										GROUP BY a.team)`
+	]
+
+	return withOracleDB(async (connection) => {
+
+		for (let query of queries) {
+			await connection.execute(query);
+		}
+
+		let result = await connection.execute("SELECT * FROM MAXAVGGOALSPERGAME");
+		return result;
+
+	});
+};
+
 module.exports = {
 	testOracleConnection,
 	getAllNamePositionTeam,
@@ -271,5 +339,7 @@ module.exports = {
 	getPlayerAwards,
 	getTables,
 	getAttributes,
-	getTable
+	getTable,
+	getStandings,
+	getMaxAvgGoalsPerGame
 };

@@ -11,7 +11,9 @@ const {
 	getPlayerAwards,
 	getTables,
 	getAttributes,
-	getTable
+	getTable,
+	getStandings,
+	getMaxAvgGoalsPerGame
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -130,6 +132,25 @@ router.post("/table", async (req, res) => {
 	}
 });
 
+router.get("/standings", async (req, res) => {	
+	let result = await getStandings();
+	if (result) {
+		console.log(result);
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.get("/max-avg-goals-per-game", async (req, res) => {	
+	let result = await getMaxAvgGoalsPerGame();
+	if (result) {
+		console.log(result);
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
 
 
 module.exports = router;
