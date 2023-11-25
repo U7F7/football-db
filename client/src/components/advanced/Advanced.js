@@ -53,7 +53,6 @@ const Advanced = () => {
 		} else {
 			setSelectedAttributes([...selectedAttributes, e.target.name]);
 		}
-		console.log(selectedAttributes);
 	};
 
 	const [data, setData] = useState([]);
@@ -65,7 +64,6 @@ const Advanced = () => {
 		})
 		.then((res) => {
 			setData(res.data);
-			console.log(res.data);
 		})
 		.catch((err) => {
 			console.error(err);
