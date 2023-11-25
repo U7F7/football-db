@@ -1,53 +1,23 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
+import axios from "axios";
+
 const Standings = () => {
-	const dummyData = [
-		{
-			team: "Vancouver Vipers",
-			gamesPlayed: 15,
-			wins: 7,
-			draws: 0,
-			losses: 8
-		},
-		{
-			team: "Richmond Thunder",
-			gamesPlayed: 15,
-			wins: 15,
-			draws: 0,
-			losses: 0
-		},
-		{
-			team: "Burnaby Warriors",
-			gamesPlayed: 15,
-			wins: 2,
-			draws: 2,
-			losses: 11
-		},
-		{
-			team: "Surrey Titans",
-			gamesPlayed: 15,
-			wins: 8,
-			draws: 2,
-			losses: 5
-		},
-		{
-			team: "Coquitlam Sharks",
-			gamesPlayed: 15,
-			wins: 4,
-			draws: 1,
-			losses: 10
-		},
-				{
-			team: "Langley Bears",
-			gamesPlayed: 15,
-			wins: 5,
-			draws: 1,
-			losses: 9
-		}	
-	];
+
+	const [news, setNews] = useState([]);
+
+	useEffect(() => {
+		axios.get("http://localhost:65535/standings")
+			.then((res) => {
+				setNews(res.data);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
 
 	return (
 		<Card>
@@ -64,14 +34,14 @@ const Standings = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{dummyData.map(row => {
+						{news.map(row => {
 							return (
 								<tr>
-									<td>{row.team}</td>
-									<td>{row.gamesPlayed}</td>
-									<td>{row.wins}</td>
-									<td>{row.draws}</td>
-									<td>{row.losses}</td>
+									<td>{row.teamname}</td>
+									<td>{row.gamesplayed}</td>
+									<td>{row.wincount}</td>
+									<td>{row.losscount}</td>
+									<td>{row.drawcount}</td>
 								</tr>	
 							);
 						})}
