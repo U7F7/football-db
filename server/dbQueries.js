@@ -265,15 +265,15 @@ const getStandings = () => {
 		`CREATE OR REPLACE VIEW GamesPerTeam(team_name, games_played) AS
 			SELECT t.team_name, COUNT(*) as games_played
 			FROM Game g, Team t, ParticipatesIn p
-			WHERE g.game_ID = p.game_ID AND (t.team_name = p.team_1 OR t.team_name = p.team_2)
+			WHERE g.game_id = p.game_id AND (t.team_name = p.team_1 OR t.team_name = p.team_2)
 			GROUP BY t.team_name`,
 		
 		`CREATE OR REPLACE VIEW GoalsPerAthlete(stats_id, person_id, game_id, total_goals) AS
-			SELECT s.STATS_ID, s.PERSON_ID, s.GAME_ID, SUM(s.goals) AS total_goals
+			SELECT s.stats_id, s.person_id, s.game_id, SUM(s.goals) AS total_goals
 			FROM Athlete a, Statistics s
-			WHERE s.PERSON_ID = a.PERSON_ID
-			GROUP BY s.stats_ID, s.PERSON_ID, s.GAME_ID
-			ORDER BY s.STATS_ID`,
+			WHERE s.person_id = a.person_id
+			GROUP BY s.stats_id, s.person_id, s.game_id
+			ORDER BY s.stats_id`,
 		
 		`CREATE OR REPLACE VIEW GoalsPerGame(stats_id, person_id, game_id, total_goals) AS
 			SELECT gpa.stats_id, gpa.person_id, gpa.game_id, gpa.total_goals
@@ -283,7 +283,7 @@ const getStandings = () => {
 		`CREATE OR REPLACE VIEW GoalsPerTeam(stats_id, game_id, CURRENT_TEAM, home, away, total_goals) AS
 			SELECT gpg.stats_id, gpg.game_id, a.CURRENT_TEAM, g.home, g.away, gpg.total_goals
 			FROM GoalsPerGame gpg, athlete a, Game g
-			WHERE gpg.person_id = a.person_id AND gpg.game_id = g.GAME_ID`,
+			WHERE gpg.person_id = a.person_id AND gpg.game_id = g.game_id`,
 		
 		`CREATE OR REPLACE VIEW HomeGoals(game_id, home, total_goals) AS
 			SELECT gpt.game_id, gpt.home, SUM(gpt.total_goals) as total_goals
@@ -400,8 +400,19 @@ const getStandings = () => {
 
 
 const getMaxAvgGoalsPerGame = () => {
-
 	const queries = [
+		`CREATE OR REPLACE VIEW HomeGoals(game_id, home, total_goals) AS
+			SELECT gpt.game_id, gpt.home, SUM(gpt.total_goals) as total_goals
+			FROM GoalsPerTeam gpt
+			WHERE gpt.CURRENT_TEAM = gpt.home
+			GROUP BY gpt.game_id, gpt.home`,
+	
+		`CREATE OR REPLACE VIEW AwayGoals(game_id, away, total_goals) AS
+			SELECT gpt.game_id, gpt.away, SUM(gpt.total_goals) as total_goals
+			FROM GoalsPerTeam gpt
+			WHERE gpt.CURRENT_TEAM = gpt.away
+			GROUP BY gpt.game_id, gpt.away`,
+
 		`CREATE OR REPLACE VIEW AvgGoalsPerGame AS
 			(SELECT home as team, total_goals
 			FROM HomeGoals)
@@ -419,14 +430,14 @@ const getMaxAvgGoalsPerGame = () => {
 	];
 
 	return withOracleDB(async (connection) => {
-
-		for (let query of queries) {
-			await connection.execute(query);
+		try {
+			for (let query of queries) {
+				await connection.execute(query);
+			}
+			return await connection.execute("SELECT * FROM MaxAvgGoalsPerGame");
+		} catch (err) {
+			throw err;
 		}
-
-		let result = await connection.execute("SELECT * FROM MAXAVGGOALSPERGAME");
-		return result;
-
 	});
 };
 
