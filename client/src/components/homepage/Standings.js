@@ -36,9 +36,9 @@ const Standings = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{standings.map(row => {
+							{standings.map((row, i) => {
 								return (
-									<tr>
+									<tr key={`std-row-${i}`}>
 										<td>{row.teamname}</td>
 										<td>{row.gamesplayed}</td>
 										<td>{row.wincount}</td>

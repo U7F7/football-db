@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const RecentGame = ({ date, home, homeScore, away, awayScore }) => {
+const RecentGame = ({ game_date, home, home_goals, away, away_goals }) => {
 	const teamNameStyle = { 
 		display: "flex", 
 		justifyContent: "left", 
@@ -21,14 +21,14 @@ const RecentGame = ({ date, home, homeScore, away, awayScore }) => {
 	return (
 		<Card>
 			<Card.Body>
-				<Card.Title>{date}</Card.Title>
+				<Card.Title>{game_date.split("T")[0]}</Card.Title>
 				<Container>
 					<Row>
 						<Col xs="auto" style={teamNameStyle}>
 							<p style={{ marginBottom: 0 }}>{home}</p>
 						</Col>
 						<Col style={teamScoreStyle}>
-							<p style={{ marginBottom: 0 }}>{homeScore}</p>
+							<p style={{ marginBottom: 0 }}>{home_goals}</p>
 						</Col>
 					</Row>
 					<Row>
@@ -36,7 +36,7 @@ const RecentGame = ({ date, home, homeScore, away, awayScore }) => {
 							<p style={{ marginBottom: 0 }}>{away}</p>
 						</Col>
 						<Col style={teamScoreStyle}>
-							<p style={{ marginBottom: 0 }}>{awayScore}</p>
+							<p style={{ marginBottom: 0 }}>{away_goals}</p>
 						</Col>
 					</Row>
 				</Container>

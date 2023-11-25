@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 
 import RecentGame from "./RecentGame";
 
@@ -7,53 +7,37 @@ import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import axios from "axios";
 
 const RecentGames = () => {
-	const dummyData = [
-		{
-			date: "2023-10-20",
-			home: "Vancouver Thunder",
-			homeScore: 3,
-			away: "Vancouver Sharks",
-			awayScore: 1
-		},
-		{
-			date: "2023-10-20",
-			home: "Vancouver Thunder",
-			homeScore: 3,
-			away: "Vancouver Sharks",
-			awayScore: 1
-		},
-		{
-			date: "2023-10-20",
-			home: "Vancouver Thunder",
-			homeScore: 3,
-			away: "Vancouver Sharks",
-			awayScore: 1
-		},
-		{
-			date: "2023-10-20",
-			home: "Vancouver Thunder",
-			homeScore: 3,
-			away: "Vancouver Sharks",
-			awayScore: 1
-		},
-	];
+	
+	const [games, setGames] = useState([]);
+
+	useEffect(() => {
+		axios.get("http://localhost:65535/four-recent-games")
+			.then((res) => {
+				setGames(res.data);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+
+	});
 
 	return (
 		<Card>
 			<Card.Header as="h5">Recent Games</Card.Header>
 			<Card.Body style={{ paddingTop: 0 }}>
 				<Container>
-					{dummyData.map((obj, i) => {
-						if (i >= dummyData.length / 2) return null;
+					{games.map((obj, i) => {
+						if (i >= games.length / 2) return null;
 						return (
-							<Row style={{ marginTop: "20px" }}>
+							<Row key={`games-${i}`}style={{ marginTop: "20px" }}>
 								<Col>
-									{2 * i < dummyData.length ? <RecentGame {...dummyData[2 * i]}/> : null}
+									{2 * i < games.length ? <RecentGame {...games[2 * i]}/> : null}
 								</Col>
 								<Col>
-									{2 * i + 1 < dummyData.length ? <RecentGame {...dummyData[2 * i + 1]}/> : null}
+									{2 * i + 1 < games.length ? <RecentGame {...games[2 * i + 1]}/> : null}
 								</Col>
 							</Row>
 						);

@@ -384,17 +384,17 @@ const getStandings = () => {
 			FROM team t, GamesPerTeam g, CountWinsAll w, CountLossesAll l, CountDrawsAll d
 			WHERE t.TEAM_NAME = g.TEAM_NAME AND t.TEAM_NAME = w.TEAM_NAME AND
 				t.TEAM_NAME = l.TEAM_NAME AND t.TEAM_NAME = d.TEAM_NAME`
-	]
+	];
 
 	return withOracleDB(async (connection) => {
-
-		for (let query of queries) {
-			await connection.execute(query);
-		}
-
-		let result = await connection.execute("SELECT * FROM STANDINGS ORDER BY winCount DESC");
-		return result;
-
+		try {
+			for (let query of queries) {
+				await connection.execute(query);
+			}
+			return await connection.execute("SELECT * FROM STANDINGS ORDER BY winCount DESC");
+		} catch (err) {
+			throw err;
+		} 
 	});
 };
 
@@ -441,6 +441,61 @@ const getMaxAvgGoalsPerGame = () => {
 	});
 };
 
+const getFourMostRecentGames = () => {
+	const query = `
+		SELECT game_date, home, home_goals, away, away_goals
+		FROM ( -- home TEAM NAME AND home TEAM GOALS
+			SELECT hg.game_id, home, "SUM(GOALS)" AS home_goals
+			FROM (
+				SELECT SUM(GOALS), st.game_id -- all goals in all matches
+				FROM ( -- person_id for home team.
+					SELECT person_id, game_id
+					FROM ( SELECT home, game_id
+							FROM game
+							ORDER BY game_date DESC
+							FETCH FIRST 4 ROWS ONLY ) g, PlaysFor pf
+					WHERE g.home = pf.team_name ) pn , Statistics st
+				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
+				GROUP BY st.game_id ) hg, (
+						SELECT game_id, home -- game id
+							FROM game
+							ORDER BY game_date DESC
+							FETCH FIRST 4 ROWS ONLY ) hgid
+			WHERE hg.game_id = hgid.game_id) hid, ( -- away TEAM NAME AND away TEAM GOALS
+			SELECT hg.game_id, away, "SUM(GOALS)" AS away_goals
+			FROM (
+				SELECT SUM(GOALS), st.game_id -- all goals in all matches
+				FROM ( -- person_id for away team.
+					SELECT person_id, game_id
+					FROM (
+						SELECT away, game_id
+						FROM game
+						ORDER BY game_date DESC
+						FETCH FIRST 4 ROWS ONLY ) g, PlaysFor pf
+					WHERE g.away = pf.team_name ) pn , Statistics st
+				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
+				GROUP BY st.game_id ) hg, (
+						SELECT game_id, away -- game id
+							FROM game
+							ORDER BY game_date DESC
+							FETCH FIRST 4 ROWS ONLY ) hgid
+			WHERE hg.game_id = hgid.game_id) aid ,
+			( -- game date
+			SELECT game_date, game_id
+			FROM game
+			ORDER BY game_date DESC
+			FETCH FIRST 4 ROWS ONLY) did
+		WHERE hid.game_id = aid.game_id AND did.game_id = hid.game_id
+	`;
+
+	return withOracleDB((connection) => {
+		return connection.execute(query)
+			.catch((err) => {
+				throw err;
+			});
+	});
+}
+
 module.exports = {
 	testOracleConnection,
 	getAllNamePositionTeam,
@@ -455,5 +510,6 @@ module.exports = {
 	getAttributes,
 	getTable,
 	getStandings,
-	getMaxAvgGoalsPerGame
+	getMaxAvgGoalsPerGame,
+	getFourMostRecentGames
 };

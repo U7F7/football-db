@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 
 import Standings from "./Standings";
 import RecentGames from "./RecentGames";
@@ -31,22 +32,25 @@ const HomePage = () => {
 					<Card>
 						<Card.Header as="h5">Current News</Card.Header>
 						{maxGoals.length !== 0 ?
-						<Card.Body>
-							<Card.Title>Championship Contenders</Card.Title>
-							<Card.Text>
-								Here are the contenders for this season! These team(s) feature their average goals scored per game as the maximum over all teams' average goals per game across the whole league.
-							</Card.Text>
-							<ul>
-								{maxGoals.map((n) => {
-									return (
-										<li>{n.team}: {n.avggoalspergame} average goals per game</li>
-									);
-								})}
-							</ul>
-						</Card.Body> :
-						<div style={{ padding: "50px" }}>
-							<Spinner animation="border"/>
-						</div>}
+							<Card.Body>
+								<Card.Title>Championship Contenders</Card.Title>
+								<Card.Text>
+								Here is the contender for the season! 
+								</Card.Text>
+								<Alert variant={"success"}>
+										{maxGoals.map((n, i) => {
+											return (
+												<div>{n.team}: {n.avggoalspergame} average goals per game</div>
+											);
+										})}
+								</Alert>
+								<Card.Text>
+								This team features an average goals scored per game as the maximum over all the teams' average goals per game across the whole league!
+								</Card.Text>
+							</Card.Body> :
+							<div style={{ padding: "50px" }}>
+								<Spinner animation="border"/>
+							</div>}
 					</Card>
 				</Col>
 			</Row>

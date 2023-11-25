@@ -13,7 +13,8 @@ const {
 	getAttributes,
 	getTable,
 	getStandings,
-	getMaxAvgGoalsPerGame
+	getMaxAvgGoalsPerGame,
+	getFourMostRecentGames
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -150,5 +151,14 @@ router.get("/max-avg-goals-per-game", async (req, res) => {
 	}
 });
 
+router.get("/four-recent-games", async (req, res) => {	
+	let result = await getFourMostRecentGames();
+	console.log(result);
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
 
 module.exports = router;
