@@ -8,6 +8,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import { hasErrors } from "../../utils/helpers";
+
 const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, setShowEditAthlete }) => {
 	const [positions, setPositions] = useState({});
 
@@ -59,34 +61,42 @@ const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, s
 		});
 	}
 
-	const editAthlete = () => {
-		axios.put("http://localhost:65535/athlete", {
-				...athlete, 
-				birthdate: athlete.birthdate.split("T")[0], 
-				date_started: athlete.date_started.split("T")[0]
-			})
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.error(err);
+	const editAthlete = async () => {
+		const editedAthlete = {
+			...athlete, 
+			birthdate: athlete.birthdate.split("T")[0], 
+			date_started: athlete.date_started.split("T")[0]
+		};
+
+		const errors = await hasErrors(editedAthlete);
+
+		if (errors.length === 0) {
+			axios.put("http://localhost:65535/athlete", editedAthlete)
+				.then((res) => {
+					console.log(res);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+	
+			const updatedAthletes = athletes.map((obj) => {
+				if (obj.person_id == person_id) {
+					return {
+						"person_id": athlete.person_id,
+						"name": athlete.name, 
+						"position": positions[athlete.jersey_num], 
+						"team": athlete.current_team 
+					};
+				}
+				return obj;
 			});
-
-		const updatedAthletes = athletes.map((obj) => {
-			if (obj.person_id == person_id) {
-				return {
-					"person_id": athlete.person_id,
-					"name": athlete.name, 
-					"position": positions[athlete.jersey_num], 
-					"team": athlete.current_team 
-				};
-			}
-			return obj;
-		});
-
-		setAthletes(updatedAthletes);
-		setShowEditAthlete(false);
-	}
+	
+			setAthletes(updatedAthletes);
+			setShowEditAthlete(false);
+		} else {
+			alert(`${errors.join("\n")}`);
+		}
+	} 
 
 	return (
 		<Modal centered size="lg" show={showEditAthlete} onHide={() => setShowEditAthlete(false)}>

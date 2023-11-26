@@ -8,6 +8,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import { hasErrors } from "../../utils/helpers";
+
 const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthlete }) => {
 	const [positions, setPositions] = useState({});
 
@@ -62,33 +64,53 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 		});
 	}
 
-	const addAthlete = () => {
+	const addAthlete = async () => {
 		const nextID = Math.max(...athletes.map((a) => a.person_id)) + 1;
 
 		// make sure post request gets nextid
 		const newAthlete = {...athlete, person_id: nextID};
 		setAthlete(newAthlete);
 
-		axios.post("http://localhost:65535/athlete", newAthlete)
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				// TODO if input invalid notify user
-				console.error(err);
-			});
+		// data validation
+		const errors = await hasErrors(newAthlete);
 
-		setAthletes([{ 
-			"person_id": athlete.person_id,
-			"name": athlete.name, 
-			"position": positions[athlete.jersey_num], 
-			"team": athlete.current_team 
-		}, ...athletes]);
-		setShowAddAthlete(false);
+		if (errors.length === 0 
+			&& (athlete.jersey_num !== null && athlete.jersey_num !== "default") 
+			&& (athlete.current_team !== null && athlete.current_team !== "default")) {
+			axios.post("http://localhost:65535/athlete", newAthlete)
+				.then((res) => {
+					console.log(res);
+				})
+				.catch((err) => {
+					// TODO if input invalid notify user
+					console.error(err);
+				});
+	
+			setAthletes([{ 
+				"person_id": athlete.person_id,
+				"name": athlete.name, 
+				"position": positions[athlete.jersey_num], 
+				"team": athlete.current_team 
+			}, ...athletes]);
+			setShowAddAthlete(false);
+		} else {
+			console.log(athlete);
+			if (athlete.jersey_num === null || athlete.jersey_num === "default") {
+				errors.push("Select a Number/Position");
+			}
+			console.log(athlete);
+			if (athlete.current_team === null || athlete.current_team === "default") {
+				errors.push("Select a Team");
+			}
+			alert(`${errors.join("\n")}`);
+		}
 	}
 
 	return (
-		<Modal centered size="lg" show={showAddAthlete} onHide={() => setShowAddAthlete(false)}>
+		<Modal centered size="lg" show={showAddAthlete} onHide={() => {
+			setShowAddAthlete(false);
+			setAthlete({...athlete, current_team: null, jersey_num: null}); // to reset after user closes modal
+		}}>
 			<Modal.Header closeButton>
 				<Modal.Title>Add Athlete</Modal.Title>
 			</Modal.Header>
@@ -188,7 +210,6 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 							</Form.Group>
 						</Col>
 					</Row>
-
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>

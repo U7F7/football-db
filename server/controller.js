@@ -14,7 +14,10 @@ const {
 	getTable,
 	getStandings,
 	getMaxAvgGoalsPerGame,
-	getFourMostRecentGames
+	getFourMostRecentGames,
+	getTeamsByCoachExp,
+	findPhoneNumber,
+	findEmail
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -153,12 +156,39 @@ router.get("/max-avg-goals-per-game", async (req, res) => {
 
 router.get("/four-recent-games", async (req, res) => {	
 	let result = await getFourMostRecentGames();
-	console.log(result);
 	if (result) {
 		res.status(200).json(queryToJson(result));
 	} else {
 		res.status(404).send("Not found");
 	}
 });
+
+router.get("/teams-by-coach-exp", async (req, res) => {	
+	let result = await getTeamsByCoachExp();
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.post("/phone-exists", async (req, res) => {
+	let result = await findPhoneNumber(req.body);
+	if (result.rows.length !== 0) {
+		res.status(200).json({ exists: true });
+	} else {
+		res.status(200).json({ exists: false });
+	}
+});
+
+router.post("/email-exists", async (req, res) => {
+	let result = await findEmail(req.body);
+	if (result.rows.length !== 0) {
+		res.status(200).json({ exists: true });
+	} else {
+		res.status(200).json({ exists: false });
+	}
+});
+
 
 module.exports = router;

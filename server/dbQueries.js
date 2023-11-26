@@ -496,6 +496,71 @@ const getFourMostRecentGames = () => {
 	});
 }
 
+const getTeamsByCoachExp = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT current_team, AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) AS avgCoachingYears
+			FROM Coach
+			GROUP BY current_team
+			HAVING AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) > 10
+			ORDER BY avgCoachingYears DESC
+		`)
+			.catch((err) => {
+				throw err;
+			});
+	});
+}
+
+const findPhoneNumber = (body) => {
+	const {
+		person_id,
+		phone_number
+	} = body;
+
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT phone_number
+			FROM (
+				SELECT person_id, phone_number
+				FROM Athlete
+				UNION
+				SELECT person_id, phone_number
+				FROM Coach
+				UNION
+				SELECT person_id, phone_number
+				FROM Referee )
+			WHERE phone_number=${phone_number} AND person_id<>${person_id}
+		`).catch((err) => {
+				throw err;
+		});
+	});	
+}
+
+const findEmail = (body) => {
+	const {
+		person_id,
+		email
+	} = body;
+
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT email
+			FROM (
+				SELECT person_id, email
+				FROM Athlete
+				UNION
+				SELECT person_id, email
+				FROM Coach
+				UNION
+				SELECT person_id, email
+				FROM Referee )
+			WHERE email='${email}' AND person_id<>${person_id}
+		`).catch((err) => {
+				throw err;
+		});
+	});	
+}
+
 module.exports = {
 	testOracleConnection,
 	getAllNamePositionTeam,
@@ -511,5 +576,8 @@ module.exports = {
 	getTable,
 	getStandings,
 	getMaxAvgGoalsPerGame,
-	getFourMostRecentGames
+	getFourMostRecentGames,
+	getTeamsByCoachExp,
+	findPhoneNumber,
+	findEmail
 };
