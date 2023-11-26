@@ -16,6 +16,7 @@ const {
 	getMaxAvgGoalsPerGame,
 	getFourMostRecentGames,
 	getTeamsByCoachExp,
+	getRefsInAllGames,
 	findPhoneNumber,
 	findEmail
 } = require("./dbQueries");
@@ -165,6 +166,15 @@ router.get("/four-recent-games", async (req, res) => {
 
 router.get("/teams-by-coach-exp", async (req, res) => {	
 	let result = await getTeamsByCoachExp();
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.get("/refs-in-all-games", async (req, res) => {	
+	let result = await getRefsInAllGames();
 	if (result) {
 		res.status(200).json(queryToJson(result));
 	} else {

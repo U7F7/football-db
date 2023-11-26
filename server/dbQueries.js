@@ -511,6 +511,25 @@ const getTeamsByCoachExp = () => {
 	});
 }
 
+const getRefsInAllGames = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT r.NAME, r.CERTIFICATION_LEVEL
+			FROM Referee r
+			WHERE NOT EXISTS
+				((SELECT g.game_id
+				FROM Game g)
+				MINUS
+				(SELECT rs.game_id
+				FROM Referees rs
+				WHERE r.PERSON_ID = rs.PERSON_ID))
+		`)
+			.catch((err) => {
+				throw err;
+			});
+	});	
+}
+
 const findPhoneNumber = (body) => {
 	const {
 		person_id,
@@ -578,6 +597,7 @@ module.exports = {
 	getMaxAvgGoalsPerGame,
 	getFourMostRecentGames,
 	getTeamsByCoachExp,
+	getRefsInAllGames,
 	findPhoneNumber,
 	findEmail
 };
