@@ -282,8 +282,6 @@ INSERT ALL
 	INTO Venue VALUES ('5101 Maple Lane, Surrey', 'Harbor View Stadium', 5000)
 	INTO Venue VALUES ('5234 Pine Street, Coquitlam', 'Sea View Arena', 34500)
     INTO Venue VALUES ('1923 River Road, Langley', 'Waterways Stadium', 17000)
-    INTO Venue VALUES ('7212 Orange Crescent, Vancouver', 'Natural Neon Arena', 7500)
-    INTO Venue VALUES ('1182 History Street, Vancouver', 'Old Books Building', 800)
 SELECT * FROM dual;
 
 INSERT ALL
@@ -399,7 +397,7 @@ INSERT ALL
 	INTO Game VALUES (10, 'Vancouver Vipers', 'Coquitlam Sharks', '2023-03-13')
 	INTO Game VALUES (11, 'Burnaby Warriors', 'Langley Bears', '2023-05-24')
 	INTO Game VALUES (12, 'Richmond Thunder', 'Surrey Titans', '2023-08-16')
-	INTO Game VALUES (13, 'Vancouver Vipers', 'Langley Bears', '2023-09-01')
+	INTO Game VALUES (13, 'Langley Bears', 'Vancouver Vipers', '2023-09-01')
 	INTO Game VALUES (14, 'Richmond Thunder', 'Burnaby Warriors', '2023-09-08')
 	INTO Game VALUES (15, 'Coquitlam Sharks', 'Surrey Titans', '2023-11-19')
 SELECT * FROM dual;
@@ -885,14 +883,14 @@ INSERT ALL
 	INTO LocatedIn VALUES (5, '5456 Oak Avenue, Richmond')
 	INTO LocatedIn VALUES (6, '5101 Maple Lane, Surrey')
 	INTO LocatedIn VALUES (7, '5123 Main Street, Vancouver')
-	INTO LocatedIn VALUES (8, '5234 Pine Street, Coquitlam')
-	INTO LocatedIn VALUES (9, '1923 River Road, Langley')
-	INTO LocatedIn VALUES (10, '5234 Pine Street, Coquitlam')
-	INTO LocatedIn VALUES (11, '1923 River Road, Langley')
-	INTO LocatedIn VALUES (12, '5101 Maple Lane, Surrey')
+	INTO LocatedIn VALUES (8, '5789 Elm Road, Burnaby')
+	INTO LocatedIn VALUES (9, '5456 Oak Avenue, Richmond')
+	INTO LocatedIn VALUES (10, '5123 Main Street, Vancouver')
+	INTO LocatedIn VALUES (11, '5789 Elm Road, Burnaby')
+	INTO LocatedIn VALUES (12, '5456 Oak Avenue, Richmond')
 	INTO LocatedIn VALUES (13, '1923 River Road, Langley')
-	INTO LocatedIn VALUES (14, '7212 Orange Crescent, Vancouver')
-	INTO LocatedIn VALUES (15, '1182 History Street, Vancouver')
+	INTO LocatedIn VALUES (14, '5456 Oak Avenue, Richmond')
+	INTO LocatedIn VALUES (15, '5234 Pine Street, Coquitlam')
 SELECT * FROM dual;
 
 INSERT ALL
@@ -908,7 +906,7 @@ INSERT ALL
 	INTO ParticipatesIn VALUES (10, 'Vancouver Vipers', 'Coquitlam Sharks')
 	INTO ParticipatesIn VALUES (11, 'Burnaby Warriors', 'Langley Bears')
 	INTO ParticipatesIn VALUES (12, 'Richmond Thunder', 'Surrey Titans')
-	INTO ParticipatesIn VALUES (13, 'Vancouver Vipers', 'Langley Bears')
+	INTO ParticipatesIn VALUES (13, 'Langley Bears', 'Vancouver Vipers')
 	INTO ParticipatesIn VALUES (14, 'Richmond Thunder', 'Burnaby Warriors')
 	INTO ParticipatesIn VALUES (15, 'Coquitlam Sharks', 'Surrey Titans')
 SELECT * FROM dual;
