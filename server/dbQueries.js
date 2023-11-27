@@ -274,7 +274,6 @@ const getStandings = () => {
 			FROM Athlete a, Statistics s
 			WHERE s.PERSON_ID = a.PERSON_ID
 			GROUP BY s.stats_ID, s.PERSON_ID, s.GAME_ID
-			ORDER BY s.STATS_ID
 		),
 		GoalsPerTeam AS (
 			SELECT gpa.stats_id, gpa.game_id, a.CURRENT_TEAM, g.home, g.away, gpa.total_goals
@@ -378,11 +377,12 @@ const getStandings = () => {
 				LEFT OUTER JOIN CountDraws cd ON t.TEAM_NAME = cd.TEAM
 		)
 		SELECT t.team_name as TeamName, g.games_played as GamesPlayed,
-					w.winCount as WinCount, l.lossCount as LossCount, d.drawCount as DrawCount
-			FROM team t, GamesPerTeam g, CountWinsAll w, CountLossesAll l, CountDrawsAll d
-			WHERE t.TEAM_NAME = g.TEAM_NAME AND t.TEAM_NAME = w.TEAM_NAME AND
-				t.TEAM_NAME = l.TEAM_NAME AND t.TEAM_NAME = d.TEAM_NAME
-			ORDER BY winCount DESC;`
+				w.winCount as WinCount, l.lossCount as LossCount, d.drawCount as DrawCount
+		FROM team t, GamesPerTeam g, CountWinsAll w, CountLossesAll l, CountDrawsAll d
+		WHERE t.TEAM_NAME = g.TEAM_NAME AND t.TEAM_NAME = w.TEAM_NAME AND
+			t.TEAM_NAME = l.TEAM_NAME AND t.TEAM_NAME = d.TEAM_NAME
+		ORDER BY WinCount DESC
+	`;
 
 	return withOracleDB((connection) => {
 		return connection.execute(query)
@@ -400,7 +400,6 @@ const getMaxAvgGoalsPerGame = () => {
 			FROM Athlete a, Statistics s
 			WHERE s.PERSON_ID = a.PERSON_ID
 			GROUP BY s.stats_ID, s.PERSON_ID, s.GAME_ID
-			ORDER BY s.STATS_ID
 		),
 		GoalsPerTeam AS (
 			SELECT gpa.stats_id, gpa.game_id, a.CURRENT_TEAM, g.home, g.away, gpa.total_goals
@@ -431,7 +430,8 @@ const getMaxAvgGoalsPerGame = () => {
 		GROUP BY team
 		HAVING avg(total_goals) >= all  (SELECT avg(a.total_goals)
 										FROM AvgGoalsPerGame a
-										GROUP BY a.team);`
+										GROUP BY a.team)
+	`;
 
 	return withOracleDB((connection) => {
 		return connection.execute(query)
