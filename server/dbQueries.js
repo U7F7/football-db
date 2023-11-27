@@ -261,183 +261,183 @@ const getTable = (body) => {
 
 const getStandings = () => {
 
-	const queries = [
-		`CREATE OR REPLACE VIEW GamesPerTeam(team_name, games_played) AS
+	const query = 
+		`WITH GamesPerTeam AS (
 			SELECT t.team_name, COUNT(*) as games_played
 			FROM Game g, Team t, ParticipatesIn p
-			WHERE g.game_id = p.game_id AND (t.team_name = p.team_1 OR t.team_name = p.team_2)
-			GROUP BY t.team_name`,
-		
-		`CREATE OR REPLACE VIEW GoalsPerAthlete(stats_id, person_id, game_id, total_goals) AS
-			SELECT s.stats_id, s.person_id, s.game_id, SUM(s.goals) AS total_goals
+			WHERE g.game_ID = p.game_ID AND (t.team_name = p.team_1 OR t.team_name = p.team_2)
+			GROUP BY t.team_name
+		),
+		-- begin calculations for W/L
+		GoalsPerAthlete AS (
+			SELECT s.STATS_ID, s.PERSON_ID, s.GAME_ID, SUM(s.goals) AS total_goals
 			FROM Athlete a, Statistics s
-			WHERE s.person_id = a.person_id
-			GROUP BY s.stats_id, s.person_id, s.game_id
-			ORDER BY s.stats_id`,
-		
-		`CREATE OR REPLACE VIEW GoalsPerGame(stats_id, person_id, game_id, total_goals) AS
-			SELECT gpa.stats_id, gpa.person_id, gpa.game_id, gpa.total_goals
-			FROM GoalsPerAthlete gpa
-			ORDER BY gpa.stats_id`,
-		
-		`CREATE OR REPLACE VIEW GoalsPerTeam(stats_id, game_id, CURRENT_TEAM, home, away, total_goals) AS
-			SELECT gpg.stats_id, gpg.game_id, a.CURRENT_TEAM, g.home, g.away, gpg.total_goals
-			FROM GoalsPerGame gpg, athlete a, Game g
-			WHERE gpg.person_id = a.person_id AND gpg.game_id = g.game_id`,
-		
-		`CREATE OR REPLACE VIEW HomeGoals(game_id, home, total_goals) AS
+			WHERE s.PERSON_ID = a.PERSON_ID
+			GROUP BY s.stats_ID, s.PERSON_ID, s.GAME_ID
+			ORDER BY s.STATS_ID
+		),
+		GoalsPerTeam AS (
+			SELECT gpa.stats_id, gpa.game_id, a.CURRENT_TEAM, g.home, g.away, gpa.total_goals
+			FROM GoalsPerAthlete gpa, athlete a, Game g
+			WHERE gpa.person_id = a.person_id AND gpa.game_id = g.GAME_ID
+		),
+		HomeGoals AS (
 			SELECT gpt.game_id, gpt.home, SUM(gpt.total_goals) as total_goals
 			FROM GoalsPerTeam gpt
 			WHERE gpt.CURRENT_TEAM = gpt.home
-			GROUP BY gpt.game_id, gpt.home`,
-		
-		`CREATE OR REPLACE VIEW AwayGoals(game_id, away, total_goals) AS
-			SELECT gpt.game_id, gpt.away, SUM(gpt.total_goals) as total_goals
+			GROUP BY gpt.game_id, gpt.home
+		),
+		AwayGoals AS (
+		SELECT gpt.game_id, gpt.away, SUM(gpt.total_goals) as total_goals
 			FROM GoalsPerTeam gpt
 			WHERE gpt.CURRENT_TEAM = gpt.away
-			GROUP BY gpt.game_id, gpt.away`,
-		
-		`CREATE OR REPLACE VIEW HomeWins AS
+			GROUP BY gpt.game_id, gpt.away
+		),
+		-- col 2, wins
+		HomeWins AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals > t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW AwayWins AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals > t2.total_goals
+		),
+		AwayWins AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals < t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW WinnerPerGame AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals < t2.total_goals
+		),
+		WinnerPerGame AS (
 			SELECT aw.game_id as game_id, aw.away as team
 			FROM AwayWins aw
 			UNION
 			SELECT hw.game_id as game_id, hw.home as team
-			FROM HomeWins hw`,
-		
-		`CREATE OR REPLACE VIEW CountWins AS
+			FROM HomeWins hw
+		),
+		CountWins AS (
 			SELECT w.team, Count(*) as winCount
 			FROM WinnerPerGame w
-			GROUP BY w.team`,
-		
-		`CREATE OR REPLACE VIEW CountWinsAll AS
+			GROUP BY w.team
+		),
+		CountWinsAll AS (
 			SELECT team_name, COALESCE(cw.winCount, 0) as winCount
 			FROM team t
-				LEFT OUTER JOIN CountWins cw ON t.TEAM_NAME = cw.TEAM`,
-		
-		`CREATE OR REPLACE VIEW HomeLosses AS
+				LEFT OUTER JOIN CountWins cw ON t.TEAM_NAME = cw.TEAM
+		),
+		-- col3, losses
+		HomeLosses AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals < t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW AwayLosses AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals < t2.total_goals
+		),
+		AwayLosses AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals > t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW LosersPerGame AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals > t2.total_goals
+		),
+		LosersPerGame AS (
 			SELECT al.game_id as game_id, al.away as team
 			FROM AwayLosses al
 			UNION
 			SELECT hl.game_id as game_id, hl.home as team
-			FROM HomeLosses hl`,
-		
-		`CREATE OR REPLACE VIEW CountLosses AS
+			FROM HomeLosses hl
+		),
+		CountLosses AS (
 			SELECT l.team, Count(*) as lossCount
 			FROM LosersPerGame l
-			GROUP BY l.team`,
-		
-		`CREATE OR REPLACE VIEW CountLossesAll AS
+			GROUP BY l.team
+		),
+		CountLossesAll AS (
 			SELECT team_name, COALESCE(lossCount, 0) as lossCount
 			FROM team t
-				LEFT OUTER JOIN CountLosses cl ON t.TEAM_NAME = cl.TEAM`,
-		
-		`CREATE OR REPLACE VIEW HomeDraws AS
+				LEFT OUTER JOIN CountLosses cl ON t.TEAM_NAME = cl.TEAM
+		),
+		-- col4, draws
+		HomeDraws AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals = t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW AwayDraws AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals = t2.total_goals
+		),
+		AwayDraws AS (
 			SELECT t1.game_id, t1.home, t1.total_goals as home_goals, t2.away, t2.total_goals as away_goals
 			FROM HomeGoals t1, AwayGoals t2
-			WHERE t1.game_id = t2.game_id AND t1.total_goals = t2.total_goals`,
-		
-		`CREATE OR REPLACE VIEW DrawsPerGame AS
+			WHERE t1.game_id = t2.game_id AND t1.total_goals = t2.total_goals
+		),
+		DrawsPerGame AS (
 			SELECT ad.game_id as game_id, ad.away as team
 			FROM AwayDraws ad
 			UNION
 			SELECT hd.game_id as game_id, hd.home as team
-			FROM HomeDraws hd`,
-		
-		`CREATE OR REPLACE VIEW CountDraws AS
+			FROM HomeDraws hd
+		),
+		CountDraws AS (
 			SELECT d.team, Count(*) as drawCount
 			FROM DrawsPerGame d
-			GROUP BY d.team`,
-		
-		`CREATE OR REPLACE VIEW CountDrawsAll AS
+			GROUP BY d.team
+		),
+		CountDrawsAll AS (
 			SELECT team_name, COALESCE(drawCount, 0) as drawCount
 			FROM team t
-				LEFT OUTER JOIN CountDraws cd ON t.TEAM_NAME = cd.TEAM`,
-
-		`CREATE OR REPLACE VIEW Standings AS
-			SELECT t.team_name as TeamName, g.games_played as GamesPlayed,
-				w.winCount as WinCount, l.lossCount as LossCount, d.drawCount as DrawCount
+				LEFT OUTER JOIN CountDraws cd ON t.TEAM_NAME = cd.TEAM
+		)
+		SELECT t.team_name as TeamName, g.games_played as GamesPlayed,
+					w.winCount as WinCount, l.lossCount as LossCount, d.drawCount as DrawCount
 			FROM team t, GamesPerTeam g, CountWinsAll w, CountLossesAll l, CountDrawsAll d
 			WHERE t.TEAM_NAME = g.TEAM_NAME AND t.TEAM_NAME = w.TEAM_NAME AND
-				t.TEAM_NAME = l.TEAM_NAME AND t.TEAM_NAME = d.TEAM_NAME`
-	];
+				t.TEAM_NAME = l.TEAM_NAME AND t.TEAM_NAME = d.TEAM_NAME
+			ORDER BY winCount DESC;`
 
-	return withOracleDB(async (connection) => {
-		try {
-			for (let query of queries) {
-				await connection.execute(query);
-			}
-			return await connection.execute("SELECT * FROM STANDINGS ORDER BY winCount DESC");
-		} catch (err) {
-			throw err;
-		} 
+	return withOracleDB((connection) => {
+		return connection.execute(query)
+			.catch((err) => {
+				throw err;
+			});
 	});
 };
 
 
 const getMaxAvgGoalsPerGame = () => {
-	const queries = [
-		`CREATE OR REPLACE VIEW HomeGoals(game_id, home, total_goals) AS
+	const query = 
+		`WITH GoalsPerAthlete AS (
+			SELECT s.STATS_ID, s.PERSON_ID, s.GAME_ID, SUM(s.goals) AS total_goals
+			FROM Athlete a, Statistics s
+			WHERE s.PERSON_ID = a.PERSON_ID
+			GROUP BY s.stats_ID, s.PERSON_ID, s.GAME_ID
+			ORDER BY s.STATS_ID
+		),
+		GoalsPerTeam AS (
+			SELECT gpa.stats_id, gpa.game_id, a.CURRENT_TEAM, g.home, g.away, gpa.total_goals
+			FROM GoalsPerAthlete gpa, athlete a, Game g
+			WHERE gpa.person_id = a.person_id AND gpa.game_id = g.GAME_ID
+		),
+		HomeGoals AS (
 			SELECT gpt.game_id, gpt.home, SUM(gpt.total_goals) as total_goals
 			FROM GoalsPerTeam gpt
 			WHERE gpt.CURRENT_TEAM = gpt.home
-			GROUP BY gpt.game_id, gpt.home`,
-	
-		`CREATE OR REPLACE VIEW AwayGoals(game_id, away, total_goals) AS
-			SELECT gpt.game_id, gpt.away, SUM(gpt.total_goals) as total_goals
+			GROUP BY gpt.game_id, gpt.home
+		),
+		AwayGoals AS (
+		SELECT gpt.game_id, gpt.away, SUM(gpt.total_goals) as total_goals
 			FROM GoalsPerTeam gpt
 			WHERE gpt.CURRENT_TEAM = gpt.away
-			GROUP BY gpt.game_id, gpt.away`,
-
-		`CREATE OR REPLACE VIEW AvgGoalsPerGame AS
+			GROUP BY gpt.game_id, gpt.away
+		),
+		AvgGoalsPerGame AS (
 			(SELECT home as team, total_goals
 			FROM HomeGoals)
 			UNION ALL
 			(SELECT away as team, total_goals
-			FROM AwayGoals)`,
-		
-		`CREATE OR REPLACE VIEW MaxAvgGoalsPerGame AS
-			SELECT team, avg(total_goals) as AvgGoalsPerGame
-			FROM AvgGoalsPerGame a
-			GROUP BY team
-			HAVING avg(total_goals) >= all  (SELECT avg(a.total_goals)
-											FROM AvgGoalsPerGame a
-											GROUP BY a.team)`
-	];
+			FROM AwayGoals)
+		)
+		SELECT team, avg(total_goals) as AvgGoalsPerGame
+		FROM AvgGoalsPerGame a
+		GROUP BY team
+		HAVING avg(total_goals) >= all  (SELECT avg(a.total_goals)
+										FROM AvgGoalsPerGame a
+										GROUP BY a.team);`
 
-	return withOracleDB(async (connection) => {
-		try {
-			for (let query of queries) {
-				await connection.execute(query);
-			}
-			return await connection.execute("SELECT * FROM MaxAvgGoalsPerGame");
-		} catch (err) {
-			throw err;
-		}
+	return withOracleDB((connection) => {
+		return connection.execute(query)
+			.catch((err) => {
+				throw err;
+			});
 	});
 };
 
