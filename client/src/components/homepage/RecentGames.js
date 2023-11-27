@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
 
 import axios from "axios";
 
@@ -29,19 +30,23 @@ const RecentGames = () => {
 			<Card.Header as="h5">Recent Games</Card.Header>
 			<Card.Body style={{ paddingTop: 0 }}>
 				<Container>
-					{games.map((obj, i) => {
-						if (i >= games.length / 2) return null;
-						return (
-							<Row key={`games-${i}`}style={{ marginTop: "20px" }}>
-								<Col>
-									{2 * i < games.length ? <RecentGame {...games[2 * i]}/> : null}
-								</Col>
-								<Col>
-									{2 * i + 1 < games.length ? <RecentGame {...games[2 * i + 1]}/> : null}
-								</Col>
-							</Row>
-						);
-					})}
+					{games.length !== 0 ? 
+						games.map((obj, i) => {
+							if (i >= games.length / 2) return null;
+							return (
+								<Row key={`games-${i}`}style={{ marginTop: "20px" }}>
+									<Col>
+										{2 * i < games.length ? <RecentGame {...games[2 * i]}/> : null}
+									</Col>
+									<Col>
+										{2 * i + 1 < games.length ? <RecentGame {...games[2 * i + 1]}/> : null}
+									</Col>
+								</Row>
+							);
+						}) : 
+						<div style={{ padding: "50px" }}>
+							<Spinner animation="border"/>
+						</div>}
 				</Container>
 			</Card.Body>
 		</Card>
