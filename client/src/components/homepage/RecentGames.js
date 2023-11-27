@@ -15,7 +15,7 @@ const RecentGames = () => {
 	const [games, setGames] = useState([]);
 
 	useEffect(() => {
-		axios.get("http://localhost:65535/four-recent-games")
+		axios.get("http://localhost:65535/recent-games", { params: { limit: 4 } })
 			.then((res) => {
 				setGames(res.data);
 			})

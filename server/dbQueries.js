@@ -441,7 +441,9 @@ const getMaxAvgGoalsPerGame = () => {
 	});
 };
 
-const getFourMostRecentGames = () => {
+const getFourMostRecentGames = (limit) => {
+	const rowsToFetch = limit ? `FETCH FIRST ${limit} ROWS ONLY` : "";
+
 	const query = `
 		SELECT game_date, home, home_goals, away, away_goals
 		FROM ( -- home TEAM NAME AND home TEAM GOALS
@@ -453,14 +455,14 @@ const getFourMostRecentGames = () => {
 					FROM ( SELECT home, game_id
 							FROM game
 							ORDER BY game_date DESC
-							FETCH FIRST 4 ROWS ONLY ) g, PlaysFor pf
+							${rowsToFetch} ) g, PlaysFor pf
 					WHERE g.home = pf.team_name ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, home -- game id
 							FROM game
 							ORDER BY game_date DESC
-							FETCH FIRST 4 ROWS ONLY ) hgid
+							${rowsToFetch} ) hgid
 			WHERE hg.game_id = hgid.game_id) hid, ( -- away TEAM NAME AND away TEAM GOALS
 			SELECT hg.game_id, away, "SUM(GOALS)" AS away_goals
 			FROM (
@@ -471,20 +473,20 @@ const getFourMostRecentGames = () => {
 						SELECT away, game_id
 						FROM game
 						ORDER BY game_date DESC
-						FETCH FIRST 4 ROWS ONLY ) g, PlaysFor pf
+						${rowsToFetch} ) g, PlaysFor pf
 					WHERE g.away = pf.team_name ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, away -- game id
 							FROM game
 							ORDER BY game_date DESC
-							FETCH FIRST 4 ROWS ONLY ) hgid
+							${rowsToFetch} ) hgid
 			WHERE hg.game_id = hgid.game_id) aid ,
 			( -- game date
 			SELECT game_date, game_id
 			FROM game
 			ORDER BY game_date DESC
-			FETCH FIRST 4 ROWS ONLY) did
+			${rowsToFetch}) did
 		WHERE hid.game_id = aid.game_id AND did.game_id = hid.game_id
 	`;
 

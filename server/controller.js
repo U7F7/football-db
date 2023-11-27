@@ -155,8 +155,8 @@ router.get("/max-avg-goals-per-game", async (req, res) => {
 	}
 });
 
-router.get("/four-recent-games", async (req, res) => {	
-	let result = await getFourMostRecentGames();
+router.get("/recent-games", async (req, res) => {
+	let result = await getFourMostRecentGames(req.query.limit || null);
 	if (result) {
 		res.status(200).json(queryToJson(result));
 	} else {
