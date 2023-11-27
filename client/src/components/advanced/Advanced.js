@@ -146,7 +146,7 @@ const Advanced = () => {
 						);
 					})}
 				</tbody>
-			</Table>`
+			</Table>
 			</Row>
 		</Container>
 	);

@@ -539,7 +539,7 @@ INSERT ALL
     INTO Statistics VALUES (117, 24, 4, 1, 8, 67, 9, 2.22)
     INTO Statistics VALUES (118, 24, 8, 0, 14, 77, 21, 9.61)
     INTO Statistics VALUES (119, 24, 11, 0, 8, 24, 21, 0.36)
-    INTO Statistics VALUES (120, 24, 14, 1, 6, 19, 9, 9.85)
+    INTO Statistics VALUES (120, 24, 14, 2, 6, 19, 9, 9.85)
     INTO Statistics VALUES (121, 25, 2, 0, 11, 16, 2, 4.79)
     INTO Statistics VALUES (122, 25, 4, 0, 8, 17, 16, 4.44)
     INTO Statistics VALUES (123, 25, 8, 0, 15, 60, 12, 7.86)
