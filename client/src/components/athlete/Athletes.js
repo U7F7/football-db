@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import Spinner from "react-bootstrap/Spinner";
 
 import { ArrowDownUp } from "react-bootstrap-icons";
 
@@ -103,10 +104,11 @@ const Athletes = () => {
 					<h1>Athletes</h1>
 				</Col>
 				<Col xs={2} style={addButtonStyle}>
-					<Button variant="primary" onClick={() => setShowAddAthlete(true)}>Add Athlete</Button>
+					{athletes.length !== 0 && <Button variant="primary" onClick={() => setShowAddAthlete(true)}>Add Athlete</Button>}
 				</Col>
 			</Row>
 			<AddAthleteModal athletes={athletes} setAthletes={setAthletes} showAddAthlete={showAddAthlete} setShowAddAthlete={setShowAddAthlete} />
+			{athletes.length !== 0 ?
 			<Table striped bordered>
 				<thead>
 					<tr>
@@ -176,7 +178,10 @@ const Athletes = () => {
 						);
 					})}
 				</tbody>
-			</Table>												
+			</Table> : 
+			<div style={{ padding: "50px" }}>
+				<Spinner animation="border"/>
+			</div>}		
 			<DeleteAthleteModal 
 				person_id={currDeleteAthlete} 
 				athletes={athletes}

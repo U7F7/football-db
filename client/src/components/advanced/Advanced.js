@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import Spinner from "react-bootstrap/Spinner";
 
 const Advanced = () => {
 	const [tables, setTables] = useState([]);
@@ -77,6 +78,7 @@ const Advanced = () => {
 				<h1>Advanced Data Viewer</h1>
 			</Col>
 			</Row>
+			{tables.length !== 0 ? <Container>
 			<Row>
 				<Form>
 					<Row>
@@ -148,6 +150,10 @@ const Advanced = () => {
 				</tbody>
 			</Table>
 			</Row>
+			</Container> :
+			<div style={{ padding: "50px" }}>
+				<Spinner animation="border"/>
+			</div>}
 		</Container>
 	);
 };
