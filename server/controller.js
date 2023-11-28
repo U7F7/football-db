@@ -18,7 +18,9 @@ const {
 	getTeamsByCoachExp,
 	getRefsInAllGames,
 	findPhoneNumber,
-	findEmail
+	findEmail,
+	getVenues,
+	findGames
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -197,6 +199,24 @@ router.post("/email-exists", async (req, res) => {
 		res.status(200).json({ exists: true });
 	} else {
 		res.status(200).json({ exists: false });
+	}
+});
+
+router.get("/venues", async (req, res) => {	
+	let result = await getVenues();
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.post("/find-games", async (req, res) => {
+	let result = await findGames(req.body);
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
 	}
 });
 

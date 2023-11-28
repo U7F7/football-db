@@ -5,6 +5,7 @@ import NavigationBar from "./components/NavigationBar";
 import HomePage from "./components/homepage/HomePage";
 import Athletes from "./components/athlete/Athletes";
 import Games from "./components/games/Games";
+import Locator from "./components/locator/Locator";
 import Advanced from "./components/advanced/Advanced";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
 				<Route exact path="/" element={<HomePage />} />
 				<Route exact path="/athletes" element={<Athletes />} />
 				<Route exact path="/games" element={<Games />} />
+				<Route exact path="/locator" element={<Locator />} />
 				<Route exact path="/advanced" element={<Advanced />} />
 			</Routes>
 		</Router>

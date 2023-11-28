@@ -68,7 +68,7 @@ const Advanced = () => {
 		})
 		.catch((err) => {
 			console.error(err);
-		})
+		});
 	};
 
 	return (
@@ -78,78 +78,79 @@ const Advanced = () => {
 				<h1>Advanced Data Viewer</h1>
 			</Col>
 			</Row>
-			{tables.length !== 0 ? <Container>
-			<Row>
-				<Form>
-					<Row>
-						<Col xs={2}>
-							<Form.Group controlId="tables">
-								<Form.Label>Table:</Form.Label>
-								<Form.Select aria-label="tables" name="tables" onChange={handleTableChange}>
-									<option value="default">-</option>
-									{tables.map((table_name, i) => {
+			{tables.length !== 0 ? 
+			<Container>
+				<Row>
+					<Form>
+						<Row>
+							<Col xs={2}>
+								<Form.Group controlId="tables">
+									<Form.Label>Table:</Form.Label>
+									<Form.Select aria-label="tables" name="tables" onChange={handleTableChange}>
+										<option value="default">-</option>
+										{tables.map((table_name, i) => {
+											return (
+												<option key={`table-${i}`} value={table_name}>{table_name}</option>
+											);
+										})}
+									</Form.Select>
+								</Form.Group>
+							</Col>
+							<Col>
+								<Form.Group controlId="attributes">
+									<Form.Label>Select Attributes:</Form.Label>
+									<Col>
+									{attributes.map((a, i) => {
 										return (
-											<option key={`table-${i}`} value={table_name}>{table_name}</option>
+											<Form.Check
+												inline
+												label={a}
+												name={a}
+												type="checkbox"
+												key={`attr-${i}`}
+												checked={selectedAttributes.includes(a)}
+												onChange={handleAttributeChange}
+											/>
 										);
 									})}
-								</Form.Select>
-							</Form.Group>
-						</Col>
-						<Col>
-							<Form.Group controlId="attributes">
-								<Form.Label>Select Attributes:</Form.Label>
-								<Col>
-								{attributes.map((a, i) => {
-									return (
-										<Form.Check
-											inline
-											label={a}
-											name={a}
-											type="checkbox"
-											key={`attr-${i}`}
-											checked={selectedAttributes.includes(a)}
-											onChange={handleAttributeChange}
-										/>
-									);
-								})}
-								</Col>
-							</Form.Group>
-						</Col>
-						<Col xs={1} style={{ display: "flex", alignItems: "center" }}>
-							{selectedAttributes.length === 0 ?
-								<Button variant="secondary" disabled>View</Button> :
-								<Button variant="success" onClick={handleClick}>View</Button>
-							}
-						</Col>
-					</Row>
-				</Form>
-			</Row>
-			<Row style={{ marginTop: "20px" }}>
-			<Table striped bordered responsive>
-				<thead>
-					<tr>
-						{data.length !== 0 && Object.keys(data[0]).map((k, i) => {
+									</Col>
+								</Form.Group>
+							</Col>
+							<Col xs={1} style={{ display: "flex", alignItems: "center" }}>
+								{selectedAttributes.length === 0 ?
+									<Button variant="secondary" disabled>View</Button> :
+									<Button variant="success" onClick={handleClick}>View</Button>
+								}
+							</Col>
+						</Row>
+					</Form>
+				</Row>
+				<Row style={{ marginTop: "20px" }}>
+				<Table striped bordered responsive>
+					<thead>
+						<tr>
+							{data.length !== 0 && Object.keys(data[0]).map((k, i) => {
+								return (
+									<th key={`header-${i}`}>{k}</th>
+								);
+							})}
+						</tr>
+					</thead>
+					<tbody>
+						{data.length !== 0  && data.map((d, i) => {
 							return (
-								<th key={`header-${i}`}>{k}</th>
+								<tr key={`body-${i}`}>
+									{Object.keys(d).map((k, j) => {
+										return (
+											<td key={`cell-${j}`}>{d[k]}</td>
+										);
+									})}
+								</tr>
 							);
 						})}
-					</tr>
-				</thead>
-				<tbody>
-					{data.length !== 0  && data.map((d, i) => {
-						return (
-							<tr key={`body-${i}`}>
-								{Object.keys(d).map((k, j) => {
-									return (
-										<td key={`cell-${j}`}>{d[k]}</td>
-									);
-								})}
-							</tr>
-						);
-					})}
-				</tbody>
-			</Table>
-			</Row>
+					</tbody>
+				</Table>
+				</Row>
 			</Container> :
 			<div style={{ padding: "50px" }}>
 				<Spinner animation="border"/>

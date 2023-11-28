@@ -15,6 +15,7 @@ const NavigationBar = () => {
 					<Nav className="me-auto">
 						<Nav.Link href="/athletes">Athletes</Nav.Link>
 						<Nav.Link href="/games">Games</Nav.Link>
+						<Nav.Link href="/locator">Locator</Nav.Link>
 						<Nav.Link href="/advanced">Advanced</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>

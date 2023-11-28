@@ -582,6 +582,30 @@ const findEmail = (body) => {
 	});	
 }
 
+const getVenues = () => {
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT *
+			FROM Venue
+		`).catch((err) => {
+			throw err;
+		});
+	});
+};
+
+const findGames = (body) => {
+	const { venueName } = body;
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT TO_CHAR(g.game_date, 'YYYY-MM-DD'), g.home, g.away, v.venue_address
+			FROM Game g, LocatedIn l, Venue v
+			WHERE g.GAME_ID = l.GAME_ID AND l.venue_address = v.venue_address AND v.venue_name = '${venueName}'
+		`).catch((err) => {
+			throw err;
+		});
+	});
+}
+
 module.exports = {
 	testOracleConnection,
 	getAllNamePositionTeam,
@@ -601,5 +625,7 @@ module.exports = {
 	getTeamsByCoachExp,
 	getRefsInAllGames,
 	findPhoneNumber,
-	findEmail
+	findEmail,
+	getVenues,
+	findGames
 };
