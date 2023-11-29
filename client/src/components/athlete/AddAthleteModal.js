@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import { hasErrors } from "../../utils/helpers";
+import { athleteFormHasErrors } from "../../utils/helpers";
 
 const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthlete }) => {
 	const [positions, setPositions] = useState({});
@@ -72,7 +72,7 @@ const AddAthleteModal = ({ athletes, setAthletes, showAddAthlete, setShowAddAthl
 		setAthlete(newAthlete);
 
 		// data validation
-		const errors = await hasErrors(newAthlete);
+		const errors = await athleteFormHasErrors(newAthlete);
 
 		if (errors.length === 0 
 			&& (athlete.jersey_num !== null && athlete.jersey_num !== "default") 

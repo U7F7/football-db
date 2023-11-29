@@ -66,13 +66,14 @@ const HomePage = () => {
 										<Alert variant={"success"}>
 												{maxGoals.map((n, i) => {
 													return (
-														<div key={`mg-${i}`}>{n.team}: {n.avggoalspergame} average goals per game</div>
+														<strong key={`mg-${i}`}>{n.team}: {n.avggoalspergame} average goals per game</strong>
 													);
 												})}
+												<br></br>
+												<div>
+													This team features an average goals scored per game as the maximum over all the teams' average goals per game across the whole league!
+												</div>
 										</Alert>
-										<Card.Text>
-										This team features an average goals scored per game as the maximum over all the teams' average goals per game across the whole league!
-										</Card.Text>
 										<Card.Title>
 											Masterminds On and Off the Field
 										</Card.Title>

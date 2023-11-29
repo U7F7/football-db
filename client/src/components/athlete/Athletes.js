@@ -94,7 +94,7 @@ const Athletes = () => {
 	const [currEditAthlete, setCurrEditAthlete] = useState(null);
 
 	const [showViewAthlete, setShowViewAthlete] = useState(false);
-	// the current athlete which the user clicked edit on
+	// the current athlete which the user clicked view on
 	const [currViewAthlete, setCurrViewAthlete] = useState(null);
 
 	return (

@@ -20,7 +20,8 @@ const {
 	findPhoneNumber,
 	findEmail,
 	getVenues,
-	findGames
+	findGames,
+	filterSponsor
 } = require("./dbQueries");
 
 const router = express.Router();
@@ -213,6 +214,15 @@ router.get("/venues", async (req, res) => {
 
 router.post("/find-games", async (req, res) => {
 	let result = await findGames(req.body);
+	if (result) {
+		res.status(200).json(queryToJson(result));
+	} else {
+		res.status(404).send("Not found");
+	}
+});
+
+router.post("/filter-sponsor", async (req, res) => {
+	let result = await filterSponsor(req.body);
 	if (result) {
 		res.status(200).json(queryToJson(result));
 	} else {

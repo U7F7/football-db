@@ -600,6 +600,23 @@ const findGames = (body) => {
 			SELECT TO_CHAR(g.game_date, 'YYYY-MM-DD'), g.home, g.away, v.venue_address
 			FROM Game g, LocatedIn l, Venue v
 			WHERE g.GAME_ID = l.GAME_ID AND l.venue_address = v.venue_address AND v.venue_name = '${venueName}'
+			ORDER BY g.game_date DESC
+		`).catch((err) => {
+			throw err;
+		});
+	});
+}
+
+const filterSponsor = (body) => {
+	const { whereClause } = body;
+
+	const where = whereClause ? `WHERE ${whereClause}` : "";
+
+	return withOracleDB((connection) => {
+		return connection.execute(`
+			SELECT *
+			FROM Sponsor
+			${where}
 		`).catch((err) => {
 			throw err;
 		});
@@ -627,5 +644,6 @@ module.exports = {
 	findPhoneNumber,
 	findEmail,
 	getVenues,
-	findGames
+	findGames,
+	filterSponsor
 };

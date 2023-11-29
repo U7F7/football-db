@@ -33,12 +33,12 @@ const Locator = () => {
 
 	const handleClick = (e) => {
 		axios.post("http://localhost:65535/find-games/", { venueName: currVenueName })
-		.then((res) => {
-			setData(res.data);
-		})
-		.catch((err) => {
-			console.error(err);
-		});
+			.then((res) => {
+				setData(res.data);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
 
 	return (

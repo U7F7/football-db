@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const hasErrors = async (athlete) => {
+export const athleteFormHasErrors = async (athlete) => {
 	const errors = [];
   
 	//name - (No symbol allowed, so no ;DROP TABLE, OR 1=1)
@@ -62,3 +62,76 @@ export const hasErrors = async (athlete) => {
   
 	return errors;
 }
+
+export const sponsorsFormHasErrors = (formData) => {
+	const nameFilled = formData.name !== "default" && formData.nameVal !== "";
+	const emailFilled = formData.email !== "default" && formData.emailVal !== "";
+	const moneyFilled = formData.money !== "default" && formData.moneyVal !== "";
+	const andor1Filled = formData.andor1 !== "default";
+	const andor2Filled = formData.andor2 !== "default";
+
+	const errors = []
+
+	if (!(/^[A-Za-z\s-]*$/.test(formData.nameVal))) {
+		errors.push("Name has invalid symbols");
+	}
+
+	if (!(/^[A-Za-z\s-]*$/.test(formData.emailVal))) {
+		errors.push("Email has invalid symbols");
+	}
+
+	if (!(/^[1-9][0-9]*$|^$/.test(formData.moneyVal))) {
+		errors.push("Money is not a valid number, no symbol or letters are allowed");
+	}
+	
+	if (formData.name !== "default" && formData.nameVal === "") {
+		errors.push("Please enter a name or remove the filter");
+	}
+	if (formData.email !== "default" && formData.emailVal === "") {
+		errors.push("Please enter a email or remove the filter");
+	}
+	if (formData.money !== "default" && formData.moneyVal === "") {
+		errors.push("Please enter a money amount or remove the filter");
+	}
+
+	if (nameFilled && !andor1Filled && emailFilled && andor2Filled && moneyFilled) {
+		errors.push("Please select AND/OR for email or remove name inputs");
+	}
+
+	return errors;
+}
+
+export const generateSponsorFormWhereClause = (formData) => {
+	const nameFilled = formData.name !== "default" && formData.nameVal !== "";
+	const emailFilled = formData.email !== "default" && formData.emailVal !== "";
+	const moneyFilled = formData.money !== "default" && formData.moneyVal !== "";
+	const andor1Filled = formData.andor1 !== "default";
+	const andor2Filled = formData.andor2 !== "default";
+
+	let whereClause = "";
+
+	if (nameFilled && !emailFilled && !moneyFilled) {
+		whereClause = `${formData.name} '${formData.nameVal}'`;
+	}
+	if (!nameFilled && emailFilled && !moneyFilled) {
+		whereClause = `${formData.email} '${formData.emailVal}'`;
+	}	
+	if (!nameFilled && !emailFilled && moneyFilled) {
+		whereClause = `${formData.money} ${formData.moneyVal}`;
+	}
+	if (nameFilled && andor1Filled && emailFilled && !andor2Filled) {
+		whereClause = `${formData.name} '${formData.nameVal}' ${formData.andor1} ${formData.email} '${formData.emailVal}'`;	
+	}
+	
+	if (nameFilled && !andor1Filled && !emailFilled && andor2Filled && moneyFilled) {
+		whereClause = `${formData.name} '${formData.nameVal}' ${formData.andor2} ${formData.money} ${formData.moneyVal}`;
+	}
+	if (!nameFilled && !andor1Filled && emailFilled && andor2Filled && moneyFilled) {
+		whereClause = `${formData.email} '${formData.emailVal}' ${formData.andor2} ${formData.money} ${formData.moneyVal}`;
+	}
+	if (nameFilled && andor1Filled && emailFilled && andor2Filled && moneyFilled) {
+		whereClause = `${formData.name} '${formData.nameVal}' ${formData.andor1} ${formData.email} '${formData.emailVal}' ${formData.andor2} ${formData.money} ${formData.moneyVal}`;	
+	}
+
+	return whereClause;
+};

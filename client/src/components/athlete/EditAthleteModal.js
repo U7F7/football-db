@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import { hasErrors } from "../../utils/helpers";
+import { athleteFormHasErrors } from "../../utils/helpers";
 
 const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, setShowEditAthlete }) => {
 	const [positions, setPositions] = useState({});
@@ -68,7 +68,7 @@ const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, s
 			date_started: athlete.date_started.split("T")[0]
 		};
 
-		const errors = await hasErrors(editedAthlete);
+		const errors = await athleteFormHasErrors(editedAthlete);
 
 		if (errors.length === 0) {
 			axios.put("http://localhost:65535/athlete", editedAthlete)
