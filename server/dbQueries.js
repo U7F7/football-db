@@ -453,7 +453,7 @@ const getFourMostRecentGames = (limit) => {
 							FROM game
 							ORDER BY game_date DESC
 							${rowsToFetch} ) g, Athlete a
-					WHERE g.home = a.team_name ) pn , Statistics st
+					WHERE g.home = a.current_team ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, home -- game id
@@ -471,7 +471,7 @@ const getFourMostRecentGames = (limit) => {
 						FROM game
 						ORDER BY game_date DESC
 						${rowsToFetch} ) g, Athlete a
-					WHERE g.away = a.team_name ) pn , Statistics st
+					WHERE g.away = a.current_team ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, away -- game id
