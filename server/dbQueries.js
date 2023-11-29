@@ -38,7 +38,7 @@ const withOracleDB = async(action) => {
             }
         }
     }
-}
+};
 
 const testOracleConnection = async () => {
 	return await withOracleDB(async (connection) => {
@@ -48,7 +48,7 @@ const testOracleConnection = async () => {
 		console.log("Oracle connection failed!");
 		return false;
 	});
-}
+};
 
 const getAllNamePositionTeam = () => {
 	return withOracleDB((connection) => {
@@ -60,7 +60,7 @@ const getAllNamePositionTeam = () => {
 			throw err;
 		});
 	});
-}
+};
 
 const getTeams = () => {
 	return withOracleDB((connection) => {
@@ -71,7 +71,7 @@ const getTeams = () => {
 			throw err;
 		});
 	});
-}
+};
 
 const getPositions = () => {
 	return withOracleDB((connection) => {
@@ -246,7 +246,7 @@ const getAttributes = (table_name) => {
 			throw err;
 		});
 	});	
-} 
+};
 
 const getTable = (body) => {
 	const { table, attributes } = body;
@@ -257,10 +257,9 @@ const getTable = (body) => {
 				throw err;
 			});
 	});
-}
+};
 
 const getStandings = () => {
-
 	const query = 
 		`WITH GamesPerTeam AS (
 			SELECT t.team_name, COUNT(*) as games_played
@@ -506,12 +505,11 @@ const getTeamsByCoachExp = () => {
 			GROUP BY current_team
 			HAVING AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) > 10
 			ORDER BY avgCoachingYears DESC
-		`)
-			.catch((err) => {
-				throw err;
-			});
+		`).catch((err) => {
+			throw err;
+		});
 	});
-}
+};
 
 const getRefsInAllGames = () => {
 	return withOracleDB((connection) => {
@@ -525,12 +523,11 @@ const getRefsInAllGames = () => {
 				(SELECT rs.game_id
 				FROM Referees rs
 				WHERE r.PERSON_ID = rs.PERSON_ID))
-		`)
-			.catch((err) => {
-				throw err;
-			});
+		`).catch((err) => {
+			throw err;
+		});
 	});	
-}
+};
 
 const findPhoneNumber = (body) => {
 	const {
@@ -552,10 +549,10 @@ const findPhoneNumber = (body) => {
 				FROM Referee )
 			WHERE phone_number=${phone_number} AND person_id<>${person_id}
 		`).catch((err) => {
-				throw err;
+			throw err;
 		});
 	});	
-}
+};
 
 const findEmail = (body) => {
 	const {
@@ -577,10 +574,10 @@ const findEmail = (body) => {
 				FROM Referee )
 			WHERE email='${email}' AND person_id<>${person_id}
 		`).catch((err) => {
-				throw err;
+			throw err;
 		});
 	});	
-}
+};
 
 const getVenues = () => {
 	return withOracleDB((connection) => {
@@ -605,7 +602,7 @@ const findGames = (body) => {
 			throw err;
 		});
 	});
-}
+};
 
 const filterSponsor = (body) => {
 	const { whereClause } = body;
@@ -621,7 +618,7 @@ const filterSponsor = (body) => {
 			throw err;
 		});
 	});
-}
+};
 
 module.exports = {
 	testOracleConnection,

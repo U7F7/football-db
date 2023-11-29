@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import axios from "axios";
-
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
+import axios from "axios";
 
 import { athleteFormHasErrors } from "../../utils/helpers";
 
@@ -59,7 +59,7 @@ const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, s
 				[e.target.name]: (["height", "weight", "salary", "phone_number"].includes(e.target.name)) ? Number(e.target.value) : e.target.value
 			};
 		});
-	}
+	};
 
 	const editAthlete = async () => {
 		const editedAthlete = {
@@ -137,17 +137,11 @@ const EditAthleteModal = ({ person_id, athletes, setAthletes, showEditAthlete, s
 								<Form.Label>Number/Position</Form.Label>
 								<Form.Select aria-label="jersey" name="jersey_num" value={athlete ? athlete.jersey_num : ""} onChange={handleFormChange}>
 									<option value="default">-</option>
-									<option value="1">1 (Goalkeeper)</option>
-									<option value="2">2 (Right Back)</option>
-									<option value="3">3 (Left Back)</option>
-									<option value="4">4 (Sweeper)</option>
-									<option value="5">5 (Central Back)</option>
-									<option value="6">6 (Defensive Midfielder)</option>
-									<option value="7">7 (Winger)</option>
-									<option value="8">8 (Central Midfielder)</option>
-									<option value="9">9 (Striker)</option>
-									<option value="10">10 (Central Attacking Midfielder)</option>
-									<option value="11">11 (Outside Midfielder)</option>
+									{Object.keys(positions).map((p, i) => {
+										return (
+											<option value={i+1} key={`jersey-${i+1}`}>{i+1} ({positions[i+1]})</option>
+										);
+									})}
 								</Form.Select>
 							</Form.Group>
 						</Col>

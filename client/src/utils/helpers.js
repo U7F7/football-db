@@ -61,7 +61,7 @@ export const athleteFormHasErrors = async (athlete) => {
 	}
   
 	return errors;
-}
+};
 
 export const sponsorsFormHasErrors = (formData) => {
 	const nameFilled = formData.name !== "default" && formData.nameVal !== "";
@@ -99,7 +99,7 @@ export const sponsorsFormHasErrors = (formData) => {
 	}
 
 	return errors;
-}
+};
 
 export const generateSponsorFormWhereClause = (formData) => {
 	const nameFilled = formData.name !== "default" && formData.nameVal !== "";

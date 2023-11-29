@@ -10,7 +10,6 @@ import Sponsors from "./components/sponsors/Sponsors";
 import Advanced from "./components/advanced/Advanced";
 
 const App = () => {
-
 	return (
 		<Router>
 			<NavigationBar />

@@ -31,7 +31,7 @@ const Locator = () => {
 
 	const [data, setData] = useState([]);
 
-	const handleClick = (e) => {
+	const handleClick = () => {
 		axios.post("http://localhost:65535/find-games/", { venueName: currVenueName })
 			.then((res) => {
 				setData(res.data);

@@ -26,7 +26,7 @@ const DeleteAthleteModal = ({ person_id, athletes, setAthletes, showDeleteAthlet
 			});
 
 		setAthletes(athletes.filter(athlete => athlete.person_id != person_id));
-	}
+	};
 
 	return (
 		<Modal centered show={showDeleteAthlete} onHide={() => setShowDeleteAthlete(false)}>

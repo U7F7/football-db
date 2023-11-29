@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -7,9 +7,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 
-import { sponsorsFormHasErrors, generateSponsorFormWhereClause } from "../../utils/helpers";
-
 import axios from "axios";
+
+import { sponsorsFormHasErrors, generateSponsorFormWhereClause } from "../../utils/helpers";
 
 const Sponsors = () => {
 	const [formData, setFormData] = useState({
@@ -36,12 +36,6 @@ const Sponsors = () => {
 	};
 
 	const handleSubmit = () => {
-		const nameFilled = formData.name !== "default" && formData.nameVal !== "";
-		const emailFilled = formData.email !== "default" && formData.emailVal !== "";
-		const moneyFilled = formData.money !== "default" && formData.moneyVal !== "";
-		const andor1Filled = formData.andor1 !== "default";
-		const andor2Filled = formData.andor2 !== "default";
-
 		const errors = 	sponsorsFormHasErrors(formData);
 
 		if (errors.length !== 0) {

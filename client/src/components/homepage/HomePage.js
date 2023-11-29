@@ -1,5 +1,8 @@
 import { React, useEffect, useState } from "react";
 
+import Standings from "./Standings";
+import RecentGames from "./RecentGames";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,9 +10,6 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
-
-import Standings from "./Standings";
-import RecentGames from "./RecentGames";
 
 import axios from "axios";
 
