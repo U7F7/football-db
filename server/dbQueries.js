@@ -226,8 +226,6 @@ const getTables = () => {
 				table_name <> 'HASSPONSOR' AND
 				table_name <> 'GIVENBY' AND
 				table_name <> 'WINSAWARD' AND
-				table_name <> 'PLAYSFOR' AND
-				table_name <> 'COACHES' AND
 				table_name <> 'REFEREES'
 		`).catch((err) => {
 			throw err;
@@ -454,8 +452,8 @@ const getFourMostRecentGames = (limit) => {
 					FROM ( SELECT home, game_id
 							FROM game
 							ORDER BY game_date DESC
-							${rowsToFetch} ) g, PlaysFor pf
-					WHERE g.home = pf.team_name ) pn , Statistics st
+							${rowsToFetch} ) g, Athlete a
+					WHERE g.home = a.team_name ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, home -- game id
@@ -472,8 +470,8 @@ const getFourMostRecentGames = (limit) => {
 						SELECT away, game_id
 						FROM game
 						ORDER BY game_date DESC
-						${rowsToFetch} ) g, PlaysFor pf
-					WHERE g.away = pf.team_name ) pn , Statistics st
+						${rowsToFetch} ) g, Athlete a
+					WHERE g.away = a.team_name ) pn , Statistics st
 				WHERE pn.PERSON_ID = st.PERSON_ID AND pn.game_id = st.game_id
 				GROUP BY st.game_id ) hg, (
 						SELECT game_id, away -- game id
