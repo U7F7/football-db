@@ -4,8 +4,6 @@ drop table LOCATEDIN;
 drop table HASSPONSOR;
 drop table GIVENBY;
 drop table WINSAWARD;
-drop table PLAYSFOR;
-drop table COACHES;
 drop table REFEREES;
 
 -- drop entities (order may matter for PK/FKs)
@@ -154,30 +152,6 @@ CREATE TABLE Injury(
 );
 
 /* Relationship Tables */
-
-CREATE TABLE PlaysFor(
-	person_id int,
-	team_name varchar(100),
-	PRIMARY KEY(person_id, team_name),
-	FOREIGN KEY(person_id) REFERENCES Athlete(person_id)
-	    ON DELETE CASCADE,
-	    /* ON UPDATE CASCADE not supported will impl another way */
-	FOREIGN KEY(team_name) REFERENCES Team(team_name)
-        ON DELETE CASCADE
-	    /* ON UPDATE CASCADE not supported will impl another way */
-);
-
-CREATE TABLE Coaches(
-	person_id int,
-	team_name varchar(100),
-	PRIMARY KEY(person_id, team_name),
-    FOREIGN KEY(person_id) REFERENCES Coach(person_id)
-        ON DELETE CASCADE,
-        /* ON UPDATE CASCADE not supported will impl another way */
-    FOREIGN KEY(team_name) REFERENCES Team(team_name)
-        ON DELETE CASCADE
-        /* ON UPDATE CASCADE not supported will impl another way */
-);
 
 CREATE TABLE ParticipatesIn(
 	game_id int,
