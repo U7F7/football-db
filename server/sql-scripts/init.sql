@@ -746,7 +746,7 @@ INSERT ALL
     INTO Coach VALUES (9, 'Oscar Rodriguez', '1986-12-08', 206, 101, 7780192939, 'oscar.rodriguez@soccer.com', '882 Parker Drive, Vancouver', '2007-07-27', 'Coquitlam Sharks', 'Head Coach')
     INTO Coach VALUES (10, 'Natalie Nguyen', '1994-04-23', 185, 81, 6047789102, 'natalie.nguyen@soccer.com', '721 Red Roof Way, Vancouver', '2013-01-19', 'Coquitlam Sharks', 'Assistant Coach')
     INTO Coach VALUES (11, 'Robert Barns', '1983-06-17', 178, 102, 6042102939, 'robert.barns@soccer.com', '900 Frankfurt Rd, Vancouver', '2001-10-09', 'Langley Bears', 'Head Coach')
-    INTO Coach VALUES (12, 'Bill Bacon', '1997-10-30', 150, 71, 7781920392, 'bill.bacon@soccer.com', '562 Fox Den Lane, Vancouver', '2016-08-07', 'Langley Bears', 'Assistant Coach')
+    INTO Coach VALUES (12, 'Bill Bacon', '1997-10-30', 150, 71, 7781920392, 'bill.bacon@soccer.com', '562 Fox Den Lane, Vancouver', '2014-08-07', 'Langley Bears', 'Assistant Coach')
 SELECT * FROM dual;
 
 

@@ -78,7 +78,7 @@ const HomePage = () => {
 											Masterminds On and Off the Field
 										</Card.Title>
 										<Card.Text>
-											Check out which teams have the most experienced coaching staff!
+											Check out which teams have the most experienced coaching staff. These teams feature an average coaching experience time of at least 15 years!
 										</Card.Text>
 										<Container style={{ paddingLeft: 0, paddingRight: "50%" }}>
 											<Table striped bordered style={{ marginTop: "20px" }}>

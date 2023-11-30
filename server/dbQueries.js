@@ -501,7 +501,7 @@ const getTeamsByCoachExp = () => {
 			SELECT current_team, AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) AS avgCoachingYears
 			FROM Coach
 			GROUP BY current_team
-			HAVING AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) > 10
+			HAVING AVG(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_started)) > 15
 			ORDER BY avgCoachingYears DESC
 		`).catch((err) => {
 			throw err;
