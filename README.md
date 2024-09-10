@@ -52,3 +52,5 @@ npm start
 ![Sponsors](examples/sponsors.png)
 
 ![Advanced](examples/advanced.png)
+
+*Special thanks to teammates [Patrick Hong](https://github.com/patrickhong21) and Fei Sam*
