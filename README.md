@@ -53,4 +53,4 @@ npm start
 
 ![Advanced](examples/advanced.png)
 
-*Special thanks to teammates [Patrick Hong](https://github.com/patrickhong21) and Fei Sam*
+*Special thanks to teammates [Patrick Hong](https://github.com/patrickhong21) and [Fei Sam](https://github.com/U7F7)*
